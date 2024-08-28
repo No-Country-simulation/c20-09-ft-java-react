@@ -1,1 +1,1 @@
-Initial Commit README
+# Proyecto - Plataforma de Evaluación y Seguimiento del Rendimiento Escolar #
