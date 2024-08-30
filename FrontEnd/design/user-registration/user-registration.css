@@ -1,0 +1,52 @@
+.user-form-container {
+    width: 80%; 
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+}
+
+.user-form-container h2 {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.input-group-inline {
+    flex: 1;
+    min-width: 200px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color:var(--primary-color);
+}
+
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+}
+
+select {
+    color: var(--primary-color); 
+}
+
+.default-option {
+    color: var(--primary-color);
+}

@@ -1,0 +1,212 @@
+:root {
+    --primary-color: #34495E; /* Color principal */
+    --secondary-color: #E67E22; /* Color secundario */
+    --hover-color: #D35400; /* Color para el estado hover */
+    --border-color: #BDC3C7; /* Color del borde */
+    --background-color: #f4f4f4; /* Color de fondo */
+    --text-color: #f4f4f4; /* Color del texto */
+    --button-secondary-color: #95A5A6; /* Color del botón Volver */
+    --button-secondary-hover-color: #7F8C8D; /* Color hover del botón Volver */
+}
+
+body {
+    font-family: "Lato", sans-serif;
+    font-weight: 400;
+    font-style: normal;
+    background-color: var(--primary-color); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    color: var(--background-color); 
+    padding: 20px; 
+}
+
+.login-container {
+    background-color: var(--background-color); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+}
+
+.logo img {
+    width: 300px;
+}
+
+h1 {
+    color: var(--secondary-color); 
+    margin-bottom: 20px;
+}
+
+.input-group {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.input-group label {
+    display: block;
+    color: var(--primary-color); 
+    margin-bottom: 5px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--border-color); 
+    border-radius: 5px;
+    box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group select:focus  {
+    border-color: var(--primary-color); 
+    outline: none;
+    box-shadow: 0 0 15px rgba(52, 73, 94, 0.5); 
+}
+
+.forgot-password {
+    margin-top: 10px;
+}
+
+.forgot-password a {
+    color: var(--primary-color); 
+    text-decoration: none;
+    transition: color 0.3s ease;
+}
+
+.forgot-password a:hover {
+    text-decoration: underline;
+    color: #1d2935;
+}
+
+/* BOTONES */
+
+.button-group {
+    display: flex;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.login-btn, 
+.back-btn, 
+.create-btn  {
+    background-color: var(--secondary-color); 
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.login-btn:hover, 
+.back-btn:hover, 
+.create-btn:hover {
+    background-color: var(--hover-color); 
+}
+
+.back-btn {
+    background-color: var(--button-secondary-color); 
+    color: var(--text-color);
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    width: 100%;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+    flex: 1; 
+}
+
+.back-btn:hover {
+    background-color: var(--button-secondary-hover-color);
+}
+
+
+/* HISTORIAL ACADEMICO */
+
+.container {
+    background-color: var(--background-color); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+/* Estilos para la información del alumno */
+.student-info {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 20px;
+}
+
+.student-info p {
+    margin: 0;
+    flex: 1;
+}
+
+/* Estilos para la tabla */
+
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #BDC3C7; 
+}
+
+th {
+    background-color: var(--secondary-color); 
+    color: white;
+}
+
+
+/* RESPONSIVE */
+@media screen and (max-width: 680px) {
+    table {
+        display: block;
+        width: 100%;
+        overflow-x: auto;
+    }
+
+    thead {
+        display: none;
+    }
+
+    tbody, tr {
+        display: block;
+        width: 100%;
+    }
+
+    td {
+        display: block;
+        width: 100%;
+        position: relative;
+        padding: 30px 10px; 
+        box-sizing: border-box;
+        border-bottom: 1px solid var(--border-color); 
+    }
+
+    td::before {
+        content: attr(data-label);
+        font-weight: bold;
+        display: block; 
+        margin-bottom: 10px; 
+        font-size: 14px; 
+        color: var(--primary-color); 
+    }
+
+}
