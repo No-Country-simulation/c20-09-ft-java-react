@@ -3,7 +3,7 @@ package com.school.service.interfaces;
 import com.school.dto.AuthRegisterUserRequest;
 import com.school.dto.AuthResponse;
 
-public interface IProfileService {
+public interface IProfileService{
     AuthResponse registerUser(AuthRegisterUserRequest request);
 
 //    UserProfileDto getUser(Long userId); // Leer un perfil de usuario por ID
