@@ -3,6 +3,7 @@ package com.school.service.implementation;
 import com.auth0.jwt.interfaces.DecodedJWT;
 import com.school.dto.*;
 import com.school.entities.*;
+import com.school.exception.EmailServiceException;
 import com.school.exception.ExpiredJwtException;
 import com.school.exception.InvalidTokenException;
 import com.school.repository.*;
@@ -20,14 +21,12 @@ import org.springframework.security.core.userdetails.User;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @Service
 public class UserEntitylServiceImpl implements UserDetailsService, IUserService {
@@ -104,6 +103,7 @@ public class UserEntitylServiceImpl implements UserDetailsService, IUserService 
         UserEntity userEntity = UserEntity.builder()
                 .email(email)
                 .password(passwordEncoder.encode(password))
+                .passwordChanged(false)
                 .roles(roleEntities)
                 .isEnable(true)
                 .accountNonLocked(true)
@@ -149,6 +149,44 @@ public class UserEntitylServiceImpl implements UserDetailsService, IUserService 
         userEntityRepository.save(registeredUser);
 
         return registeredUser.getId();
+    }
+
+    @Transactional
+    @Override
+    public void updatePasswordToken(String token, String email) throws EmailServiceException {
+        Optional<UserEntity> optionalUsuario = userEntityRepository.findUserEntityByEmail(email);
+
+        if (optionalUsuario.isPresent()) {
+            UserEntity user = optionalUsuario.get();
+            user.setResetPasswordToken(token);  // Asigna el token al usuario
+            userEntityRepository.save(user);    // Guarda el usuario actualizado en la base de datos
+        } else {
+            throw new EmailServiceException("User not found with email: " + email);
+        }
+    }
+
+    @Override
+    public UserEntity get(String resetPasswordToken) throws EmailServiceException {
+        if (resetPasswordToken == null) {
+            throw new EmailServiceException("Token not provided. Please request a new token.");
+        }
+
+        Optional<UserEntity> optionalUsuario = userEntityRepository.findByResetPasswordToken(resetPasswordToken);
+
+        if (optionalUsuario.isPresent()) {
+            return optionalUsuario.get(); // Retorna el usuario si el token es válido
+        } else {
+            throw new EmailServiceException("Invalid or expired token. Please request a new token.");
+        }
+    }
+
+    @Transactional
+    @Override
+    public void updatePassword(UserEntity user, String password) {
+        user.setPassword(new BCryptPasswordEncoder().encode(password));
+        user.setResetPasswordToken(null);
+        user.setPasswordChanged(true);
+        userEntityRepository.save(user);
     }
 
     @Transactional
