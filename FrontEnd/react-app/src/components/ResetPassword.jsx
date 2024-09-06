@@ -10,7 +10,10 @@ import {
   Heading,
   useToast,
   Text,
+  InputGroup,
+  InputLeftElement,
 } from "@chakra-ui/react";
+import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -19,6 +22,8 @@ const ResetPassword = () => {
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
   const [passwordError, setPasswordError] = useState("");
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -39,7 +44,9 @@ const ResetPassword = () => {
   }, [searchParams, navigate, toast]);
 
   const validatePassword = (password) => {
-    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)[A-Za-z\d]{13,}$/;
+    // Ejemplo de expresión regular que asegura al menos 12 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial
+    const regex =
+      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
     return regex.test(password);
   };
 
@@ -58,7 +65,7 @@ const ResetPassword = () => {
 
     if (!validatePassword(newPassword)) {
       setPasswordError(
-        "La contraseña debe tener al menos 13 caracteres, una letra mayúscula, una letra minúscula y un número."
+        "La contraseña debe tener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial."
       );
       return;
     } else {
@@ -77,11 +84,12 @@ const ResetPassword = () => {
         duration: 5000,
         isClosable: true,
       });
-      navigate("/login");
+      navigate("/");
     } catch (error) {
       toast({
         title: "Error",
-        description: "No se pudo restablecer la contraseña.",
+        description:
+          "No se pudo restablecer la contraseña. Por favor, verifica el token o intenta nuevamente.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -113,27 +121,47 @@ const ResetPassword = () => {
         <form onSubmit={handleSubmit}>
           <FormControl id="new-password" isRequired mb={4}>
             <FormLabel color="gray.700">Nueva Contraseña</FormLabel>
-            <Input
-              type="password"
-              value={newPassword}
-              onChange={(e) => setNewPassword(e.target.value)}
-              _focus={{
-                borderColor: "blue.500",
-                boxShadow: "0 0 0 1px blue.500",
-              }}
-            />
+            <InputGroup>
+              <InputLeftElement>
+                <Button
+                  variant="link"
+                  onClick={() => setShowPassword(!showPassword)}
+                >
+                  {showPassword ? <ViewOffIcon /> : <ViewIcon />}
+                </Button>
+              </InputLeftElement>
+              <Input
+                type={showPassword ? "text" : "password"}
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                _focus={{
+                  borderColor: "blue.500",
+                  boxShadow: "0 0 0 1px blue.500",
+                }}
+              />
+            </InputGroup>
           </FormControl>
           <FormControl id="confirm-password" isRequired mb={4}>
             <FormLabel color="gray.700">Confirmar Contraseña</FormLabel>
-            <Input
-              type="password"
-              value={confirmPassword}
-              onChange={(e) => setConfirmPassword(e.target.value)}
-              _focus={{
-                borderColor: "blue.500",
-                boxShadow: "0 0 0 1px blue.500",
-              }}
-            />
+            <InputGroup>
+              <InputLeftElement>
+                <Button
+                  variant="link"
+                  onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                >
+                  {showConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
+                </Button>
+              </InputLeftElement>
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={(e) => setConfirmPassword(e.target.value)}
+                _focus={{
+                  borderColor: "blue.500",
+                  boxShadow: "0 0 0 1px blue.500",
+                }}
+              />
+            </InputGroup>
           </FormControl>
           {passwordError && (
             <Text color="red.500" mb={4}>

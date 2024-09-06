@@ -18,7 +18,7 @@ const TeacherDashboard = () => {
   const handleLogout = () => {
     // Elimina el token del almacenamiento local y redirige al usuario al inicio de sesión
     localStorage.removeItem("token");
-    navigate("/login");
+    navigate("/");
   };
 
   return (
