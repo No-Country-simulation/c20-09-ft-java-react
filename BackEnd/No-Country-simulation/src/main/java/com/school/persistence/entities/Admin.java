@@ -11,6 +11,7 @@ import lombok.*;
 @Entity
 @Table(name = "admins")
 public class Admin extends User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
