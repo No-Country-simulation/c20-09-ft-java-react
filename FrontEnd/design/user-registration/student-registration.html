@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registro de Alumno</title>
+
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="./user-registration.css">
+</head>
+<body>
+    <div class="user-form-container">
+        <h2>Registro de Alumno</h2>
+
+        <!-- Formulario -->
+        <form id="create-alumno-form">
+            <h3>Información personal</h3>
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="firstName">Nombre/s:</label>
+                    <input type="text" id="firstName" name="firstName" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="lastName">Apellido/s:</label>
+                    <input type="text" id="lastName" name="lastName" required>
+                </div>
+            </div>
+
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="fechaNacimiento">Fecha de Nacimiento:</label>
+                    <input type="date" id="fechaNacimiento" name="fechaNacimiento" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="dni">D.N.I.:</label>
+                    <input type="text" id="dni" name="dni" required>
+                </div>
+            </div>
+
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="email">Email (Opcional):</label>
+                    <input type="email" id="email" name="email">
+                </div>
+                <div class="input-group-inline">
+                    <label for="phone">Celular (Opcional):</label>
+                    <input type="tel" id="phone" name="phone">
+                </div>
+            </div>
+
+            <h3>Dirección</h3>
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="address-street">Calle:</label>
+                    <input type="text" id="address-street" name="address-street" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="address-city">Ciudad:</label>
+                    <input type="text" id="address-city" name="address-city" required>
+                </div>
+            </div>
+
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="address-province">Provincia:</label>
+                    <input type="text" id="address-province" name="address-province" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="address-zipcode">Código Postal:</label>
+                    <input type="text" id="address-zipcode" name="address-zipcode" required>
+                </div>
+            </div>    
+
+            <h3>Datos Académicos</h3>
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="numMatricula">Número de Matrícula:</label>
+                    <input type="text" id="numMatricula" name="numMatricula" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="turno">Turno:</label>
+                    <select id="turno" name="turno" required>
+                        <option value="" disabled selected>Elija un turno</option>
+                        <option value="Mañana">Mañana</option>
+                        <option value="Tarde">Tarde</option>
+                    </select>
+                </div>
+            </div>
+
+            <h3>Información de Contacto de Emergencia</h3>
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="nombreEmergencia">Nombre del Contacto:</label>
+                    <input type="text" id="nombreEmergencia" name="nombreEmergencia" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="telefonoEmergencia">Teléfono del Contacto:</label>
+                    <input type="tel" id="telefonoEmergencia" name="telefonoEmergencia" required>
+                </div>
+            </div>
+
+            <h3>Información Médica</h3>
+            <div class="input-group row">
+                <div class="input-group-inline">
+                    <label for="grupoSanguineo">Grupo Sanguíneo:</label>
+                    <input type="text" id="grupoSanguineo" name="grupoSanguineo" required>
+                </div>
+                <div class="input-group-inline">
+                    <label for="alergias">Alergias:</label>
+                    <input type="text" id="alergias" name="alergias">
+                </div>
+                <div class="input-group-inline">
+                    <label for="otrasCondiciones">Otras Afecciones:</label>
+                    <input type="text" id="otrasCondiciones" name="otrasCondiciones">
+                </div>
+            </div>
+
+            <!-- Botones -->
+            <div class="button-group">
+                <button class="create-btn" type="submit">Registrar Alumno</button>
+                <button class="back-btn" type="button">Volver</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
