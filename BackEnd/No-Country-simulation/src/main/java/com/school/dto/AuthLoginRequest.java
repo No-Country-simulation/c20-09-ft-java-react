@@ -1,18 +1,19 @@
 package com.school.dto;
 
-import jakarta.validation.constraints.*;
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Size;
 
 public record AuthLoginRequest(
         @NotNull(message = "Email is required")
         @NotBlank(message = "Email must not be blank")
         @Email(message = "Please provide a valid email address")
-        @Size(max = 100, message = "Email must not exceed 100 characters")
+        @Size(max = 255, message = "Email must not exceed 255 characters")
         String email,
 
+        @NotNull(message = "Password is required")
         @NotBlank(message = "Password must not be blank")
-        @Size(min = 11, max = 15, message = "Password must be between 11 and 12 characters")
-        @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
-        @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter")
-        @Pattern(regexp = ".*[!@#$%&*_].*", message = "Password must contain at least one special character from !@#$%&*_")
+        @Size(min = 8, message = "Password must be at least 5 characters long")
         String password) {
 }
