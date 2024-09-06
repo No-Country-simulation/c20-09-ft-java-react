@@ -8,6 +8,7 @@ import {
 import useAuth from "./hooks/useAuth";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import AdminDashboard from "./pages/AdminDashboard";
 import ResetPassword from "./components/ResetPassword";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
@@ -23,6 +24,8 @@ const App = () => {
       <Routes>
         {/* Ruta para la página de inicio */}
         <Route path="/" element={<LoginPage />} />
+
+        <Route path="/admin" element={<AdminDashboard />} />
 
         <Route path="/reset_password" element={<ResetPassword />} />
         <Route path="/register" element={<RegisterPage />} />
