@@ -84,4 +84,9 @@ public class RolePermissionServiceImpl implements IRoleService {
                         .name(permissionEnum.name())
                         .build()));
     }
+
+    @Override
+    public Set<RoleEntity> getAllRoles() {
+        return new HashSet<>(roleEntityRepository.findAll());
+    }
 }

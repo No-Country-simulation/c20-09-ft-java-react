@@ -41,4 +41,10 @@ public class UserEntity {
 
     @Column(name = "refresh_token", length = 512)
     private String refreshToken;
+
+    @Column(name = "reset_password_token")
+    private String resetPasswordToken;
+
+    @Column(name = "password_changed")
+    private Boolean passwordChanged;
 }

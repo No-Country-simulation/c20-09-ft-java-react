@@ -14,6 +14,6 @@ public record AuthLoginRequest(
 
         @NotNull(message = "Password is required")
         @NotBlank(message = "Password must not be blank")
-        @Size(min = 5, message = "Password must be at least 5 characters long")
+        @Size(min = 8, message = "Password must be at least 5 characters long")
         String password) {
 }

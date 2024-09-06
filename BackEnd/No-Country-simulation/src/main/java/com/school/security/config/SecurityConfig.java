@@ -41,10 +41,12 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(http -> {
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/status").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/status", "/auth/roles").permitAll();
+                    http.requestMatchers(HttpMethod.GET, "/api/reset_password").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll();
+                    http.requestMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset_password").permitAll();
 
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-student").hasAnyRole("STUDENT");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-teacher").hasAnyRole("TEACHER");

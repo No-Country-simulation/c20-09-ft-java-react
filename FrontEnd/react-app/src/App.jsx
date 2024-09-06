@@ -8,10 +8,10 @@ import {
 import useAuth from "./hooks/useAuth";
 import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
+import ResetPassword from "./components/ResetPassword";
 import TeacherDashboard from "./pages/TeacherDashboard";
 import StudentDashboard from "./pages/StudentDashboard";
 import ParentDashboard from "./pages/ParentDashboard";
-import HomePage from "./pages/HomePage";
 import ProtectedRoute from "./components/ProtectedRoute"; // Importa el componente ProtectedRoute
 import "./styles/App.css";
 
@@ -22,9 +22,9 @@ const App = () => {
     <Router>
       <Routes>
         {/* Ruta para la página de inicio */}
-        <Route path="/" element={<HomePage />} />
+        <Route path="/" element={<LoginPage />} />
 
-        <Route path="/login" element={<LoginPage />} />
+        <Route path="/reset_password" element={<ResetPassword />} />
         <Route path="/register" element={<RegisterPage />} />
 
         {/* Ruta protegida para los dashboards */}

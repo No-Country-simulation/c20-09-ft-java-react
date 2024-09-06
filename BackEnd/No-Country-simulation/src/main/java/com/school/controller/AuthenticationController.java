@@ -1,6 +1,7 @@
 package com.school.controller;
 
 import com.school.dto.*;
+import com.school.entities.RoleEntity;
 import com.school.exception.ExpiredJwtException;
 import com.school.exception.InvalidTokenException;
 import com.school.service.implementation.ParentServiceImpl;
@@ -8,16 +9,15 @@ import com.school.service.implementation.StudentServiceImpl;
 import com.school.service.implementation.TeacherServiceImpl;
 import com.school.service.implementation.UserEntitylServiceImpl;
 import com.school.service.interfaces.IProfileService;
+import com.school.service.interfaces.IRoleService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.Map;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/auth")
@@ -25,9 +25,11 @@ public class AuthenticationController {
     Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticationController.class);
     private final UserEntitylServiceImpl userDetailService;
     private final Map<String, IProfileService> profileServiceMap;
+    private final IRoleService roleService;
 
-    public AuthenticationController(UserEntitylServiceImpl userDetailService, StudentServiceImpl studentService, ParentServiceImpl parentService, TeacherServiceImpl teacherService) {
+    public AuthenticationController(UserEntitylServiceImpl userDetailService, StudentServiceImpl studentService, ParentServiceImpl parentService, TeacherServiceImpl teacherService, IRoleService roleService) {
         this.userDetailService = userDetailService;
+        this.roleService = roleService;
         this.profileServiceMap = Map.of(
                 "STUDENT", studentService,
                 "PARENT", parentService,
@@ -35,21 +37,21 @@ public class AuthenticationController {
         );
     }
 
-    @PostMapping("/register")
-    public ResponseEntity<?> register(@RequestBody AuthRegisterUserRequest registerUserRequest) {
-        logger.info("Registering user with profileType: {}", registerUserRequest.profileType());
-        String profileType = registerUserRequest.profileType().toUpperCase();
-        logger.info("Profile type: {}", profileType);
-        IProfileService profileService = profileServiceMap.get(profileType);
-        logger.info("Profile service: {}", profileService);
+@PostMapping("/register")
+public ResponseEntity<?> register(@RequestBody @Valid AuthRegisterUserRequest registerUserRequest) {
+    logger.info("Registrando usuario con profileType: {}", registerUserRequest.profileType());
+    String profileType = registerUserRequest.profileType().toUpperCase();
+    logger.info("Tipo de perfil: {}", profileType);
+    IProfileService profileService = profileServiceMap.get(profileType);
+    logger.info("Servicio de perfil: {}", profileService);
 
-        if (profileService == null) {
-            return new ResponseEntity<>("Profile type not supported", HttpStatus.BAD_REQUEST);
-        }
-
-        AuthResponse registeredUser = profileService.registerUser(registerUserRequest);
-        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    if (profileService == null) {
+        return new ResponseEntity<>("Tipo de perfil no soportado", HttpStatus.BAD_REQUEST);
     }
+
+    AuthResponse registeredUser = profileService.registerUser(registerUserRequest);
+    return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+}
 
     @PostMapping("/login")
     public ResponseEntity<?> login(@RequestBody @Valid AuthLoginRequest userRequest) {
@@ -61,6 +63,12 @@ public class AuthenticationController {
     public ResponseEntity<?> refreshToken(@RequestBody @Valid RefreshTokenRequest request) throws InvalidTokenException, ExpiredJwtException {
         LoginAuthResponse authResponse = userDetailService.refreshToken(request.refreshToken());
         return ResponseEntity.ok(authResponse);
+    }
+
+    @GetMapping("/roles")
+    public ResponseEntity<Set<RoleEntity>> getAllRoles() {
+        Set<RoleEntity> roles = roleService.getAllRoles();
+        return ResponseEntity.ok(roles);
     }
 }
 

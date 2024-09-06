@@ -1,10 +1,10 @@
 // src/services/authService.js
-import api from "./api";
+import auth from "./auth";
 
 // Registro de usuario
 export const registerUser = async (userData) => {
   try {
-    const response = await api.post("/register", userData);
+    const response = await auth.post("/register", userData);
     return response.data;
   } catch (error) {
     console.error(
@@ -18,7 +18,7 @@ export const registerUser = async (userData) => {
 // Inicio de sesión
 export const loginUser = async (loginData) => {
   try {
-    const response = await api.post("/login", loginData);
+    const response = await auth.post("/login", loginData);
     // Guardar el token en el almacenamiento local para futuras solicitudes
     localStorage.setItem("token", response.data.token);
     return response.data;
@@ -31,7 +31,7 @@ export const loginUser = async (loginData) => {
 // Renovación de token
 export const refreshToken = async (refreshToken) => {
   try {
-    const response = await api.post("/refresh-token", { refreshToken });
+    const response = await auth.post("/refresh-token", { refreshToken });
     // Actualizar el token en el almacenamiento local
     localStorage.setItem("token", response.data.token);
     return response.data;

@@ -14,4 +14,6 @@ public interface IRoleService {
     Set<PermissionEntity> assignPermissionsToRole(RoleEnum roleEnum);
 
     PermissionEntity findOrCreatePermission(PermissionEnum permissionEnum);
+
+    Set<RoleEntity> getAllRoles();
 }
