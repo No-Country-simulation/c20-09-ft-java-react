@@ -1,12 +1,16 @@
 package com.school.service.implementation;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.school.dto.*;
 import com.school.entities.*;
 import com.school.exception.EmailServiceException;
 import com.school.exception.ExpiredJwtException;
 import com.school.exception.InvalidTokenException;
+import com.school.persistence.entities.*;
+import com.school.persistence.repository.*;
 import com.school.repository.*;
+import com.school.rest.request.AuthLoginRequest;
+import com.school.rest.request.AuthRegisterUserRequest;
+import com.school.rest.response.LoginAuthResponse;
 import com.school.service.interfaces.IUserService;
 import com.school.utility.JwtUtils;
 import org.slf4j.Logger;
@@ -87,7 +91,7 @@ public class UserEntitylServiceImpl implements UserDetailsService, IUserService 
 
     @Transactional
     @Override
-    public Long registerUser(AuthRegisterUserRequest registerUserRequest,  String password) {
+    public Long registerUser(AuthRegisterUserRequest registerUserRequest, String password) {
         String email = registerUserRequest.email();
         logger.info("Registering user password: " + password);
         if (userEntityRepository.existsByEmail(email)) {

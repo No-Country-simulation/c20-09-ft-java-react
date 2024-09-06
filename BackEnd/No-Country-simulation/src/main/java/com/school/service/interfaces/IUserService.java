@@ -1,7 +1,7 @@
 package com.school.service.interfaces;
 
-import com.school.dto.AuthRegisterUserRequest;
-import com.school.entities.UserEntity;
+import com.school.rest.request.AuthRegisterUserRequest;
+import com.school.persistence.entities.UserEntity;
 import com.school.exception.EmailServiceException;
 
 public interface IUserService {

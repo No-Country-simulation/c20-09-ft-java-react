@@ -1,7 +1,7 @@
 package com.school.service.implementation;
 
-import com.school.dto.AuthRegisterUserRequest;
-import com.school.dto.AuthResponse;
+import com.school.rest.request.AuthRegisterUserRequest;
+import com.school.rest.response.AuthResponse;
 import com.school.service.interfaces.IProfileService;
 import com.school.utility.PasswordUtil;
 import org.slf4j.Logger;

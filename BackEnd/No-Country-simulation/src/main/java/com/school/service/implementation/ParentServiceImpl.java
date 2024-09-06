@@ -1,10 +1,10 @@
 package com.school.service.implementation;
 
-import com.school.dto.AuthRegisterUserRequest;
-import com.school.dto.AuthResponse;
-import com.school.entities.Parent;
-import com.school.repository.ParentRepository;
-import com.school.repository.UserEntityRepository;
+import com.school.rest.request.AuthRegisterUserRequest;
+import com.school.rest.response.AuthResponse;
+import com.school.persistence.entities.Parent;
+import com.school.persistence.repository.ParentRepository;
+import com.school.persistence.repository.UserEntityRepository;
 import com.school.service.interfaces.IProfileService;
 import com.school.utility.PasswordUtil;
 
