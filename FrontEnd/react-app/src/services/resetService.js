@@ -1,9 +1,11 @@
-// src/services/resetService.js
 import api from "./api";
+
 // Solicitar el enlace para restablecimiento de contraseña
 export const forgotPassword = async (email) => {
   try {
-    const response = await api.post("/forgot-password", { email });
+    const response = await api.post("/forgot-password", null, {
+      params: { email },
+    });
     return response.data;
   } catch (error) {
     console.error(
@@ -17,9 +19,8 @@ export const forgotPassword = async (email) => {
 // Finalizar el restablecimiento de contraseña
 export const resetPassword = async (token, newPassword) => {
   try {
-    const response = await api.post("/reset_password", {
-      token,
-      password: newPassword,
+    const response = await api.post("/reset_password", null, {
+      params: { token, password: newPassword },
     });
     return response.data;
   } catch (error) {
