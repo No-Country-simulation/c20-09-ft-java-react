@@ -96,7 +96,7 @@ h1 {
 .back-btn, 
 .create-btn  {
     background-color: var(--secondary-color); 
-    color: var(--text-color);
+    color: #f4f4f4;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;
@@ -114,7 +114,7 @@ h1 {
 
 .back-btn {
     background-color: var(--button-secondary-color); 
-    color: var(--text-color);
+    color: #f4f4f4;
     padding: 10px 20px;
     border: none;
     border-radius: 5px;

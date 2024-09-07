@@ -1,25 +1,52 @@
-import React from "react";
-import "./AdminDashboard.css";
+import React, { useState } from "react";
+import {
+  Container,
+  Heading,
+  Button,
+  VStack,
+  Box,
+  useDisclosure,
+} from "@chakra-ui/react";
+import RegisterTeacher from "./admin/RegisterTeacher";
+import RegisterStudent from "./admin/RegisterStudent";
+import RegisterParent from "./admin/RegisterParent";
 
 const AdminDashboard = () => {
+  const [activeForm, setActiveForm] = useState("teacher"); // Estado para controlar el formulario activo
+
   return (
-    <div className="admin-dashboard">
-      <h1>Admin Dashboard</h1>
-      <div className="dashboard-content">
-        <section className="dashboard-section">
-          <h2>Welcome, Admin!</h2>
-          <p>
-            Here you can manage users, view system reports, and configure
-            platform settings.
-          </p>
-        </section>
-        <section className="dashboard-actions">
-          <button className="dashboard-button">Manage Users</button>
-          <button className="dashboard-button">View Reports</button>
-          <button className="dashboard-button">System Settings</button>
-        </section>
-      </div>
-    </div>
+    <Container maxW="container.lg" py={8}>
+      <Heading as="h1" mb={6} textAlign="center" color="orange.500">
+        Panel de Administración
+      </Heading>
+
+      <VStack spacing={4} align="stretch" mb={6}>
+        <Button
+          colorScheme={activeForm === "teacher" ? "orange" : "gray"}
+          onClick={() => setActiveForm("teacher")}
+        >
+          Registrar Profesor
+        </Button>
+        <Button
+          colorScheme={activeForm === "student" ? "orange" : "gray"}
+          onClick={() => setActiveForm("student")}
+        >
+          Registrar Estudiante
+        </Button>
+        <Button
+          colorScheme={activeForm === "parent" ? "orange" : "gray"}
+          onClick={() => setActiveForm("parent")}
+        >
+          Registrar Padre/Tutor
+        </Button>
+      </VStack>
+
+      <Box bg="white" p={6} borderRadius="md" boxShadow="md">
+        {activeForm === "teacher" && <RegisterTeacher />}
+        {activeForm === "student" && <RegisterStudent />}
+        {activeForm === "parent" && <RegisterParent />}
+      </Box>
+    </Container>
   );
 };
 

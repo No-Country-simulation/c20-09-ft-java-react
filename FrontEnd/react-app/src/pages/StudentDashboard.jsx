@@ -1,25 +1,123 @@
+// src/pages/StudentDashboard.jsx
 import React from "react";
-import "./StudentDashboard.css";
+import {
+  Box,
+  Button,
+  Heading,
+  Text,
+  Flex,
+  useBreakpointValue,
+  Link as ChakraLink,
+  Container,
+} from "@chakra-ui/react";
+import { Link, useNavigate } from "react-router-dom";
 
 const StudentDashboard = () => {
+  const navigate = useNavigate();
+  const isMobile = useBreakpointValue({ base: true, md: false });
+
+  const handleLogout = () => {
+    // Elimina el token del almacenamiento local y redirige al usuario al inicio de sesión
+    localStorage.removeItem("token");
+    navigate("/");
+  };
+
   return (
-    <div className="student-dashboard">
-      <h1>Student Dashboard</h1>
-      <div className="dashboard-content">
-        <section className="dashboard-section">
-          <h2>Welcome, Student!</h2>
-          <p>
-            Here you can view your courses, track your progress, and manage your
-            assignments.
-          </p>
-        </section>
-        <section className="dashboard-actions">
-          <button className="dashboard-button">View Courses</button>
-          <button className="dashboard-button">Track Progress</button>
-          <button className="dashboard-button">Manage Assignments</button>
-        </section>
-      </div>
-    </div>
+    <Container
+      maxW="container.lg"
+      p={8}
+      bg="gray.50"
+      borderRadius="md"
+      boxShadow="md"
+      mt={4}
+      textAlign="center"
+    >
+      <Heading color="teal.600" mb={6}>
+        Bienvenido, Estudiante
+      </Heading>
+      <Text color="gray.600" mb={8}>
+        Accede a tus tareas, calificaciones y perfil desde aquí.
+      </Text>
+      <Flex
+        direction={isMobile ? "column" : "row"}
+        wrap="wrap"
+        justify="center" // Centra los elementos en el contenedor Flex
+        gap={4}
+      >
+        <ChakraLink
+          as={Link}
+          to="/view-assignments"
+          _hover={{ textDecor: "none" }}
+        >
+          <Box
+            p={4}
+            bg="white"
+            borderRadius="md"
+            boxShadow="md"
+            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            _hover={{
+              transform: "scale(1.05)",
+              boxShadow: "lg",
+            }}
+            maxW="200px" // Limita el ancho máximo de cada tarjeta
+            textAlign="center" // Centra el texto dentro de cada tarjeta
+            mx="auto" // Centra cada tarjeta horizontalmente
+          >
+            <Heading size="md" color="teal.600" mb={2}>
+              Ver Tareas
+            </Heading>
+            <Text mb={4}>Consulta y completa tus tareas asignadas.</Text>
+          </Box>
+        </ChakraLink>
+        <ChakraLink as={Link} to="/view-grades" _hover={{ textDecor: "none" }}>
+          <Box
+            p={4}
+            bg="white"
+            borderRadius="md"
+            boxShadow="md"
+            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            _hover={{
+              transform: "scale(1.05)",
+              boxShadow: "lg",
+            }}
+            maxW="200px" // Limita el ancho máximo de cada tarjeta
+            textAlign="center" // Centra el texto dentro de cada tarjeta
+            mx="auto" // Centra cada tarjeta horizontalmente
+          >
+            <Heading size="md" color="teal.600" mb={2}>
+              Ver Calificaciones
+            </Heading>
+            <Text mb={4}>
+              Revisa tus calificaciones y el progreso académico.
+            </Text>
+          </Box>
+        </ChakraLink>
+        <ChakraLink as={Link} to="/profile" _hover={{ textDecor: "none" }}>
+          <Box
+            p={4}
+            bg="white"
+            borderRadius="md"
+            boxShadow="md"
+            transition="transform 0.3s ease, box-shadow 0.3s ease"
+            _hover={{
+              transform: "scale(1.05)",
+              boxShadow: "lg",
+            }}
+            maxW="200px" // Limita el ancho máximo de cada tarjeta
+            textAlign="center" // Centra el texto dentro de cada tarjeta
+            mx="auto" // Centra cada tarjeta horizontalmente
+          >
+            <Heading size="md" color="teal.600" mb={2}>
+              Perfil
+            </Heading>
+            <Text mb={4}>Edita tu perfil y configura tu cuenta.</Text>
+          </Box>
+        </ChakraLink>
+      </Flex>
+      <Button mt={8} colorScheme="red" onClick={handleLogout}>
+        Cerrar Sesión
+      </Button>
+    </Container>
   );
 };
 

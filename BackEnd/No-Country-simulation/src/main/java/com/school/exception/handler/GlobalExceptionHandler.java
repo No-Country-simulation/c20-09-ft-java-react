@@ -1,5 +1,6 @@
 package com.school.exception.handler;
 
+import com.school.exception.EmailServiceException;
 import com.school.exception.InvalidTokenException;
 import com.school.exception.UserAlreadyExistsException;
 import com.school.exception.UserNotFoundException;
@@ -83,6 +84,11 @@ public class GlobalExceptionHandler {
     @ExceptionHandler(InvalidTokenException.class)
     public ResponseEntity<Map<String, Object>> handleInvalidTokenException(InvalidTokenException e) {
         return buildErrorResponse(HttpStatus.UNAUTHORIZED, "The refresh token provided is invalid or has expired. Please request a new one.");
+    }
+
+    @ExceptionHandler(EmailServiceException.class)
+    public ResponseEntity<Map<String, Object>> handleEmailServiceException(EmailServiceException e) {
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String message) {
