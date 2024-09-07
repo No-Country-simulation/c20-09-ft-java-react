@@ -1,1 +1,10 @@
-# Proyecto - Plataforma de Evaluación y Seguimiento del Rendimiento Escolar #
+# Proyecto Plataforma de Evaluación y Seguimiento Educativo #
+
+ 
+
+
+
+
+
+
+
