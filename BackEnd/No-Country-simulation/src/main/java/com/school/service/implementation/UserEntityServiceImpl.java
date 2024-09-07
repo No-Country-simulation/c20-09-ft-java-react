@@ -1,13 +1,11 @@
 package com.school.service.implementation;
 
 import com.auth0.jwt.interfaces.DecodedJWT;
-import com.school.entities.*;
 import com.school.exception.EmailServiceException;
 import com.school.exception.ExpiredJwtException;
 import com.school.exception.InvalidTokenException;
 import com.school.persistence.entities.*;
 import com.school.persistence.repository.*;
-import com.school.repository.*;
 import com.school.rest.request.AuthLoginRequest;
 import com.school.rest.request.AuthRegisterUserRequest;
 import com.school.rest.response.LoginAuthResponse;
@@ -33,7 +31,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.*;
 
 @Service
-public class UserEntitylServiceImpl implements UserDetailsService, IUserService {
+public class UserEntityServiceImpl implements UserDetailsService, IUserService {
+
     private final ParentRepository parentRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
@@ -41,9 +40,9 @@ public class UserEntitylServiceImpl implements UserDetailsService, IUserService 
     private final RoleEntityRepository roleEntityRepository;
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
-    private static final Logger logger = LoggerFactory.getLogger(UserEntitylServiceImpl.class);
+    private static final Logger logger = LoggerFactory.getLogger(UserEntityServiceImpl.class);
 
-    public UserEntitylServiceImpl(ParentRepository parentRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, UserEntityRepository userEntityRepository, RoleEntityRepository roleEntityRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+    public UserEntityServiceImpl(ParentRepository parentRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, UserEntityRepository userEntityRepository, RoleEntityRepository roleEntityRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
         this.parentRepository = parentRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;

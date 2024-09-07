@@ -1,19 +1,24 @@
-package com.school.persistence.entities;
+package com.school.service.dto;
 
+import com.school.persistence.entities.Address;
+import com.school.persistence.entities.MedicalInformation;
 import jakarta.persistence.Column;
-import jakarta.persistence.MappedSuperclass;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
+import jakarta.persistence.Id;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
-import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import java.time.LocalDate;
 
 @Getter
 @Setter
-@NoArgsConstructor
-@MappedSuperclass
-public abstract class User {
+public class TeacherRegistrationDto {
+
+    @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
 
     @NotNull(message = "Name cannot be null")
     @Size(min = 2, max = 30, message = "Name must be between 2 and 30 characters")
@@ -29,6 +34,7 @@ public abstract class User {
     private String dni;
 
     @Size(max = 11, message = "Phone number cannot have more than 11 digits")
+    @NotNull(message = "Phone number cannot be null")
     private String phoneNumber;
 
     @Pattern(regexp = ".*@.*", message = "The field must contain '@'")
@@ -44,4 +50,6 @@ public abstract class User {
     private int emergencyNumber;
 
     private String emergencyContactName;
+
+    private MedicalInformation medicalInformation;
 }

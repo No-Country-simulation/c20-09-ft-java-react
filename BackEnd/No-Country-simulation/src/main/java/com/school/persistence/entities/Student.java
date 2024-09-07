@@ -14,6 +14,7 @@ import java.util.Set;
 @Entity
 @Table(name = "students")
 public class Student extends User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

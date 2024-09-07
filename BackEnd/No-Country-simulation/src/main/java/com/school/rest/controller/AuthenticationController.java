@@ -11,7 +11,7 @@ import com.school.rest.response.LoginAuthResponse;
 import com.school.service.implementation.ParentServiceImpl;
 import com.school.service.implementation.StudentServiceImpl;
 import com.school.service.implementation.TeacherServiceImpl;
-import com.school.service.implementation.UserEntitylServiceImpl;
+import com.school.service.implementation.UserEntityServiceImpl;
 import com.school.service.interfaces.IProfileService;
 import com.school.service.interfaces.IRoleService;
 import jakarta.validation.Valid;
@@ -27,11 +27,12 @@ import java.util.Set;
 @RequestMapping("/auth")
 public class AuthenticationController {
     Logger logger = org.slf4j.LoggerFactory.getLogger(AuthenticationController.class);
-    private final UserEntitylServiceImpl userDetailService;
+    private final UserEntityServiceImpl userDetailService;
     private final Map<String, IProfileService> profileServiceMap;
     private final IRoleService roleService;
 
-    public AuthenticationController(UserEntitylServiceImpl userDetailService, StudentServiceImpl studentService, ParentServiceImpl parentService, TeacherServiceImpl teacherService, IRoleService roleService) {
+    public AuthenticationController(UserEntityServiceImpl userDetailService, StudentServiceImpl studentService,
+                                    ParentServiceImpl parentService, TeacherServiceImpl teacherService, IRoleService roleService) {
         this.userDetailService = userDetailService;
         this.roleService = roleService;
         this.profileServiceMap = Map.of(

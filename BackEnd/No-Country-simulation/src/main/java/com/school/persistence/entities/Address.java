@@ -19,9 +19,9 @@ public class Address {
 
     private int zipCode;
 
-    private String streetName;
+    private String streetNameNumberDepartmentFloorAndNumber;
 
-    private String streetNumber;
-
-    private String departmentFloorAndNumber;
+//    private String streetNumber;
+//
+//    private String departmentFloorAndNumber;
 }
