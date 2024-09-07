@@ -7,6 +7,7 @@ import com.school.service.dto.StudentRegistrationDto;
 import com.school.utility.PasswordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class StudentServiceImpl {
     private final StudentRepository studentRepository;
     private static final Logger logger = LoggerFactory.getLogger(StudentServiceImpl.class);
 
+    @Autowired
     public StudentServiceImpl(PasswordUtil passwordUtil,
                               UserEntityServiceImpl userEntityService,
                               UserEntityRepository userEntityRepository,
@@ -72,18 +74,18 @@ public class StudentServiceImpl {
         return true;
     }
 
-    public Optional<Student> findStudentById(StudentRegistrationDto studentRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public Optional<Student> findStudentById(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Student> optionalStudent = studentRepository.findById(studentRegistrationDto.getId());
+        Optional<Student> optionalStudent = studentRepository.findById(id);
 
         if (optionalStudent.isPresent()){
             return optionalStudent;
         } else throw new ChangeSetPersister.NotFoundException();
     }
 
-    public Optional<Student> updateStudentById(StudentRegistrationDto studentRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public Optional<Student> updateStudentById(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Student> optionalStudent = studentRepository.findById(studentRegistrationDto.getId());
+        Optional<Student> optionalStudent = studentRepository.findById(id);
 
         if (optionalStudent.isPresent()) {
             Student existingStudent = optionalStudent.get();
@@ -95,12 +97,12 @@ public class StudentServiceImpl {
         } else throw new ChangeSetPersister.NotFoundException();
     }
 
-    public void deleteStudent(StudentRegistrationDto studentRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public void deleteStudent(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Student> optionalStudent = studentRepository.findById(studentRegistrationDto.getId());
+        Optional<Student> optionalStudent = studentRepository.findById(id);
 
         if (optionalStudent.isPresent()){
-            studentRepository.deleteById(studentRegistrationDto.getId());
+            studentRepository.deleteById(id);
         } else throw new ChangeSetPersister.NotFoundException();
     }
 }

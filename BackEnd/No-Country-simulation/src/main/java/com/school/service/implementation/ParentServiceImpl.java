@@ -7,6 +7,7 @@ import com.school.service.dto.ParentRegistrationDto;
 import com.school.utility.PasswordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -21,6 +22,7 @@ public class ParentServiceImpl{
     private final UserEntityServiceImpl userEntityService;
     private static final Logger logger = LoggerFactory.getLogger(ParentServiceImpl.class);
 
+    @Autowired
     public ParentServiceImpl(UserEntityRepository userEntityRepository, ParentRepository parentRepository,
                              PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService) {
         this.userEntityRepository = userEntityRepository;
@@ -82,18 +84,18 @@ public class ParentServiceImpl{
         return true;
     }
 
-    public Optional<Parent> findParentById(ParentRegistrationDto parentRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public Optional<Parent> findParentById(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Parent> optionalParent = parentRepository.findById(parentRegistrationDto.getId());
+        Optional<Parent> optionalParent = parentRepository.findById(id);
 
         if (optionalParent.isPresent()){
             return optionalParent;
         } else throw new ChangeSetPersister.NotFoundException();
     }
 
-    public Optional<Parent> updateParentById(ParentRegistrationDto parentRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public Optional<Parent> updateParentById(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Parent> optionalParent = parentRepository.findById(parentRegistrationDto.getId());
+        Optional<Parent> optionalParent = parentRepository.findById(id);
 
         if (optionalParent.isPresent()) {
             Parent existingStudent = optionalParent.get();
@@ -105,12 +107,12 @@ public class ParentServiceImpl{
         } else throw new ChangeSetPersister.NotFoundException();
     }
 
-    public void deleteParent(ParentRegistrationDto parentRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public void deleteParent(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Parent> optionalParent = parentRepository.findById(parentRegistrationDto.getId());
+        Optional<Parent> optionalParent = parentRepository.findById(id);
 
         if (optionalParent.isPresent()){
-            parentRepository.deleteById(parentRegistrationDto.getId());
+            parentRepository.deleteById(id);
         } else throw new ChangeSetPersister.NotFoundException();
     }
 }

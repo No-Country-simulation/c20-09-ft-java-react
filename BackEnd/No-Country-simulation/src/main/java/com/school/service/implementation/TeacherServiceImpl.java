@@ -6,6 +6,7 @@ import com.school.service.dto.TeacherRegistrationDto;
 import com.school.utility.PasswordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 
@@ -19,6 +20,7 @@ public class TeacherServiceImpl{
     private final TeacherRepository teacherRepository;
     private static final Logger logger = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
+    @Autowired
     public TeacherServiceImpl(PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, TeacherRepository teacherRepository) {
         this.passwordUtil = passwordUtil;
         this.userEntityService = userEntityService;
@@ -47,7 +49,7 @@ public class TeacherServiceImpl{
      *
      * 2: Los metodos de buscar, editar y eliminar profesores, los realicé con ID, pero se pueden cambiar por el DNI
      * O en su defecto agregar otra serie de mismos metodos pero cambiando el ID por DNI*/
-    public boolean TeacherRegistration(TeacherRegistrationDto teacherRegistrationDto){
+    public boolean teacherRegistration(TeacherRegistrationDto teacherRegistrationDto){
 
         Teacher teacher = new Teacher();
         teacher.setName(teacherRegistrationDto.getName());
@@ -60,25 +62,25 @@ public class TeacherServiceImpl{
         teacher.setEmergencyNumber(teacherRegistrationDto.getEmergencyNumber());
         teacher.setEmergencyContactName(teacherRegistrationDto.getEmergencyContactName());
         teacher.setMedicalInformation(teacherRegistrationDto.getMedicalInformation());
-        teacher.setProfesionalInformation(teacherRegistrationDto.getProfesionalInformation);
+        teacher.setProfesionalInformation(teacherRegistrationDto.getProfesionalInformation());
 
         teacherRepository.save(teacher);
 
         return true;
     }
 
-    public Optional<Teacher> findTeacherById(TeacherRegistrationDto teacherRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public Optional<Teacher> findTeacherById(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(teacherRegistrationDto.getId());
+        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
 
         if (optionalTeacher.isPresent()){
             return optionalTeacher;
         } else throw new ChangeSetPersister.NotFoundException();
     }
 
-    public Optional<Teacher> updateTeacherById(TeacherRegistrationDto teacherRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public Optional<Teacher> updateTeacherById(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(teacherRegistrationDto.getId());
+        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
 
         if (optionalTeacher.isPresent()) {
             Teacher existingTeacher = optionalTeacher.get();
@@ -90,12 +92,12 @@ public class TeacherServiceImpl{
         } else throw new ChangeSetPersister.NotFoundException();
     }
 
-    public void deleteTeacher(TeacherRegistrationDto teacherRegistrationDto) throws ChangeSetPersister.NotFoundException {
+    public void deleteTeacher(long id) throws ChangeSetPersister.NotFoundException {
 
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(teacherRegistrationDto.getId());
+        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
 
         if (optionalTeacher.isPresent()){
-            teacherRepository.deleteById(teacherRegistrationDto.getId());
+            teacherRepository.deleteById(id);
         } else throw new ChangeSetPersister.NotFoundException();
     }
 }
