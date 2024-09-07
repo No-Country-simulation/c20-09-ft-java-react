@@ -2,6 +2,7 @@ package com.school.service.dto;
 
 import com.school.persistence.entities.Address;
 import com.school.persistence.entities.MedicalInformation;
+import com.school.persistence.entities.ProfesionalInformation;
 import jakarta.persistence.Column;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -52,4 +53,6 @@ public class TeacherRegistrationDto {
     private String emergencyContactName;
 
     private MedicalInformation medicalInformation;
+
+    private ProfesionalInformation profesionalInformation;
 }

@@ -28,4 +28,6 @@ public class Teacher extends User {
 
     private MedicalInformation medicalInformation;
 
+    private ProfesionalInformation profesionalInformation;
+
 }

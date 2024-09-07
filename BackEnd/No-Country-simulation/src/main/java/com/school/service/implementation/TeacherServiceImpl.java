@@ -60,6 +60,7 @@ public class TeacherServiceImpl{
         teacher.setEmergencyNumber(teacherRegistrationDto.getEmergencyNumber());
         teacher.setEmergencyContactName(teacherRegistrationDto.getEmergencyContactName());
         teacher.setMedicalInformation(teacherRegistrationDto.getMedicalInformation());
+        teacher.setProfesionalInformation(teacherRegistrationDto.getProfesionalInformation);
 
         teacherRepository.save(teacher);
 
