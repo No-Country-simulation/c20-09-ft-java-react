@@ -1,9 +1,9 @@
 package com.school.service.interfaces;
 
-import com.school.entities.PermissionEntity;
-import com.school.entities.RoleEntity;
-import com.school.enums.PermissionEnum;
-import com.school.enums.RoleEnum;
+import com.school.persistence.entities.PermissionEntity;
+import com.school.persistence.entities.RoleEntity;
+import com.school.persistence.enums.PermissionEnum;
+import com.school.persistence.enums.RoleEnum;
 
 import java.util.Set;
 

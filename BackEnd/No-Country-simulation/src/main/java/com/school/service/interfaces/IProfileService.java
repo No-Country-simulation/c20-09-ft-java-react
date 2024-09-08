@@ -1,7 +1,7 @@
 package com.school.service.interfaces;
 
-import com.school.dto.AuthRegisterUserRequest;
-import com.school.dto.AuthResponse;
+import com.school.rest.request.AuthRegisterUserRequest;
+import com.school.rest.response.AuthResponse;
 
 public interface IProfileService{
     AuthResponse registerUser(AuthRegisterUserRequest request);

@@ -1,7 +1,7 @@
 package com.school.security;
 
-import com.school.entities.RoleEntity;
-import com.school.enums.RoleEnum;
+import com.school.persistence.entities.RoleEntity;
+import com.school.persistence.enums.RoleEnum;
 import com.school.service.implementation.RolePermissionServiceImpl;
 import com.school.service.interfaces.IRoleService;
 import org.springframework.beans.factory.annotation.Autowired;
