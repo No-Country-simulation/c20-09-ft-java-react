@@ -41,6 +41,7 @@ public class SecurityConfig {
                 .httpBasic(Customizer.withDefaults())
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(http -> {
+                    // Rutas accesibles sin autenticación
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status", "/auth/roles").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/reset_password").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
@@ -48,10 +49,16 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset_password").permitAll();
 
+                    // Rutas accesibles solo con roles específicos
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-student").hasAnyRole("STUDENT");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-teacher").hasAnyRole("TEACHER");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-parent").hasAnyRole("PARENT");
 
+                    // Permisos para evaluaciones
+                    http.requestMatchers(HttpMethod.POST, "/evaluations/load").hasRole("TEACHER");
+                    http.requestMatchers(HttpMethod.GET, "/evaluations/student/{dni}").hasAnyRole("STUDENT", "PARENT");
+
+                    // Denegar todas las demás solicitudes
                     http.anyRequest().denyAll();
                 })
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
