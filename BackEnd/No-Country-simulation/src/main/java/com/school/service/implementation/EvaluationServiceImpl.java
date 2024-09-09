@@ -1,7 +1,7 @@
 package com.school.service.implementation;
 
-import com.school.entities.Evaluation;
-import com.school.repository.EvaluationRepository;
+import com.school.persistence.entities.Evaluation;
+import com.school.persistence.repository.EvaluationRepository;
 import com.school.service.interfaces.IEvaluationService;
 import org.springframework.stereotype.Service;
 

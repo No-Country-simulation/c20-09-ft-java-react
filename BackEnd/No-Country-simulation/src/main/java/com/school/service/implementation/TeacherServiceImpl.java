@@ -1,103 +1,122 @@
 package com.school.service.implementation;
 
 import com.school.persistence.entities.Teacher;
+import com.school.persistence.enums.RoleEnum;
 import com.school.persistence.repository.TeacherRepository;
+import com.school.persistence.repository.UserEntityRepository;
+import com.school.rest.request.AuthRegisterRoleRequest;
+import com.school.rest.request.AuthRegisterUserRequest;
+import com.school.rest.response.AuthResponse;
 import com.school.service.dto.TeacherRegistrationDto;
+import com.school.service.dto.UpdateTeacherDto;
+import com.school.service.interfaces.GenericService;
 import com.school.utility.PasswordUtil;
+import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.util.Collections;
 import java.util.Optional;
 
 @Service
-public class TeacherServiceImpl{
+public class TeacherServiceImpl implements GenericService<Teacher, TeacherRegistrationDto, UpdateTeacherDto, AuthResponse> {
 
     private final PasswordUtil passwordUtil;
     private final UserEntityServiceImpl userEntityService;
+    private final UserEntityRepository userEntityRepository;
     private final TeacherRepository teacherRepository;
     private static final Logger logger = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
-    @Autowired
-    public TeacherServiceImpl(PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, TeacherRepository teacherRepository) {
+    public TeacherServiceImpl(PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, UserEntityRepository userEntityRepository, TeacherRepository teacherRepository) {
         this.passwordUtil = passwordUtil;
         this.userEntityService = userEntityService;
+        this.userEntityRepository = userEntityRepository;
         this.teacherRepository = teacherRepository;
     }
 
-//    @Override
-//    public AuthResponse registerUser(AuthRegisterUserRequest request) {
-//        logger.info("Parent registered successfully: {}", request.toString());
-//
-//        String rawPassword = passwordUtil.generatePassword(request.dni());
-//
-//        //TODO: Implement this method Teacher ver servicio ParentServiceImpl para referencia
-//        userEntitylService.registerUser(request, rawPassword);
-//
-//        return new AuthResponse( request.email(),rawPassword,"Teacher registered successfully",  "TBD", true);
-//    }
+    @Transactional
+    @Override
+    public AuthResponse create(TeacherRegistrationDto teacherRegistrationDto) {
 
+        // Verificar si el DNI ya está registrado
+        if (teacherRepository.existsByDni(teacherRegistrationDto.getDni())) {
+            throw new IllegalArgumentException("DNI already registered: " + teacherRegistrationDto.getDni());
+        }
 
-    /*
-     * Hice los cuatros metodos CRUD clasicos de una entidad
-     * Hay que tomar los siguientes puntos a consideracion
-     *
-     * 1: El registro del usuario no tiene los componentes del anterior
-     * registro de mas arriba porque no estoy familiarizado con el funcionamiento
-     *
-     * 2: Los metodos de buscar, editar y eliminar profesores, los realicé con ID, pero se pueden cambiar por el DNI
-     * O en su defecto agregar otra serie de mismos metodos pero cambiando el ID por DNI*/
-    public boolean teacherRegistration(TeacherRegistrationDto teacherRegistrationDto){
+        logger.info("Teacher registered successfully: {}", teacherRegistrationDto.toString());
 
-        Teacher teacher = new Teacher();
+        // Generar una contraseña basada en el DNI del profesor
+        String rawPassword = passwordUtil.generatePassword(teacherRegistrationDto.getDni());
+
+        // Construir el AuthRegisterUserRequest con los datos necesarios
+        AuthRegisterUserRequest requestUser = AuthRegisterUserRequest.builder()
+                .email(teacherRegistrationDto.getEmail())
+                .profileType("TEACHER")  // Establecer el perfil como 'TEACHER'
+                .roleRequest(AuthRegisterRoleRequest.builder()
+                        .roleListName(Collections.singletonList(RoleEnum.TEACHER.name()))
+                        .build())
+                .build();
+
+        // Registrar usuario y obtener el ID
+        Long idUser = userEntityService.registerUser(requestUser, rawPassword);
+
+        // Buscar el Teacher asociado al usuario registrado
+        Teacher teacher = teacherRepository.findByUser(userEntityRepository.findById(idUser)
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + idUser)));
+
+        // Asignar los datos del DTO al objeto Teacher
         teacher.setName(teacherRegistrationDto.getName());
+        teacher.setDateOfBirth(teacherRegistrationDto.getDateOfBirth());
         teacher.setLastName(teacherRegistrationDto.getLastName());
         teacher.setDni(teacherRegistrationDto.getDni());
         teacher.setPhoneNumber(teacherRegistrationDto.getPhoneNumber());
         teacher.setEmail(teacherRegistrationDto.getEmail());
-        teacher.setAddress(teacherRegistrationDto.getAddress());
-        teacher.setDateOfBirth(teacherRegistrationDto.getDateOfBirth());
         teacher.setEmergencyNumber(teacherRegistrationDto.getEmergencyNumber());
         teacher.setEmergencyContactName(teacherRegistrationDto.getEmergencyContactName());
-        teacher.setMedicalInformation(teacherRegistrationDto.getMedicalInformation());
-        teacher.setProfesionalInformation(teacherRegistrationDto.getProfesionalInformation());
+        teacher.setProfesionalInformation(teacherRegistrationDto.getProfessionalInformation());
+        teacher.setAddress(teacherRegistrationDto.getAddress());
 
+        // Guardar los datos del profesor en el repositorio
         teacherRepository.save(teacher);
 
-        return true;
+        // Retornar respuesta de autenticación
+        return new AuthResponse(teacher.getName(), rawPassword, "Teacher registered successfully", "TBD", true);
     }
 
-    public Optional<Teacher> findTeacherById(long id) throws ChangeSetPersister.NotFoundException {
+    @Override
+    @Transactional
+    public Teacher update(Long id, UpdateTeacherDto updateTeacherDto) {
 
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
+        // Buscar el profesor existente por ID, lanzando una excepción si no se encuentra
+        Teacher existingTeacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher with ID " + id + " not found"));
 
-        if (optionalTeacher.isPresent()){
-            return optionalTeacher;
-        } else throw new ChangeSetPersister.NotFoundException();
+        // Actualizar los campos del profesor con la información proporcionada en updateTeacherDto
+        existingTeacher.setName(updateTeacherDto.getName());
+        existingTeacher.setLastName(updateTeacherDto.getLastName());
+        existingTeacher.setDni(updateTeacherDto.getDni());
+        existingTeacher.setPhoneNumber(updateTeacherDto.getPhoneNumber());
+        existingTeacher.setEmail(updateTeacherDto.getEmail());
+        existingTeacher.setEmergencyNumber(updateTeacherDto.getEmergencyNumber());
+        existingTeacher.setEmergencyContactName(updateTeacherDto.getEmergencyContactName());
+        existingTeacher.setProfesionalInformation(updateTeacherDto.getProfesionalInformation());
+
+        // Guardar el profesor actualizado en la base de datos
+        return teacherRepository.save(existingTeacher);
     }
 
-    public Optional<Teacher> updateTeacherById(long id) throws ChangeSetPersister.NotFoundException {
-
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
-
-        if (optionalTeacher.isPresent()) {
-            Teacher existingTeacher = optionalTeacher.get();
-            /*
-              Aqui irian los campos a actualizar del estudiante
-              no se como tendriamos pensado hacerlo.
-              */
-            return Optional.of(teacherRepository.save(existingTeacher));
-        } else throw new ChangeSetPersister.NotFoundException();
+    @Override
+    public Optional<Teacher> findById(Long id) {
+        return teacherRepository.findById(id);
     }
 
-    public void deleteTeacher(long id) throws ChangeSetPersister.NotFoundException {
-
-        Optional<Teacher> optionalTeacher = teacherRepository.findById(id);
-
-        if (optionalTeacher.isPresent()){
-            teacherRepository.deleteById(id);
-        } else throw new ChangeSetPersister.NotFoundException();
+    @Override
+    public void delete(Long id) {
+        if (!teacherRepository.existsById(id)) {
+            throw new EntityNotFoundException("Teacher with ID " + id + " not found");
+        }
+        teacherRepository.deleteById(id);
     }
 }

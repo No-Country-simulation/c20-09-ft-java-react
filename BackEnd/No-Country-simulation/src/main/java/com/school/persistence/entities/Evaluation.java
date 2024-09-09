@@ -1,4 +1,4 @@
-package com.school.entities;
+package com.school.persistence.entities;
 
 import jakarta.persistence.*;
 import lombok.*;

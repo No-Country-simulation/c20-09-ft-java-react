@@ -46,29 +46,28 @@ public class RolePermissionServiceImpl implements IRoleService {
         return roleEntityRepository.save(roleEntity);
     }
 
+    @Transactional
     @Override
     public Set<PermissionEntity> assignPermissionsToRole(RoleEnum roleEnum) {
         Set<PermissionEntity> permissions = new HashSet<>();
 
         switch (roleEnum) {
-            case TEACHER:
+            case TEACHER, PARENT:
+                permissions.add(findOrCreatePermission(PermissionEnum.READ_PRIVILEGES));
+                permissions.add(findOrCreatePermission(PermissionEnum.WRITE_PRIVILEGES));
+
+                break;
+
+            case STUDENT:
+                permissions.add(findOrCreatePermission(PermissionEnum.READ_PRIVILEGES));
+                break;
+
+            case ADMIN:
                 permissions.add(findOrCreatePermission(PermissionEnum.READ_PRIVILEGES));
                 permissions.add(findOrCreatePermission(PermissionEnum.WRITE_PRIVILEGES));
                 permissions.add(findOrCreatePermission(PermissionEnum.DELETE_PRIVILEGES));
                 permissions.add(findOrCreatePermission(PermissionEnum.UPDATE_PRIVILEGES));
                 break;
-
-            case PARENT:
-                permissions.add(findOrCreatePermission(PermissionEnum.READ_PRIVILEGES));
-                permissions.add(findOrCreatePermission(PermissionEnum.WRITE_PRIVILEGES));
-                break;
-
-            case STUDENT:
-                permissions.add(findOrCreatePermission(PermissionEnum.READ_PRIVILEGES));
-                permissions.add(findOrCreatePermission(PermissionEnum.WRITE_PRIVILEGES));
-                permissions.add(findOrCreatePermission(PermissionEnum.DELETE_PRIVILEGES));
-                break;
-
             default:
                 throw new IllegalArgumentException("Unknown role: " + roleEnum.name());
         }

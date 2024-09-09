@@ -1,7 +1,10 @@
 package com.school.rest.entityControllers;
 
 import com.school.persistence.entities.Teacher;
+import com.school.rest.response.AuthResponse;
+import com.school.rest.response.Response;
 import com.school.service.dto.TeacherRegistrationDto;
+import com.school.service.dto.UpdateTeacherDto;
 import com.school.service.implementation.TeacherServiceImpl;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
@@ -12,7 +15,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/teacher")
+@RequestMapping("/admin/teacher")
 public class TeacherController {
 
     private final TeacherServiceImpl teacherService;
@@ -22,19 +25,21 @@ public class TeacherController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> processTeacherRegistration(@Valid @RequestBody TeacherRegistrationDto teacherRegistrationDto){
+    public ResponseEntity<AuthResponse> processTeacherRegistration(@Valid @RequestBody TeacherRegistrationDto teacherRegistrationDto) {
+        // Llamar al método del servicio para manejar la lógica de registro de profesores
+        AuthResponse registeredUser = teacherService.create(teacherRegistrationDto);
 
-        try {
-            // Call the service method to handle registration logic
-            teacherService.teacherRegistration(teacherRegistrationDto);
+        // Devolver un estado CREATED si el registro es exitoso con la respuesta de autenticación
+        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    }
 
-            // Return a CREATED status if the registration is successful
-            return ResponseEntity.status(HttpStatus.CREATED).body("Teacher registered successfully");
+    @PutMapping("/update/{id}")
+    public ResponseEntity<Response<Teacher>> updateTeacher(@PathVariable Long id, @Valid @RequestBody UpdateTeacherDto updateTeacherDto) {
+        // Llamar al método del servicio para actualizar el profesor
+        Teacher updatedTeacher = teacherService.update(id, updateTeacherDto);
 
-        } catch (Exception e) {
-            // Handle potential errors in service logic
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred during registration.");
-        }
+        // Crear y devolver la respuesta con el mensaje de éxito y el objeto actualizado
+        return ResponseEntity.ok(new Response<>("Teacher updated successfully", updatedTeacher));
     }
 
     @GetMapping("/find{id}")
@@ -42,7 +47,7 @@ public class TeacherController {
 
         try {
             // Find teacher by ID using the service
-            Optional<Teacher> optionalTeacher = teacherService.findTeacherById(id);
+            Optional<Teacher> optionalTeacher = teacherService.findById(id);
 
             // If teacher is found, return it with OK status
             return ResponseEntity.ok(optionalTeacher);
@@ -56,31 +61,12 @@ public class TeacherController {
         }
     }
 
-    @PutMapping("/update{id}")
-    public ResponseEntity<?> updateStudent(@PathVariable Long id) {
-
-        try {
-            // Update teacher information
-            Optional<Teacher> optionalStudent = teacherService.updateTeacherById(id);
-
-            // Return updated teacher details
-            return ResponseEntity.ok(optionalStudent);
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where teacher is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while updating the teacher.");
-        }
-    }
-
     @DeleteMapping("/delete{id}")
     public ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
 
         try {
             // Delete teacher by ID
-            teacherService.deleteTeacher(id);
+            teacherService.delete(id);
 
             // Return NO_CONTENT status to indicate successful deletion
             return ResponseEntity.noContent().build();

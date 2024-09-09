@@ -1,7 +1,7 @@
-package com.school.controller;
+package com.school.rest.controller;
 
-import com.school.dto.EvaluationDTO;
-import com.school.entities.Evaluation;
+import com.school.service.dto.EvaluationDTO;
+import com.school.persistence.entities.Evaluation;
 import com.school.service.interfaces.IEvaluationService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;

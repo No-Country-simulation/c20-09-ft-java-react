@@ -91,13 +91,13 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
     @Transactional
     @Override
     public Long registerUser(AuthRegisterUserRequest registerUserRequest, String password) {
-        String email = registerUserRequest.email();
+        String email = registerUserRequest.getEmail();
         logger.info("Registering user password: " + password);
         if (userEntityRepository.existsByEmail(email)) {
             throw new IllegalArgumentException("Username is already in use");
         }
 
-        List<String> roles = registerUserRequest.roleRequest().roleListName();
+        List<String> roles = registerUserRequest.getRoleRequest().getRoleListName();
         Set<RoleEntity> roleEntities = new HashSet<>(roleEntityRepository.findRoleEntitiesByRoleEnumIn(roles));
         if (roleEntities.isEmpty()) {
             throw new IllegalArgumentException("Role not found");
@@ -116,7 +116,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
 
         UserEntity registeredUser = userEntityRepository.save(userEntity);
 
-        String profileType = registerUserRequest.profileType().toUpperCase();
+        String profileType = registerUserRequest.getProfileType().toUpperCase();
         logger.info("Profile type: " + profileType);
         switch (profileType.toUpperCase()) {
             case "STUDENT":
