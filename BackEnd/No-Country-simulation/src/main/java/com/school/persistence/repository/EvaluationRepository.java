@@ -1,6 +1,6 @@
-package com.school.repository;
+package com.school.persistence.repository;
 
-import com.school.entities.Evaluation;
+import com.school.persistence.entities.Evaluation;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

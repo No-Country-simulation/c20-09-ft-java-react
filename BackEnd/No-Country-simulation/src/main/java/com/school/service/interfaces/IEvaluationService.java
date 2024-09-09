@@ -1,6 +1,6 @@
 package com.school.service.interfaces;
 
-import com.school.entities.Evaluation;
+import com.school.persistence.entities.Evaluation;
 import java.util.List;
 
 public interface IEvaluationService {

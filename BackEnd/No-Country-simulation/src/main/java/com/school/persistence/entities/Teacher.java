@@ -3,6 +3,7 @@ package com.school.persistence.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -23,11 +24,15 @@ public class Teacher extends User {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
-    @ManyToMany(mappedBy = "teachers")
+    @ManyToMany
+    @JoinTable(name = "student_teacher",
+            joinColumns = @JoinColumn(name = "teacher_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> students = new HashSet<>();
 
-    private MedicalInformation medicalInformation;
+    @Embedded
+    private ProfessionalInformation profesionalInformation;
 
-    private ProfesionalInformation profesionalInformation;
+    private LocalDate dateOfBirth;
 
 }

@@ -3,8 +3,10 @@ package com.school.persistence.entities;
 import jakarta.persistence.*;
 import lombok.*;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.UUID;
 
 @Builder
 @Getter
@@ -12,6 +14,7 @@ import java.util.Set;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
+@ToString
 @Table(name = "students")
 public class Student extends User {
 
@@ -29,5 +32,21 @@ public class Student extends User {
     @ManyToMany(mappedBy = "students")
     private Set<Teacher> teachers = new HashSet<>();
 
+    @Embedded
     private MedicalInformation medicalInformation;
+
+    @Column(name = "enrollment_number")
+    private String enrollmentNumber;
+
+    @Column(name = "session")
+    private String session;
+
+    private LocalDate dateOfBirth;
+
+    @PrePersist
+    public void generateEnrollmentNumber() {
+        if (this.enrollmentNumber == null || this.enrollmentNumber.isEmpty()) {
+            this.enrollmentNumber = UUID.randomUUID().toString();
+        }
+    }
 }

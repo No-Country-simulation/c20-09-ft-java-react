@@ -23,6 +23,15 @@ public class Parent extends User {
     @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
     private UserEntity user;
 
-    @ManyToMany(mappedBy = "parents")
+    @ManyToMany
+    @JoinTable(name = "student_parent",
+            joinColumns = @JoinColumn(name = "parent_id"),
+            inverseJoinColumns = @JoinColumn(name = "student_id"))
     private Set<Student> children = new HashSet<>();
+
+    @Column(name = "relationship_to_child")
+    private String relationshipToChild;
+
+    @Column(name = "occupation")
+    private String occupation;
 }

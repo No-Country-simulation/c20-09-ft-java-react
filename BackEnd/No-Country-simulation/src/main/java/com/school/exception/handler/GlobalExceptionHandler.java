@@ -4,6 +4,8 @@ import com.school.exception.EmailServiceException;
 import com.school.exception.InvalidTokenException;
 import com.school.exception.UserAlreadyExistsException;
 import com.school.exception.UserNotFoundException;
+import jakarta.persistence.EntityNotFoundException;
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -91,6 +93,23 @@ public class GlobalExceptionHandler {
         return buildErrorResponse(HttpStatus.BAD_REQUEST, e.getMessage());
     }
 
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<Map<String, Object>> handleEntityNotFoundException(EntityNotFoundException e) {
+        return buildErrorResponse(HttpStatus.NOT_FOUND, e.getMessage());
+    }
+
+    @ExceptionHandler(ConstraintViolationException.class)
+    public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException e) {
+        String message = "Constraint violation error occurred";
+
+        // Personalizar el mensaje si contiene información sobre la clave única
+        if (e.getSQLException().getMessage().contains("Duplicate entry")) {
+            message = "Duplicate entry detected. Please ensure that all unique fields are unique.";
+        }
+
+        return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String message) {
         Map<String, Object> errorMap = new HashMap<>();
         errorMap.put("Status", "Error");
@@ -100,4 +119,3 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(errorMap, status);
     }
 }
-

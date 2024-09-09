@@ -26,5 +26,8 @@ public class RoleSetup {
 
         // Crear el rol de STUDENT con sus permisos
         RoleEntity studentRole = rolePermissionService.createRoleWithPermissions(RoleEnum.STUDENT);
+
+        // Crear el rol de ADMIN con sus permisos
+        RoleEntity adminRole = rolePermissionService.createRoleWithPermissions(RoleEnum.ADMIN);
     }
 }
