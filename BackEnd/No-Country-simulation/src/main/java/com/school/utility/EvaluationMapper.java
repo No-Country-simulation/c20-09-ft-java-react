@@ -1,6 +1,7 @@
 package com.school.utility;
 
 import com.school.persistence.entities.Evaluation;
+import com.school.persistence.entities.Student;
 import com.school.service.dto.EvaluationDTO;
 import org.springframework.stereotype.Component;
 
@@ -15,11 +16,11 @@ public class EvaluationMapper {
      * @param evaluationDTO El DTO de evaluación.
      * @return La entidad Evaluation.
      */
-    public Evaluation toEntity(EvaluationDTO evaluationDTO) {
+    public Evaluation toEntity(EvaluationDTO evaluationDTO, Student student) {
         return new Evaluation(
                 null, // El ID se genera automáticamente
-                evaluationDTO.studentName(),
-                evaluationDTO.studentLastname(),
+                student.getName(), // Nombre obtenido del objeto Student
+                student.getLastName(),  // Apellido obtenido del objeto Student
                 evaluationDTO.dniStudent(),
                 evaluationDTO.year(),
                 evaluationDTO.trimester(),

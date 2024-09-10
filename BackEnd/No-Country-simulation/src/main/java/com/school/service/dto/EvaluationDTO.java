@@ -1,6 +1,7 @@
 package com.school.service.dto;
 
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Pattern;
 
 /**
  * Record que representa el DTO (Data Transfer Object) de Evaluación.
@@ -17,11 +18,16 @@ import jakarta.validation.constraints.NotBlank;
  * - feedback: Comentarios sobre el desempeño del estudiante.
  */
 public record EvaluationDTO(
-        @NotBlank String studentName,
-        @NotBlank String studentLastname,
         @NotBlank String dniStudent,
-        @NotBlank String year,
-        @NotBlank String trimester,
+
+        @NotBlank
+        @Pattern(regexp = "1º|2º|3º|4º|5º", message = "Year must be one of the following: 1º, 2º, 3º, 4º, 5º")
+        String year,
+
+        @NotBlank
+        @Pattern(regexp = "primero|segundo|tercero", message = "Trimester must be one of the following: primero, segundo, tercero")
+        String trimester,
+
         @NotBlank String subject,
         @NotBlank String feedback){
 }

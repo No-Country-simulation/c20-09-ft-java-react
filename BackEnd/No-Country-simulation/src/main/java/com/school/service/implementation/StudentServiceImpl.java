@@ -138,4 +138,8 @@ public class StudentServiceImpl implements GenericService<Student, StudentRegist
         // Devolver la información del hijo como DTO
         return new StudentResponse(student.getDni(), student.getName(), student.getLastName());
     }
+
+    public Optional<Student> findStudentByDni(String dni) {
+        return studentRepository.findByDni(dni);
+    }
 }
