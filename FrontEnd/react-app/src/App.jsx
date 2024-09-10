@@ -6,7 +6,6 @@ import {
   Navigate,
 } from "react-router-dom";
 import useAuth from "./hooks/useAuth";
-import RegisterPage from "./pages/RegisterPage";
 import LoginPage from "./pages/LoginPage";
 import AdminDashboard from "./pages/AdminDashboard";
 import ResetPassword from "./components/ResetPassword";
@@ -28,7 +27,7 @@ const App = () => {
         <Route path="/admin" element={<AdminDashboard />} />
 
         <Route path="/reset_password" element={<ResetPassword />} />
-        <Route path="/register" element={<RegisterPage />} />
+
 
         {/* Ruta protegida para los dashboards */}
         <Route element={<ProtectedRoute />}>

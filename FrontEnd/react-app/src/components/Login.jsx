@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 import { loginUser } from "../services/authService";
 import { forgotPassword } from "../services/resetService"; // Cambia de resetService a authService
 import {
@@ -24,7 +24,7 @@ const Login = () => {
   const toast = useToast();
 
   useEffect(() => {
-    const token = localStorage.getItem("token");
+    const token = sessionStorage.getItem("token");
     if (token) {
       try {
         const decodedToken = jwtDecode(token);
@@ -186,6 +186,7 @@ const Login = () => {
                       borderColor: "blue.500",
                       boxShadow: "0 0 0 1px blue.500",
                     }}
+                    autoComplete="current-password"
                   />
                 </FormControl>
                 <Button type="submit" colorScheme="orange" width="100%">
