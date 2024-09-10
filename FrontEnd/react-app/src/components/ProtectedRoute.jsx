@@ -4,7 +4,7 @@ import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Importa jwt-decode
 
 const ProtectedRoute = () => {
-  const token = localStorage.getItem("token"); // Obtén el token del almacenamiento local
+  const token = sessionStorage.getItem("token"); // Obtén el token del almacenamiento local
   const location = useLocation(); // Obtén la ubicación actual
 
   if (!token) {
