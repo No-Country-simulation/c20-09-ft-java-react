@@ -1,8 +1,10 @@
 package com.school.service.implementation;
 
+import com.school.exception.EvaluationNotFoundException;
 import com.school.persistence.entities.Evaluation;
 import com.school.persistence.repository.EvaluationRepository;
 import com.school.service.interfaces.IEvaluationService;
+import com.school.utility.EvaluationMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
@@ -17,9 +19,11 @@ import java.util.List;
 public class EvaluationServiceImpl implements IEvaluationService {
 
     private final EvaluationRepository evaluationRepository;
+    private final EvaluationMapper evaluationMapper;
 
-    public EvaluationServiceImpl(EvaluationRepository evaluationRepository) {
+    public EvaluationServiceImpl(EvaluationRepository evaluationRepository, EvaluationMapper evaluationMapper) {
         this.evaluationRepository = evaluationRepository;
+        this.evaluationMapper = evaluationMapper;
     }
 
     /**
@@ -31,7 +35,7 @@ public class EvaluationServiceImpl implements IEvaluationService {
      */
     @Override
     public Evaluation saveEvaluation(Evaluation evaluation) {
-        // Llamada al repositorio para guardar la evaluación en la base de datos
+        // Guardar la evaluación en la base de datos
         return evaluationRepository.save(evaluation);
     }
 
@@ -49,7 +53,14 @@ public class EvaluationServiceImpl implements IEvaluationService {
 
     @Override
     public List<Evaluation> getEvaluationsByDni(String dniStudent) {
-        // Buscar evaluaciones por DNI del estudiante
-        return evaluationRepository.findByDniStudent(dniStudent);
+        // Busca evaluaciones en la base de datos utilizando el DNI del estudiante
+        List<Evaluation> evaluations = evaluationRepository.findByDniStudent(dniStudent);
+        // Lanza una excepción si no se encuentran evaluaciones para el DNI proporcionado
+        if (evaluations.isEmpty()) {
+            throw new EvaluationNotFoundException("No se encontraron evaluaciones para el DNI: " +
+                    dniStudent + ". Por cualquier consulta o reclamo, por favor diríjase a la Dirección del Establecimiento.");
+        }
+        // Devuelve la lista de evaluaciones encontradas
+        return evaluations;
     }
 }
