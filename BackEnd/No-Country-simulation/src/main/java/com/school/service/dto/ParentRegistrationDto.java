@@ -12,24 +12,24 @@ import java.util.List;
 @Setter
 public class ParentRegistrationDto {
 
-    @NotNull(message = "Name cannot be null")
+    @NotBlank(message = "Name cannot be null")
     @Size(min = 2, max = 50, message = "Name must be between 2 and 30 characters")
     private String name;
 
-    @NotNull(message = "Last name cannot be null")
+    @NotBlank(message = "Last name cannot be null")
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 30 characters")
     private String lastName;
 
     @Size(max = 8, message = "DNI number cannot be higher than 8 digits")
-    @NotNull(message = "DNI cannot be null")
+    @NotBlank(message = "DNI cannot be null")
     private String dni;
 
     @Size(max = 11, message = "Phone number cannot have more than 11 digits")
-    @NotNull(message = "Phone number cannot be null")
+    @NotBlank(message = "Phone number cannot be null")
     private String phoneNumber;
 
     @Email(message = "Email should be valid")
-    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be null")
     private String email;
 
     private Address address;
@@ -54,11 +54,8 @@ public class ParentRegistrationDto {
     @Setter
     public static class ChildDto {
         @Size(max = 8, message = "Child DNI number cannot be higher than 8 digits")
-        @NotNull(message = "Child DNI cannot be null")
+        @NotBlank(message = "Child DNI cannot be null")
         private String childDNI;
-
-        @NotNull(message = "Child name cannot be null")
-        private String childName;
     }
 
 }

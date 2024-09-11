@@ -23,9 +23,6 @@ public class MedicalInformation {
     @Size(max = 2, message = "Blood type should not have more than two characters")
     private String bloodType;
 
-    @Size(max = 1, message = "Blood type poles should be either + or -")
-    private String bloodTypePoles;
-
     @ElementCollection
     private List<String> allergies;
 

@@ -20,6 +20,7 @@ public abstract class User {
 
     private String lastName;
 
+
     @Column(unique = true)
     private String dni;
 

@@ -1,14 +1,13 @@
 // src/pages/StudentDashboard.jsx
-import React from "react";
 import {
   Box,
   Button,
-  Heading,
-  Text,
-  Flex,
-  useBreakpointValue,
   Link as ChakraLink,
   Container,
+  Flex,
+  Heading,
+  Text,
+  useBreakpointValue,
 } from "@chakra-ui/react";
 import { Link, useNavigate } from "react-router-dom";
 

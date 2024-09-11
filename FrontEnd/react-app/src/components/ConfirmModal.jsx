@@ -1,5 +1,5 @@
 // src/ConfirmModal.jsx
-import React from "react";
+import PropTypes from "prop-types";
 import {
   Modal,
   ModalOverlay,
@@ -30,6 +30,13 @@ const ConfirmModal = ({ isOpen, onClose, onConfirm }) => {
       </ModalContent>
     </Modal>
   );
+};
+
+// Validación de Propiedades
+ConfirmModal.propTypes = {
+  isOpen: PropTypes.bool.isRequired,
+  onClose: PropTypes.func.isRequired,
+  onConfirm: PropTypes.func.isRequired,
 };
 
 export default ConfirmModal;

@@ -1,23 +1,23 @@
-import React, { useState } from "react";
+import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
+  Checkbox,
+  Container,
+  Divider,
   FormControl,
   FormLabel,
-  Input,
-  Heading,
-  useToast,
-  Container,
   Grid,
   GridItem,
-  Text,
-  Checkbox,
-  Divider,
+  Heading,
   IconButton,
+  Input,
+  Text,
+  useToast,
 } from "@chakra-ui/react";
-import { useForm, useFieldArray } from "react-hook-form";
+import { useState } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
 import { registerTeacher } from "../../services/adminService";
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 
 const RegisterTeacher = () => {
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
@@ -94,6 +94,7 @@ const RegisterTeacher = () => {
         isClosable: true,
       });
     } catch (error) {
+      console.error(error);
       toast({
         title: "Error",
         description: "No se pudo registrar al profesor.",
@@ -106,11 +107,11 @@ const RegisterTeacher = () => {
   };
 
   return (
-    <Container maxW="container.md" py={8}>
+    <Container maxW="container.lg" py={8}>
+      <Box bg="#f4f4f4" p={6} borderRadius="xl" boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)">
       <Heading as="h1" mb={6} textAlign="center" color="orange.500">
         Registro de Profesor
       </Heading>
-      <Box bg="white" p={6} borderRadius="md" boxShadow="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid
             templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
@@ -119,10 +120,10 @@ const RegisterTeacher = () => {
           >
             {/* Información Personal */}
             <GridItem colSpan={2}>
-              <Heading as="h3" size="md" mb={4}>
+            <Heading as="h3" size="md" mb={2} color="#34495e">
                 Información Personal
               </Heading>
-              <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.nombre} isRequired>
@@ -130,7 +131,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="nombre"
                   type="text"
-                  placeholder="Ingrese su nombre"
+                  placeholder="Ej: Jorge Fabian, Daniel, Sonia"
                   {...register("nombre", {
                     required: "Este campo es obligatorio",
                   })}
@@ -146,7 +147,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="apellido"
                   type="text"
-                  placeholder="Ingrese su apellido"
+                  placeholder="Ej: Vargas, Granado"
                   {...register("apellido", {
                     required: "Este campo es obligatorio",
                   })}
@@ -177,7 +178,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="dni"
                   type="text"
-                  placeholder="Ingrese el número de identificación"
+                  placeholder="Ej: 3387456, 2945687"
                   {...register("dni", {
                     required: "Este campo es obligatorio",
                   })}
@@ -193,7 +194,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="telefono"
                   type="tel"
-                  placeholder="Ingrese su teléfono"
+                  placeholder="Ej: 1134756894, "
                   {...register("telefono", {
                     required: "Este campo es obligatorio",
                   })}
@@ -209,7 +210,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Ingrese su correo electrónico"
+                  placeholder="Ej: profesor@gmail.com"
                   {...register("email", {
                     required: "Este campo es obligatorio",
                   })}
@@ -223,10 +224,10 @@ const RegisterTeacher = () => {
             {/* Dirección */}
             <GridItem colSpan={2}>
               <Divider my={4} />
-              <Heading as="h3" size="md" mb={4}>
+              <Heading as="h3" size="md" mb={2} color="#34495e">
                 Dirección
               </Heading>
-              <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
             </GridItem>
             <GridItem>
               <FormControl
@@ -239,7 +240,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="streetNameNumberDepartmentFloorAndNumber"
                   type="text"
-                  placeholder="Ingrese la calle"
+                  placeholder="Ej: Av. Corrientes 1234, Piso 2, Dpto A"
                   {...register("streetNameNumberDepartmentFloorAndNumber", {
                     required: "Este campo es obligatorio",
                   })}
@@ -257,7 +258,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="city"
                   type="text"
-                  placeholder="Ingrese la ciudad"
+                  placeholder="Ej: C.A.B.A, Ciudadela, Moreno, Palomar, Haedo"
                   {...register("city", {
                     required: "Este campo es obligatorio",
                   })}
@@ -273,7 +274,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="state"
                   type="text"
-                  placeholder="Ingrese la provincia"
+                  placeholder="Ej: Buenos Aires, Salta, Neuquen, San Luis"
                   {...register("state", {
                     required: "Este campo es obligatorio",
                   })}
@@ -289,7 +290,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="zipCode"
                   type="text"
-                  placeholder="Ingrese el código postal"
+                  placeholder="Ej: B1712, B1668"
                   {...register("zipCode", {
                     required: "Este campo es obligatorio",
                   })}
@@ -305,7 +306,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="country"
                   type="text"
-                  placeholder="Ingrese el país"
+                  placeholder="Ej: Argentina, Colombia, Uruguay, Chile, Venezuela"
                   {...register("country", {
                     required: "Este campo es obligatorio",
                   })}
@@ -319,18 +320,18 @@ const RegisterTeacher = () => {
             {/* Información Profesional */}
             <GridItem colSpan={2}>
               <Divider my={4} />
-              <Heading as="h3" size="md" mb={4}>
+              <Heading as="h3" size="md" mb={2} color="#34495e">
                 Información Profesional
               </Heading>
-              <hr style={{ border: "1px solid #ccc", margin: "20px 0" }} />
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.professorId} isRequired>
-                <FormLabel htmlFor="professorId">ID del Profesor</FormLabel>
+                <FormLabel htmlFor="professorId">Matricula:</FormLabel>
                 <Input
                   id="professorId"
                   type="text"
-                  placeholder="Ingrese el ID del profesor"
+                  placeholder="Ej: MAT-2024-00123"
                   {...register("professorId", {
                     required: "Este campo es obligatorio",
                   })}
@@ -343,12 +344,12 @@ const RegisterTeacher = () => {
             <GridItem>
               <FormControl isInvalid={errors.academicTitles} isRequired>
                 <FormLabel htmlFor="academicTitles">
-                  Título/s Académico/s
+                Títulos Académicos:
                 </FormLabel>
                 <Input
                   id="academicTitles"
                   type="text"
-                  placeholder="Ingrese los títulos académicos"
+                  placeholder="Ej: Licenciado en Matemáticas, Master en Educación, Doctorado en Física"
                   {...register("academicTitles", {
                     required: "Este campo es obligatorio",
                   })}
@@ -358,13 +359,8 @@ const RegisterTeacher = () => {
                 )}
               </FormControl>
             </GridItem>
-
-            {/* Materias */}
             <GridItem colSpan={2}>
-              <Divider my={4} />
-              <Heading as="h3" size="md" mb={4}>
-                Materias
-              </Heading>
+              {/* Materias */}
               {fields.map((field, index) => (
                 <Box
                   key={field.id}
@@ -373,18 +369,21 @@ const RegisterTeacher = () => {
                   borderRadius="md"
                   p={4}
                 >
-                  <Grid templateColumns="1fr auto" gap={4}>
+                  <FormLabel htmlFor={`subjects.${index}.subjectCode`}>
+                    Asignatura/s que Imparte:
+                  </FormLabel>
+                  <Grid templateColumns="1fr 1fr" gap={4}>
                     <GridItem>
                       <FormControl
                         isInvalid={errors.subjects?.[index]?.subjectCode}
                       >
-                        <FormLabel htmlFor={`subjects.${index}.subjectCode`}>
-                          Código de Materia
-                        </FormLabel>
+                        <FormLabel
+                          htmlFor={`subjects.${index}.subjectCode`}
+                        ></FormLabel>
                         <Input
                           id={`subjects.${index}.subjectCode`}
                           type="text"
-                          placeholder="Ingrese el código de materia"
+                          placeholder="Ej: MAT-101, HIS-202"
                           {...register(`subjects.${index}.subjectCode`, {
                             required: "Este campo es obligatorio",
                           })}
@@ -400,13 +399,13 @@ const RegisterTeacher = () => {
                       <FormControl
                         isInvalid={errors.subjects?.[index]?.subjectName}
                       >
-                        <FormLabel htmlFor={`subjects.${index}.subjectName`}>
-                          Nombre de la Materia
-                        </FormLabel>
+                        <FormLabel
+                          htmlFor={`subjects.${index}.subjectName`}
+                        ></FormLabel>
                         <Input
                           id={`subjects.${index}.subjectName`}
                           type="text"
-                          placeholder="Ingrese el nombre de la materia"
+                          placeholder="Ej: Matemáticas, Historia"
                           {...register(`subjects.${index}.subjectName`, {
                             required: "Este campo es obligatorio",
                           })}
@@ -439,17 +438,77 @@ const RegisterTeacher = () => {
                 colorScheme="orange"
                 onClick={() => append({ subjectCode: "", subjectName: "" })}
               >
-                Añadir Materia
+                Añadir otra asignatura
               </Button>
             </GridItem>
 
+               {/* Datos de Emergencia */}
+               <Box>
+              <Heading as="h3" size="md" mb={2}>
+              Datos de Emergencia
+              </Heading>
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
+              <Grid
+                templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+                gap={4}
+              >
+                <GridItem colSpan={1}>
+                  <FormControl isInvalid={errors.emergencyContactName}>
+                    <FormLabel htmlFor="emergencyContactName">
+                      Nombre del Contacto (emergencias):
+                    </FormLabel>
+                    <Input
+                      id="emergencyContactName"
+                      type="text"
+                      placeholder="Ej: Juan Pérez (tío), María Gómez (vecina), Ana Rodríguez (madre)"
+                      {...register("emergencyContactName")}
+                    />
+                    {errors.emergencyContactName && (
+                      <Text color="red.500">
+                        {errors.emergencyContactName.message}
+                      </Text>
+                    )}
+                  </FormControl>
+                </GridItem>
+
+                <GridItem colSpan={1}>
+                  <FormControl isInvalid={errors.emergencyNumber} isRequired>
+                    <FormLabel htmlFor="emergencyNumber">
+                    Celular (emergencias):
+                    </FormLabel>
+                    <Input
+                      id="emergencyNumber"
+                      type="tel"
+                      placeholder="Ej: 1187693452, 113465879234"
+                      {...register("emergencyNumber", {
+                        required: "Este campo es obligatorio",
+                      })}
+                    />
+                    {errors.emergencyNumber && (
+                      <Text color="red.500">
+                        {errors.emergencyNumber.message}
+                      </Text>
+                    )}
+                  </FormControl>
+                </GridItem>
+              </Grid>
+            </Box>
+
+            {/* Información Adicional */}
+            <GridItem colSpan={2}>
+              <Divider my={2} />
+              <Heading as="h3" size="md" mb={2} color="#34495e">
+                Información Adicional
+              </Heading>
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
+            </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.workingHours} isRequired>
-                <FormLabel htmlFor="workingHours">Horas de Trabajo</FormLabel>
+                <FormLabel htmlFor="workingHours">Horas de Trabajo:</FormLabel>
                 <Input
                   id="workingHours"
                   type="text"
-                  placeholder="Ingrese las horas de trabajo"
+                  placeholder="Ej: Lunes a Viernes de 9:00 a 17:00 horas"
                   {...register("workingHours", {
                     required: "Este campo es obligatorio",
                   })}
@@ -460,11 +519,11 @@ const RegisterTeacher = () => {
               </FormControl>
             </GridItem>
             <GridItem colSpan={2}>
+              <FormLabel htmlFor="workingHours">Disponibilidad:</FormLabel>
               <Checkbox id="tutorship" {...register("tutorship")}>
-                Tutoría
+                Tutorías
               </Checkbox>
-            </GridItem>
-            <GridItem colSpan={2}>
+
               <Checkbox
                 id="extracurricularClasses"
                 {...register("extracurricularClasses")}

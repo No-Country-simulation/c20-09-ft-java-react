@@ -1,25 +1,24 @@
-import React, { useState } from "react";
 import {
+  Button,
   Container,
   Heading,
-  Button,
-  VStack,
-  useDisclosure,
-  Input,
   Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
   ModalBody,
-  ModalFooter,
   ModalCloseButton,
+  ModalContent,
+  ModalFooter,
+  ModalHeader,
+  ModalOverlay,
+  VStack,
+  useDisclosure
 } from "@chakra-ui/react";
-import RegisterTeacher from "./admin/RegisterTeacher";
-import RegisterStudent from "./admin/RegisterStudent";
-import RegisterParent from "./admin/RegisterParent";
+import React, { useState } from "react";
 import ConfirmModal from "../components/ConfirmModal";
-import Statistics from "../components/Statistics";
 import ExportData from "../components/ExportData";
+import Statistics from "../components/Statistics";
+import RegisterParent from "./admin/RegisterParent";
+import RegisterStudent from "./admin/RegisterStudent";
+import RegisterTeacher from "./admin/RegisterTeacher";
 import UserManagement from "./admin/UserManagement";
 
 const AdminDashboard = () => {
@@ -105,6 +104,7 @@ const AdminDashboard = () => {
       <Modal isOpen={isTeacherOpen} onClose={onTeacherClose} size="full">
         <ModalOverlay />
         <ModalContent
+          bg="#34495e"
           w="full"
           h="full"
           maxW="none"
@@ -130,6 +130,7 @@ const AdminDashboard = () => {
       <Modal isOpen={isStudentOpen} onClose={onStudentClose} size="full">
         <ModalOverlay />
         <ModalContent
+          bg="#34495e"
           w="full"
           h="full"
           maxW="none"
@@ -156,6 +157,7 @@ const AdminDashboard = () => {
       <Modal isOpen={isParentOpen} onClose={onParentClose} size="full">
         <ModalOverlay />
         <ModalContent
+          bg="#34495e"
           w="full"
           h="full"
           maxW="none"

@@ -1,5 +1,4 @@
 // src/components/ProtectedRoute.jsx
-import React from "react";
 import { Navigate, Outlet, useLocation } from "react-router-dom";
 import { jwtDecode } from "jwt-decode"; // Importa jwt-decode
 
@@ -17,7 +16,6 @@ const ProtectedRoute = () => {
     const decodedToken = jwtDecode(token);
     const authorities = decodedToken.authorities || "";
 
-    // Redirige según el rol
     if (
       location.pathname === "/teacher-dashboard" &&
       !authorities.includes("ROLE_TEACHER")
@@ -31,6 +29,11 @@ const ProtectedRoute = () => {
     } else if (
       location.pathname === "/parent-dashboard" &&
       !authorities.includes("ROLE_PARENT")
+    ) {
+      return <Navigate to="/" />;
+    } else if (
+      location.pathname === "/admin" &&
+      !authorities.includes("ROLE_ADMIN")
     ) {
       return <Navigate to="/" />;
     }

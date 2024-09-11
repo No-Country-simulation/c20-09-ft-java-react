@@ -1,5 +1,5 @@
 // src/pages/HomePage.jsx
-import React, { useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom"; // Importa Link y useNavigate
 import {jwtDecode} from "jwt-decode"; // Importa jwt-decode
 
@@ -25,6 +25,8 @@ const HomePage = () => {
           setUserRole("ROLE_STUDENT");
         } else if (authorities.includes("ROLE_PARENT")) {
           setUserRole("ROLE_PARENT");
+        } else if (authorities.includes("ROLE_ADMIN")) {
+          setUserRole("ROLE_ADMIN");
         }
       } catch (error) {
         console.error("Error decoding token:", error);
@@ -46,6 +48,9 @@ const HomePage = () => {
       case "ROLE_PARENT":
         navigate("/parent-dashboard");
         break;
+        case "ROLE_ADMIN":
+          navigate("/ADMIN-dashboard");
+          break;
       default:
         navigate("/");
     }
@@ -77,9 +82,11 @@ const HomePage = () => {
 
 // Estilos opcionales para la página
 const styles = {
+
   container: {
     textAlign: "center",
     padding: "50px",
+    backgroundColor: "#34495e",
   },
   buttonContainer: {
     marginTop: "20px",
@@ -91,7 +98,7 @@ const styles = {
     fontSize: "16px",
     textDecoration: "none",
     color: "white",
-    backgroundColor: "#007bff",
+    backgroundColor: "#e67e22",
     borderRadius: "5px",
     border: "none",
     cursor: "pointer",

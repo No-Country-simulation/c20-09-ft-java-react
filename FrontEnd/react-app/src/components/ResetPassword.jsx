@@ -1,19 +1,20 @@
-import React, { useState, useEffect } from "react";
-import { useSearchParams, useNavigate } from "react-router-dom";
-import { resetPassword } from "../services/resetService";
+import { CheckIcon, ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   FormControl,
   FormLabel,
-  Input,
   Heading,
-  useToast,
-  Text,
+  IconButton,
+  Input,
   InputGroup,
   InputLeftElement,
+  Text,
+  useToast,
 } from "@chakra-ui/react";
-import { ViewIcon, ViewOffIcon } from "@chakra-ui/icons";
+import { useEffect, useState } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
+import { resetPassword } from "../services/resetService";
 
 const ResetPassword = () => {
   const [searchParams] = useSearchParams();
@@ -21,9 +22,15 @@ const ResetPassword = () => {
   const [newPassword, setNewPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [loading, setLoading] = useState(false);
-  const [passwordError, setPasswordError] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState({
+    lengthValid: false,
+    hasUppercase: false,
+    hasLowercase: false,
+    hasSpecialChar: false,
+  });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [passwordsMatch, setPasswordsMatch] = useState(false); // New state for checking password match
   const navigate = useNavigate();
   const toast = useToast();
 
@@ -44,14 +51,33 @@ const ResetPassword = () => {
   }, [searchParams, navigate, toast]);
 
   const validatePassword = (password) => {
-    // Ejemplo de expresión regular que asegura al menos 12 caracteres, una letra mayúscula, una minúscula, un número y un carácter especial
-    const regex =
-      /^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{12,}$/;
-    return regex.test(password);
+    return {
+      lengthValid: password.length >= 11 && password.length <= 12,
+      hasUppercase: /[A-Z]/.test(password),
+      hasLowercase: /[a-z]/.test(password),
+      hasSpecialChar: /[!@#$%&*_]/.test(password),
+    };
+  };
+
+  const handlePasswordChange = (e) => {
+    const { value } = e.target;
+    setNewPassword(value);
+    setPasswordErrors(validatePassword(value));
+    // Check if passwords match
+    setPasswordsMatch(value === confirmPassword);
+  };
+
+  const handleConfirmPasswordChange = (e) => {
+    const { value } = e.target;
+    setConfirmPassword(value);
+    // Check if passwords match
+    setPasswordsMatch(newPassword === value);
   };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+    // Verificar si las contraseñas coinciden
     if (newPassword !== confirmPassword) {
       toast({
         title: "Error",
@@ -63,13 +89,16 @@ const ResetPassword = () => {
       return;
     }
 
-    if (!validatePassword(newPassword)) {
-      setPasswordError(
-        "La contraseña debe tener al menos 12 caracteres, una letra mayúscula, una letra minúscula, un número y un carácter especial."
-      );
+    // Si no se cumplen los requisitos, evitar el envío
+    if (!passwordErrors.lengthValid || !passwordErrors.hasUppercase || !passwordErrors.hasLowercase || !passwordErrors.hasSpecialChar) {
+      toast({
+        title: "Error en la contraseña",
+        description: "Asegúrate de cumplir todos los requisitos de la contraseña.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
       return;
-    } else {
-      setPasswordError(""); // Clear error if password is valid
     }
 
     setLoading(true);
@@ -78,18 +107,18 @@ const ResetPassword = () => {
       await resetPassword(token, newPassword);
       toast({
         title: "Éxito",
-        description:
-          "La contraseña se ha restablecido con éxito. Puedes iniciar sesión con tu nueva contraseña.",
+        description: "La contraseña se ha restablecido con éxito. Puedes iniciar sesión con tu nueva contraseña.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
       navigate("/");
+
     } catch (error) {
+      console.error("Error al restablecer la contraseña:", error);
       toast({
         title: "Error",
-        description:
-          "No se pudo restablecer la contraseña. Por favor, verifica el token o intenta nuevamente.",
+        description: "El token de restablecimiento de contraseña no es válido. Por favor, solicita un nuevo para intentar nuevamente.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -105,14 +134,14 @@ const ResetPassword = () => {
       alignItems="center"
       justifyContent="center"
       height="100vh"
-      bg="gray.100"
+      bg="#34495e"
     >
       <Box
         p={6}
-        borderRadius="md"
-        boxShadow="lg"
+        borderRadius="xl"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
         maxW="md"
-        bg="white"
+        bg="#f4f4f4"
         textAlign="center"
       >
         <Heading as="h1" size="lg" mb={6} color="orange.500">
@@ -120,7 +149,7 @@ const ResetPassword = () => {
         </Heading>
         <form onSubmit={handleSubmit}>
           <FormControl id="new-password" isRequired mb={4}>
-            <FormLabel color="gray.700">Nueva Contraseña</FormLabel>
+            <FormLabel color="#34495E">Nueva Contraseña</FormLabel>
             <InputGroup>
               <InputLeftElement>
                 <Button
@@ -133,16 +162,97 @@ const ResetPassword = () => {
               <Input
                 type={showPassword ? "text" : "password"}
                 value={newPassword}
-                onChange={(e) => setNewPassword(e.target.value)}
+                onChange={handlePasswordChange}
                 _focus={{
-                  borderColor: "blue.500",
-                  boxShadow: "0 0 0 1px blue.500",
+                  borderColor: "#34495E",
+                  boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
                 }}
               />
             </InputGroup>
+
+            {/* Mostrar la validación en tiempo real */}
+            <Box mt={2} color="gray.500" textAlign="left">
+              {newPassword.length > 0 && (
+                <>
+                  <Text color={passwordErrors.hasSpecialChar ? "green.500" : "red.500"}>
+                    {passwordErrors.hasSpecialChar ? (
+                      <IconButton
+                        isRound={true}
+                        variant="unstyled"
+                        aria-label="x"
+                        fontSize="20px"
+                        icon={<CheckIcon />}
+                        size="sm"
+                        color="green.500"
+                        mr={2}
+                        pointerEvents="none"
+                      />
+                    ) : (
+                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                    )}
+                    Un carácter especial (!@#$%&/*_)
+                  </Text>
+                  <Text color={passwordErrors.lengthValid ? "green.500" : "red.500"}>
+                    {passwordErrors.lengthValid ? (
+                      <IconButton
+                        isRound={true}
+                        variant="unstyled"
+                        aria-label="x"
+                        fontSize="20px"
+                        icon={<CheckIcon />}
+                        size="sm"
+                        color="green.500"
+                        mr={2}
+                        pointerEvents="none"
+                      />
+                    ) : (
+                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                    )}
+                    Entre 11 y 12 caracteres
+                  </Text>
+                  <Text color={passwordErrors.hasUppercase ? "green.500" : "red.500"}>
+                    {passwordErrors.hasUppercase ? (
+                      <IconButton
+                        isRound={true}
+                        variant="unstyled"
+                        aria-label="x"
+                        fontSize="20px"
+                        icon={<CheckIcon />}
+                        size="sm"
+                        color="green.500"
+                        mr={2}
+                        pointerEvents="none"
+                      />
+                    ) : (
+                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                    )}
+                    Una letra mayúscula
+                  </Text>
+                  <Text color={passwordErrors.hasLowercase ? "green.500" : "red.500"}>
+                    {passwordErrors.hasLowercase ? (
+                      <IconButton
+                        isRound={true}
+                        variant="unstyled"
+                        aria-label="x"
+                        fontSize="20px"
+                        icon={<CheckIcon />}
+                        size="sm"
+                        color="green.500"
+                        mr={2}
+                        pointerEvents="none"
+                      />
+                    ) : (
+                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                    )}
+                    Una letra minúscula
+                  </Text>
+                </>
+              )}
+            </Box>
           </FormControl>
+
           <FormControl id="confirm-password" isRequired mb={4}>
-            <FormLabel color="gray.700">Confirmar Contraseña</FormLabel>
+            <FormLabel color="#34495E">Confirmar Contraseña</FormLabel>
             <InputGroup>
               <InputLeftElement>
                 <Button
@@ -152,26 +262,24 @@ const ResetPassword = () => {
                   {showConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
                 </Button>
               </InputLeftElement>
-              <Input
-                type={showConfirmPassword ? "text" : "password"}
-                value={confirmPassword}
-                onChange={(e) => setConfirmPassword(e.target.value)}
-                _focus={{
-                  borderColor: "blue.500",
-                  boxShadow: "0 0 0 1px blue.500",
-                }}
-              />
+              <Input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={handleConfirmPasswordChange} 
+              _focus={{
+              borderColor: passwordsMatch ? "green.500" : "#34495E",
+              boxShadow: passwordsMatch ? "0 0 0 3px green.500" : "0 0 15px rgba(52, 73, 94, 0.5)",}}
+              borderColor={passwordsMatch ? "green.500" : "red.500"}
+              borderWidth="1px"/>
             </InputGroup>
+            {!passwordsMatch && confirmPassword.length > 0 && (
+              <Text color="red.500" textAlign="left" marginLeft='8px' mt={1}>Las contraseñas no coinciden.</Text>
+            )}
           </FormControl>
-          {passwordError && (
-            <Text color="red.500" mb={4}>
-              {passwordError}
-            </Text>
-          )}
+
           <Button
+            width="full"
+            mt="4"
             type="submit"
-            colorScheme="blue"
-            width="100%"
+            colorScheme="orange"
+            isFullWidth
             isLoading={loading}
           >
             Restablecer Contraseña

@@ -1,13 +1,12 @@
 // src/pages/TeacherDashboard.jsx
-import React from "react";
 import {
   Box,
   Button,
+  Flex,
   Heading,
+  Link,
   Text,
   useBreakpointValue,
-  Flex,
-  Link,
 } from "@chakra-ui/react";
 import { useNavigate } from "react-router-dom";
 

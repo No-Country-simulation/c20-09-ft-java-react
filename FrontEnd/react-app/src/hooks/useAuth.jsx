@@ -1,6 +1,6 @@
 // src/hooks/useAuth.js
 import { useState, useEffect } from "react";
-import {jwtDecode} from "jwt-decode";
+import { jwtDecode } from "jwt-decode";
 
 const useAuth = () => {
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -16,7 +16,9 @@ const useAuth = () => {
         const decodedToken = jwtDecode(token);
         setIsAuthenticated(true);
         setUserRole(
-          decodedToken.authorities.includes("ROLE_TEACHER")
+          decodedToken.authorities.includes("ROLE_ADMIN")
+            ? "admin"
+            : decodedToken.authorities.includes("ROLE_TEACHER")
             ? "teacher"
             : decodedToken.authorities.includes("ROLE_STUDENT")
             ? "student"

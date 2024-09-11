@@ -10,7 +10,7 @@ public record AuthLoginRequest(
         String email,
 
         @NotBlank(message = "Password must not be blank")
-        @Size(min = 11, max = 15, message = "Password must be between 11 and 12 characters")
+        @Size(min = 11, max = 12, message = "Password must be between 11 and 12 characters")
         @Pattern(regexp = ".*[A-Z].*", message = "Password must contain at least one uppercase letter")
         @Pattern(regexp = ".*[a-z].*", message = "Password must contain at least one lowercase letter")
         @Pattern(regexp = ".*[!@#$%&*_].*", message = "Password must contain at least one special character from !@#$%&*_")

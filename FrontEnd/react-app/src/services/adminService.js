@@ -82,6 +82,17 @@ export const findStudentById = async (id) => {
   }
 };
 
+// Buscar estudiante por DNI
+export const findStudentByDni = async (dni) => {
+  try {
+    const response = await adminService.post('/student/verifyChild', { childDNI: dni });
+    return response.data;
+  } catch (error) {
+    console.error("Error finding student:", error.response?.data || error.message);
+    throw error;
+  }
+};
+
 // Eliminar estudiante
 export const deleteStudent = async (id) => {
   try {
@@ -93,9 +104,9 @@ export const deleteStudent = async (id) => {
 };
 
 // Verificar hijo por DNI
-export const verifyChildByDni = async (dniData) => {
+export const verifyChildByDni = async (childDNI) => {
   try {
-    const response = await adminService.post('/student/verifyChild', dniData);
+    const response = await adminService.post('/student/verifyChild', { childDNI });
     return response.data;
   } catch (error) {
     console.error("Error verifying child by DNI:", error.response?.data || error.message);

@@ -1,22 +1,22 @@
-import React, { useEffect, useState } from "react";
 import {
   Box,
   Button,
+  Container,
+  Divider,
   FormControl,
   FormLabel,
-  Input,
-  Select,
-  Heading,
-  useToast,
-  Container,
   Grid,
   GridItem,
+  Heading,
+  Input,
+  Select,
   Text,
-  Divider,
+  useToast,
   VStack,
 } from "@chakra-ui/react";
-import { useForm, useFieldArray } from "react-hook-form";
-import { registerParent, findStudentById } from "../../services/adminService"; // Asegúrate de que la ruta sea correcta
+import { useEffect } from "react";
+import { useFieldArray, useForm } from "react-hook-form";
+import { registerParent, verifyChildByDni } from "../../services/adminService"; // Asegúrate de que la ruta sea correcta
 
 const RegisterParent = () => {
   const {
@@ -27,40 +27,45 @@ const RegisterParent = () => {
     setValue,
     watch,
   } = useForm();
-  const { fields, append } = useFieldArray({
+  const { fields, append,  remove} = useFieldArray({
     control,
     name: "children",
   });
+
+  const handleRemoveChild = (index) => {
+    remove(index);
+  };
+
   const toast = useToast();
 
   // Watch for changes in child IDs
   const children = watch("children");
 
   useEffect(() => {
-    const updateChildNames = async () => {
-      for (let index = 0; index < children.length; index++) {
-        const childId = watch(`children.${index}.id`); // Observa el ID del niño individualmente
-        if (childId) {
-          try {
-            const data = await findStudentById(childId);
-            if (data) {
-              setValue(`children.${index}.childName`, data.childName || "");
-            }
-          } catch (error) {
-            console.error("Error fetching child data:", error);
+    const fetchStudentData = async () => {
+      const childDNIs = children.map(child => child.childDNI).filter(dni => dni && dni.length === 8);
+      for (let index = 0; index < childDNIs.length; index++) {
+        const childDNI = childDNIs[index];
+        try {
+          const data = await verifyChildByDni(childDNI);
+          if (data) {
+            console.log(`Fetched data for DNI ${childDNI}:`, data);
+            setValue(`children.${index}.childName`, data.firstName + " " +data.lastName || "");
           }
+        } catch (error) {
+          console.error("Error fetching student data:", error);
         }
       }
     };
-
-    // Añadimos un debounce para que no se haga la consulta al servidor en cada cambio de tecla
+  
+    // Añadimos un debounce para evitar llamadas excesivas
     const timeoutId = setTimeout(() => {
-      updateChildNames();
+      fetchStudentData();
     }, 500); // Debounce de 500ms
-
-    return () => clearTimeout(timeoutId); // Limpiar el timeout para evitar múltiples llamadas rápidas
-  }, [children, setValue, watch]); // Observa cambios en los hijos, el valor del formulario y los cambios individuales en los IDs
-
+  
+    return () => clearTimeout(timeoutId); // Limpiar el timeout
+  }, [children, watch, setValue]); // Observa cambios en `children`, `watch`, y `setValue`
+  
   const onSubmit = async (data) => {
     try {
       // Transformar la dirección en un objeto
@@ -75,9 +80,8 @@ const RegisterParent = () => {
 
       // Preparar los hijos en un array
       const children = data.children.map((child) => ({
-        id: child.id, // Añadido ID del hijo
-        childDNI: child.childDNI,
-        childName: child.childName,
+       // Añadido ID del hijo
+        childDNI: child.childDNI
       }));
 
       // Preparar el objeto final
@@ -105,41 +109,42 @@ const RegisterParent = () => {
         isClosable: true,
       });
     } catch (error) {
+      console.error((error))
       toast({
         title: "Error",
-        description: "No se pudo registrar al padre/tutor.",
+        description: "No se pudo registrar al padre/madre.",
         status: "error",
-        duration: 5000,
+        duration: 55000,
         isClosable: true,
       });
     }
   };
 
   return (
-    <Container maxW="container.md" py={8}>
+    <Container maxW="container.lg" py={8}>
+      <Box bg="#f4f4f4" p={6} borderRadius="xl" boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)">
       <Heading as="h1" mb={6} textAlign="center" color="orange.500">
-        Registro de Padre/Tutor
+        Registro de Padre/Madre
       </Heading>
-      <Box bg="white" p={6} borderRadius="md" boxShadow="md">
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={6} align="stretch">
             {/* Información Personal */}
             <Box>
-              <Heading as="h3" size="md" mb={4}>
-                Información Personal
+              <Heading as="h3" size="md" mb={2}>
+              Información Personal
               </Heading>
-              <Divider mb={4} />
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               <Grid
                 templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
                 gap={4}
               >
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.nombres} isRequired>
-                    <FormLabel htmlFor="nombres">Nombre/s</FormLabel>
+                    <FormLabel htmlFor="nombres">Nombre/s:</FormLabel>
                     <Input
                       id="nombres"
                       type="text"
-                      placeholder="Ingrese sus nombres"
+                      placeholder="Ej: Juan Carlos, Alfredo"
                       {...register("nombres", {
                         required: "Este campo es obligatorio",
                       })}
@@ -152,11 +157,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.apellidos} isRequired>
-                    <FormLabel htmlFor="apellidos">Apellido/s</FormLabel>
+                    <FormLabel htmlFor="apellidos">Apellido/s:</FormLabel>
                     <Input
                       id="apellidos"
                       type="text"
-                      placeholder="Ingrese sus apellidos"
+                      placeholder="Ej: Gil, Benitez, Retamozo"
                       {...register("apellidos", {
                         required: "Este campo es obligatorio",
                       })}
@@ -169,11 +174,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.dni} isRequired>
-                    <FormLabel htmlFor="dni">DNI</FormLabel>
+                    <FormLabel htmlFor="dni">D.N.I.:</FormLabel>
                     <Input
                       id="dni"
                       type="text"
-                      placeholder="Ingrese su DNI o documento de identidad"
+                      placeholder="Ej: 35765489, 19432567"
                       {...register("dni", {
                         required: "Este campo es obligatorio",
                       })}
@@ -186,11 +191,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.telefono} isRequired>
-                    <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+                    <FormLabel htmlFor="telefono">Celular:</FormLabel>
                     <Input
                       id="telefono"
                       type="tel"
-                      placeholder="Ingrese su teléfono"
+                      placeholder="Ej: 1187693452, 113465879234"
                       {...register("telefono", {
                         required: "Este campo es obligatorio",
                       })}
@@ -203,11 +208,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.email} isRequired>
-                    <FormLabel htmlFor="email">Correo Electrónico</FormLabel>
+                    <FormLabel htmlFor="email">Email:</FormLabel>
                     <Input
                       id="email"
                       type="email"
-                      placeholder="Ingrese su correo electrónico"
+                      placeholder="Ej: padre@hotmail.com"
                       {...register("email", {
                         required: "Este campo es obligatorio",
                       })}
@@ -220,11 +225,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.occupation} isRequired>
-                    <FormLabel htmlFor="occupation">Ocupación</FormLabel>
+                    <FormLabel htmlFor="occupation">Ocupación laboral:</FormLabel>
                     <Input
                       id="occupation"
                       type="text"
-                      placeholder="Ingrese su ocupación"
+                      placeholder="Ej: Médico, Profesor, Empresario, Enfermero, Abogado, Ingeniero, Farmacéutico, Técnico"
                       {...register("occupation", {
                         required: "Este campo es obligatorio",
                       })}
@@ -238,11 +243,11 @@ const RegisterParent = () => {
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.relacion} isRequired>
                     <FormLabel htmlFor="relacion">
-                      Relación con el Niño
+                    Vínculo con el estudiante:
                     </FormLabel>
                     <Select
                       id="relacion"
-                      placeholder="Seleccione la relación con el estudiante"
+                      placeholder="Seleccione el vínculo con el estudiante"
                       {...register("relacion", {
                         required: "Este campo es obligatorio",
                       })}
@@ -262,10 +267,10 @@ const RegisterParent = () => {
 
             {/* Datos de Emergencia */}
             <Box>
-              <Heading as="h3" size="md" mb={4}>
-                Datos de Emergencia
+              <Heading as="h3" size="md" mb={2}>
+              Datos de Emergencia
               </Heading>
-              <Divider mb={4} />
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               <Grid
                 templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
                 gap={4}
@@ -273,12 +278,12 @@ const RegisterParent = () => {
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.emergencyContactName}>
                     <FormLabel htmlFor="emergencyContactName">
-                      Nombre del Contacto de Emergencia
+                      Nombre del Contacto (emergencias):
                     </FormLabel>
                     <Input
                       id="emergencyContactName"
                       type="text"
-                      placeholder="Ingrese el nombre del contacto de emergencia"
+                      placeholder="Ej: Juan Pérez (tío), María Gómez (vecina), Ana Rodríguez (madre)"
                       {...register("emergencyContactName")}
                     />
                     {errors.emergencyContactName && (
@@ -292,12 +297,12 @@ const RegisterParent = () => {
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.emergencyPhone} isRequired>
                     <FormLabel htmlFor="emergencyPhone">
-                      Teléfono de Emergencia
+                    Celular (emergencias):
                     </FormLabel>
                     <Input
                       id="emergencyPhone"
                       type="tel"
-                      placeholder="Ingrese el teléfono de emergencia"
+                      placeholder="Ej: 1187693452, 113465879234"
                       {...register("emergencyPhone", {
                         required: "Este campo es obligatorio",
                       })}
@@ -314,10 +319,10 @@ const RegisterParent = () => {
 
             {/* Dirección */}
             <Box>
-              <Heading as="h3" size="md" mb={4}>
+              <Heading as="h3" size="md" mb={2}>
                 Dirección
               </Heading>
-              <Divider mb={4} />
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               <Grid
                 templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
                 gap={4}
@@ -328,12 +333,12 @@ const RegisterParent = () => {
                     isRequired
                   >
                     <FormLabel htmlFor="streetNameNumberDepartmentFloorAndNumber">
-                      Dirección
+                    Calle:
                     </FormLabel>
                     <Input
                       id="streetNameNumberDepartmentFloorAndNumber"
                       type="text"
-                      placeholder="Ingrese la dirección completa"
+                      placeholder="Av. Corrientes 1234, Piso 2, Dpto A"
                       {...register("streetNameNumberDepartmentFloorAndNumber", {
                         required: "Este campo es obligatorio",
                       })}
@@ -351,11 +356,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.state} isRequired>
-                    <FormLabel htmlFor="state">Provincia</FormLabel>
+                    <FormLabel htmlFor="state">Provincia:</FormLabel>
                     <Input
                       id="state"
                       type="text"
-                      placeholder="Ingrese el estado o provincia"
+                      placeholder="Buenos Aires"
                       {...register("state", {
                         required: "Este campo es obligatorio",
                       })}
@@ -368,11 +373,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.city} isRequired>
-                    <FormLabel htmlFor="city">Ciudad</FormLabel>
+                    <FormLabel htmlFor="city">Ciudad:</FormLabel>
                     <Input
                       id="city"
                       type="text"
-                      placeholder="Ingrese la ciudad"
+                      placeholder="Ciudad Autónoma de Buenos Aires"
                       {...register("city", {
                         required: "Este campo es obligatorio",
                       })}
@@ -385,11 +390,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.zipCode} isRequired>
-                    <FormLabel htmlFor="zipCode">Código Postal</FormLabel>
+                    <FormLabel htmlFor="zipCode">Código Postal:</FormLabel>
                     <Input
                       id="zipCode"
                       type="text"
-                      placeholder="Ingrese el código postal"
+                      placeholder="C1043AAE"
                       {...register("zipCode", {
                         required: "Este campo es obligatorio",
                       })}
@@ -402,11 +407,11 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.country} isRequired>
-                    <FormLabel htmlFor="country">País</FormLabel>
+                    <FormLabel htmlFor="country">País:</FormLabel>
                     <Input
                       id="country"
                       type="text"
-                      placeholder="Ingrese el país"
+                      placeholder="Argentina"
                       {...register("country", {
                         required: "Este campo es obligatorio",
                       })}
@@ -421,90 +426,60 @@ const RegisterParent = () => {
 
             {/* Hijos */}
             <Box>
-              <Heading as="h3" size="md" mb={4}>
+              <Heading as="h3" size="md" mb={2}>
                 Hijos
               </Heading>
-              <Divider mb={4} />
-              {fields.map((field, index) => (
-                <Box
-                  key={field.id}
-                  mb={4}
-                  p={4}
-                  borderWidth="1px"
-                  borderRadius="md"
-                  bg="gray.50"
-                >
-                  <Grid
-                    templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
-                    gap={4}
-                  >
+              <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
+              {fields.map((item, index) => (
+                <Box key={item.id} mb={4}>
+                  <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={4}>
                     <GridItem colSpan={1}>
-                      <FormControl
-                        isInvalid={errors.children?.[index]?.id}
-                        isRequired
-                      >
-                        <FormLabel htmlFor={`children[${index}].id`}>
-                          ID del Niño
-                        </FormLabel>
+                      <FormControl isInvalid={errors.children?.[index]?.childDNI} isRequired>
+                        <FormLabel htmlFor={`children.${index}.childDNI`}>D.N.I. del Niño/a:</FormLabel>
                         <Input
-                          id={`children[${index}].id`}
+                          id={`children.${index}.childDNI`}
                           type="text"
-                          placeholder="Ingrese el ID del niño"
-                          {...register(`children.${index}.id`, {
+                          placeholder="Ej: 35765489, 19432567"
+                          {...register(`children.${index}.childDNI`, {
                             required: "Este campo es obligatorio",
                           })}
                         />
-                        {errors.children?.[index]?.id && (
-                          <Text color="red.500">
-                            {errors.children[index].id.message}
-                          </Text>
+                        {errors.children?.[index]?.childDNI && (
+                          <Text color="red.500">{errors.children[index].childDNI.message}</Text>
                         )}
                       </FormControl>
                     </GridItem>
-
                     <GridItem colSpan={1}>
-                      <FormControl
-                        isInvalid={errors.children?.[index]?.childName}
-                        isRequired
-                      >
-                        <FormLabel htmlFor={`children[${index}].childName`}>
-                          Nombre del Niño
-                        </FormLabel>
+                      <FormControl isInvalid={errors.children?.[index]?.childName} isRequired>
+                        <FormLabel htmlFor={`children.${index}.childName`}>Nombre del Niño/a:</FormLabel>
                         <Input
-                          id={`children[${index}].childName`}
+                          id={`children.${index}.childName`}
                           type="text"
-                          placeholder="Ingrese el nombre del niño"
+                          placeholder="Nombre del niño/a"
                           {...register(`children.${index}.childName`, {
                             required: "Este campo es obligatorio",
                           })}
+                          readOnly
+                          border="none"
+                          background="transparent"
+                          _focus={{ boxShadow: "none" }}
+                          _hover={{ border: "none" }}
                         />
                         {errors.children?.[index]?.childName && (
-                          <Text color="red.500">
-                            {errors.children[index].childName.message}
-                          </Text>
+                          <Text color="red.500">{errors.children[index].childName.message}</Text>
                         )}
                       </FormControl>
+                      <Button size="sm" onClick={() => remove(index)}>x</Button>
                     </GridItem>
                   </Grid>
                 </Box>
               ))}
-              <Button
-                mt={4}
-                colorScheme="teal"
-                onClick={() => append({ id: "", childDNI: "", childName: "" })}
-              >
-                Añadir Hijo
-              </Button>
+              <Button colorScheme="orange" mt={4}
+                onClick={() => append({ childDNI: "", childName: "" })}
+              > Añadir otro hijo</Button>
             </Box>
-
             {/* Botón de Enviar */}
-            <Button
-              mt={6}
-              colorScheme="teal"
-              type="submit"
-              size="lg"
-              isFullWidth
-            >
+            <Button type="submit" colorScheme="orange" width="full" mt={4}>
               Registrar
             </Button>
           </VStack>
