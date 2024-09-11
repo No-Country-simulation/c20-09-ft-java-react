@@ -17,6 +17,8 @@ public class AuthRegisterUserRequest {
     @NotBlank
     private String dni;
 
+    private String username;
+
     @Valid
     private AuthRegisterRoleRequest roleRequest;
 

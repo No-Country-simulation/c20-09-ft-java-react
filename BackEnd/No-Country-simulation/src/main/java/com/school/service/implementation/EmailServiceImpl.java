@@ -1,7 +1,9 @@
 package com.school.service.implementation;
 
 import com.school.exception.EmailServiceException;
+import com.school.persistence.entities.UserEntity;
 import com.school.service.interfaces.IEmailService;
+import com.school.service.interfaces.IUserService;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.slf4j.Logger;
@@ -20,10 +22,12 @@ public class EmailServiceImpl implements IEmailService {
     private static final Logger log = LoggerFactory.getLogger(EmailServiceImpl.class);
     private final JavaMailSender javaMailSender;
     private final TemplateEngine templateEngine;
+    private final IUserService userService;
 
-    public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine) {
+    public EmailServiceImpl(JavaMailSender javaMailSender, TemplateEngine templateEngine, IUserService userService) {
         this.javaMailSender = javaMailSender;
         this.templateEngine = templateEngine;
+        this.userService = userService;
     }
 
     @Value("spring.mail.username")
@@ -31,7 +35,10 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendPasswordRecoveryEmail(String email, String resetPasswordLink) throws EmailServiceException {
+        String username = "";
         try {
+            UserEntity userEntity = userService.findUserByEmail(email);
+
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(emailSender, "Support");
@@ -40,6 +47,7 @@ public class EmailServiceImpl implements IEmailService {
 
             Context context = new Context();
             context.setVariable("resetPasswordLink", resetPasswordLink);
+            context.setVariable("username", userEntity.getUsername());
             String htmlContent = templateEngine.process("password-recovery", context);
 
             helper.setText(htmlContent, true);

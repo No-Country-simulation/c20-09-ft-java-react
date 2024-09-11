@@ -59,6 +59,7 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
         // Construir el AuthRegisterUserRequest con los datos necesarios
         AuthRegisterUserRequest requestUser = AuthRegisterUserRequest.builder()
                 .email(parentRegistrationDto.getEmail())
+                .username(parentRegistrationDto.getName())
                 .profileType("PARENT")
                 .roleRequest(AuthRegisterRoleRequest.builder()
                         .roleListName(Collections.singletonList(RoleEnum.PARENT.name()))

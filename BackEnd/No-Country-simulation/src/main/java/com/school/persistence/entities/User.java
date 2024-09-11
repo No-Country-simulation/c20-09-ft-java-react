@@ -16,16 +16,19 @@ import java.time.LocalDate;
 @MappedSuperclass
 public abstract class User {
 
+    @Size(min = 2, max = 50, message = "Name must be between 2 and 30 characters")
     private String name;
 
+    @Size(min = 2, max = 50, message = "Last name must be between 2 and 30 characters")
     private String lastName;
-
 
     @Column(unique = true)
     private String dni;
 
+    @Email(message = "Invalid email format")
     private String email;
 
+    @Pattern(regexp = "\\d{10,}", message = "Phone number must be at least 10 digits")
     private String phoneNumber;
 
     @Embedded

@@ -23,4 +23,6 @@ public interface IUserService {
 
     @Transactional
     LoginAuthResponse refreshToken(String oldRefreshToken) throws InvalidTokenException, ExpiredJwtException;
+
+    UserEntity findUserByEmail(String email);
 }

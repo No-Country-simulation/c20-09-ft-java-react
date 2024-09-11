@@ -53,6 +53,7 @@ public class TeacherServiceImpl implements GenericService<Teacher, TeacherRegist
         // Construir el AuthRegisterUserRequest con los datos necesarios
         AuthRegisterUserRequest requestUser = AuthRegisterUserRequest.builder()
                 .email(teacherRegistrationDto.getEmail())
+                .username(teacherRegistrationDto.getName())
                 .profileType("TEACHER")  // Establecer el perfil como 'TEACHER'
                 .roleRequest(AuthRegisterRoleRequest.builder()
                         .roleListName(Collections.singletonList(RoleEnum.TEACHER.name()))

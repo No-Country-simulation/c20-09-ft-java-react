@@ -63,6 +63,7 @@ public class StudentServiceImpl implements GenericService<Student, StudentRegist
         // Construir el AuthRegisterUserRequest con los datos necesarios
         AuthRegisterUserRequest requestUser = AuthRegisterUserRequest.builder()
                 .email(studentRegistrationDto.getEmail())
+                .username(studentRegistrationDto.getName())
                 .profileType("STUDENT")  // Establecer el perfil como 'STUDENT'
                 .roleRequest(AuthRegisterRoleRequest.builder()
                         .roleListName(Collections.singletonList(RoleEnum.STUDENT.name()))

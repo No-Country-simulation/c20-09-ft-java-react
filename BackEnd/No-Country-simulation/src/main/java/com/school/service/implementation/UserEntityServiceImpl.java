@@ -55,7 +55,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        // Buscar usuario por nombre de usuario
+        // Buscar usuario por email de usuario
         UserEntity userEntity = userEntityRepository.findUserEntityByEmail(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
 
@@ -105,6 +105,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
 
         UserEntity userEntity = UserEntity.builder()
                 .email(email)
+                .username(registerUserRequest.getUsername())
                 .password(passwordEncoder.encode(password))
                 .passwordChanged(false)
                 .roles(roleEntities)
@@ -208,7 +209,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
         userEntity.setRefreshToken(refreshToken);
         userEntityRepository.save(userEntity);
 
-        return new LoginAuthResponse(email, "Successful login", accessToken, refreshToken, true);
+        return new LoginAuthResponse(userEntity.getUsername(), "Successful login", accessToken, refreshToken, userEntity.getPasswordChanged());
     }
 
     @Transactional
@@ -234,9 +235,15 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
             userEntity.setRefreshToken(newRefreshToken);
             userEntityRepository.save(userEntity);
 
-            return new LoginAuthResponse(username, "Token refreshed successfully", newAccessToken, newRefreshToken, true);
+            return new LoginAuthResponse(userEntity.getUsername(), "Token refreshed successfully", newAccessToken, newRefreshToken, true);
         } else {
             throw new InvalidTokenException("Invalid refresh token");
         }
+    }
+
+    @Override
+    public UserEntity findUserByEmail(String email) {
+        return userEntityRepository.findUserEntityByEmail(email)
+                .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
     }
 }
