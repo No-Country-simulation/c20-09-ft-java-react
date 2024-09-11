@@ -20,11 +20,11 @@ public class ParentRegistrationDto {
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 30 characters")
     private String lastName;
 
-    @Size(max = 8, message = "DNI number cannot be higher than 8 digits")
+    @Pattern(regexp = "\\d{8}", message = "DNI must be exactly 8 digits")
     @NotBlank(message = "DNI cannot be null")
     private String dni;
 
-    @Size(max = 11, message = "Phone number cannot have more than 11 digits")
+    @Pattern(regexp = "\\d{10}", message = "Phone number cannot have more than 10 digits")
     @NotBlank(message = "Phone number cannot be null")
     private String phoneNumber;
 
@@ -45,7 +45,7 @@ public class ParentRegistrationDto {
 
     private String emergencyContactName;
 
-    @NotNull(message = "Emergency phone number cannot be null")
+    @Pattern(regexp = "\\d{10}", message = "Phone number cannot have more than 10 digits")
     private String emergencyPhone;
 
     private List<ChildDto> children;

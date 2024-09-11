@@ -20,6 +20,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/student")
+//@Secured("ROLE_ADMIN")
 public class StudentController {
 
     private final StudentServiceImpl studentService;
@@ -29,7 +30,7 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> processStudentRegistration(@RequestBody StudentRegistrationDto studentRegistrationDto){
+    public ResponseEntity<?> processStudentRegistration(@Valid @RequestBody StudentRegistrationDto studentRegistrationDto){
         logger.info("Student registration request received: {}", studentRegistrationDto.toString());
         // Llamar al método del servicio para manejar la lógica de registro
         AuthResponse registeredUser = studentService.create(studentRegistrationDto);

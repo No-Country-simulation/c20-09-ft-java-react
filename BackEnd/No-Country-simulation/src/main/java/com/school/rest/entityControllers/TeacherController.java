@@ -10,12 +10,14 @@ import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/teacher")
+//@Secured("ROLE_ADMIN")
 public class TeacherController {
 
     private final TeacherServiceImpl teacherService;

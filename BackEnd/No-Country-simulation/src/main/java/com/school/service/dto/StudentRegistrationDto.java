@@ -2,7 +2,6 @@ package com.school.service.dto;
 
 import com.school.persistence.entities.Address;
 import com.school.persistence.entities.MedicalInformation;
-import jakarta.persistence.Column;
 import jakarta.validation.constraints.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -19,13 +18,14 @@ public class StudentRegistrationDto {
     @Size(min = 2, max = 50, message = "Last name must be between 2 and 30 characters")
     private String lastName;
 
-    @Size(max = 8, message = "DNI number cannot be higher than 8 digits")
+    @Pattern(regexp = "\\d{8}", message = "DNI must be exactly 8 digits")
+    @NotBlank(message = "DNI cannot be null")
     private String dni;
 
-    @Size(max = 11, message = "Phone number cannot have more than 11 digits")
+    @Pattern(regexp = "\\d{10}", message = "Phone number cannot have more than 10 digits")
     private String phoneNumber;
 
-    @NotNull(message = "Email cannot be null")
+    @NotBlank(message = "Email cannot be null")
     @Email(message = "Invalid email format")
     private String email;
 
@@ -34,6 +34,7 @@ public class StudentRegistrationDto {
     @Past(message = "Date of birth must be in the past")
     private LocalDate dateOfBirth;
 
+    @Pattern(regexp = "\\d{10}", message = "Phone number cannot have more than 10 digits")
     private String emergencyNumber;
 
     private String emergencyContactName;
