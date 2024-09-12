@@ -47,6 +47,9 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/auth/register").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset_password").permitAll();
+                    //test
+                    http.requestMatchers(HttpMethod.POST, "/api/v1/subject/**").permitAll();
+                    http.requestMatchers("api/v1/course-student/**").permitAll();
 
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-student").hasAnyRole("STUDENT");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-teacher").hasAnyRole("TEACHER");

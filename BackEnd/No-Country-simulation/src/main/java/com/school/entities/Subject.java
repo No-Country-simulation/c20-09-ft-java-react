@@ -4,17 +4,16 @@ import jakarta.persistence.*;
 import lombok.*;
 
 @Builder
-@Getter
 @Setter
+@Getter
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "students")
-public class Student extends User {
+@Table(name = "subjects")
+public class Subject {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id", referencedColumnName = "id", nullable = false)
-    private UserEntity user;
+    @Column(name = "nombre")
+    private String name;
 }
