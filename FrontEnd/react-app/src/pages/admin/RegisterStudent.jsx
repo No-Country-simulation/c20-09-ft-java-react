@@ -183,12 +183,12 @@ const RegisterStudent = () => {
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.phone} isRequired>
-                <FormLabel htmlFor="phone">Celular:</FormLabel>
+                <FormLabel htmlFor="phoneNumber">Celular:</FormLabel>
                 <Input
-                  id="phone"
+                  id="phoneNumber"
                   type="tel"
                   placeholder="Ej: 1154327854"
-                  {...register("phone", {
+                  {...register("phoneNumber", {
                     required: "Este campo es obligatorio",
                   })}
                 />
@@ -345,14 +345,14 @@ const RegisterStudent = () => {
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.emergencyContactPhone} isRequired>
-                <FormLabel htmlFor="emergencyContactPhone">
+                <FormLabel htmlFor="emergencyNumber">
                 Teléfono del Contacto:
                 </FormLabel>
                 <Input
-                  id="emergencyContactPhone"
+                  id="emergencyNumber"
                   type="tel"
                   placeholder="Ej: 1163238756"
-                  {...register("emergencyContactPhone", {
+                  {...register("emergencyNumber", {
                     required: "Este campo es obligatorio",
                   })}
                 />
