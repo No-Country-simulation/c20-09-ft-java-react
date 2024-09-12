@@ -72,7 +72,7 @@ const RegisterStudent = () => {
         isClosable: true,
       });
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast({
         title: "Error",
         description: "No se pudo registrar al estudiante.",
@@ -85,8 +85,13 @@ const RegisterStudent = () => {
 
   return (
     <Container bg="#34495E" maxW="container.lg" py={8}>
-      <Box bg="#f4f4f4" p={6} borderRadius="xl" boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)">
-        <Heading as="h1" mb={6} textAlign="center"  color="orange.500">
+      <Box
+        bg="#f4f4f4"
+        p={6}
+        borderRadius="xl"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
+      >
+        <Heading as="h1" mb={6} textAlign="center" color="orange.500">
           Registro de Alumno
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
@@ -136,7 +141,9 @@ const RegisterStudent = () => {
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.dateOfBirth} isRequired>
-                <FormLabel htmlFor="dateOfBirth">Fecha de Nacimiento:</FormLabel>
+                <FormLabel htmlFor="dateOfBirth">
+                  Fecha de Nacimiento:
+                </FormLabel>
                 <Input
                   id="dateOfBirth"
                   type="date"
@@ -183,12 +190,12 @@ const RegisterStudent = () => {
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.phone} isRequired>
-                <FormLabel htmlFor="phone">Celular:</FormLabel>
+                <FormLabel htmlFor="phoneNumber">Celular:</FormLabel>
                 <Input
-                  id="phone"
+                  id="phoneNumber"
                   type="tel"
                   placeholder="Ej: 1154327854"
-                  {...register("phone", {
+                  {...register("phoneNumber", {
                     required: "Este campo es obligatorio",
                   })}
                 />
@@ -319,14 +326,14 @@ const RegisterStudent = () => {
             <GridItem colSpan={2}>
               <Divider my={4} />
               <Heading as="h3" size="md" color="#34495e" mb={2}>
-              Información de Contacto de Emergencia
+                Información de Contacto de Emergencia
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.emergencyContactName} isRequired>
                 <FormLabel htmlFor="emergencyContactName">
-                Nombre del Contacto:
+                  Nombre del Contacto:
                 </FormLabel>
                 <Input
                   id="emergencyContactName"
@@ -345,14 +352,14 @@ const RegisterStudent = () => {
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.emergencyContactPhone} isRequired>
-                <FormLabel htmlFor="emergencyContactPhone">
-                Teléfono del Contacto:
+                <FormLabel htmlFor="emergencyNumber">
+                  Teléfono del Contacto:
                 </FormLabel>
                 <Input
-                  id="emergencyContactPhone"
+                  id="emergencyNumber"
                   type="tel"
                   placeholder="Ej: 1163238756"
-                  {...register("emergencyContactPhone", {
+                  {...register("emergencyNumber", {
                     required: "Este campo es obligatorio",
                   })}
                 />
@@ -405,7 +412,7 @@ const RegisterStudent = () => {
             <GridItem>
               <FormControl isInvalid={errors.additionalConditions}>
                 <FormLabel htmlFor="additionalConditions">
-                Otras Afecciones:
+                  Otras Afecciones:
                 </FormLabel>
                 <Input
                   id="additionalConditions"

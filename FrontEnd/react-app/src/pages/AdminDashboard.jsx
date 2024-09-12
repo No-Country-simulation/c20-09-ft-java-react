@@ -25,7 +25,7 @@ import btnTeacher from "../assets/registrar_profesores.webp";
 import btnStudent from "../assets/registrar_alumnos.webp";
 import btnParent from "../assets/registrar_padres.webp";
 
-import "./AdminDashboard.css";
+import "./Dashboard.css";
 
 const AdminDashboard = () => {
   const [name, setName] = useState("");
@@ -149,13 +149,12 @@ const AdminDashboard = () => {
             display="flex"
             flexDirection="column"
           >
-            <ModalHeader>Registrar Profesor</ModalHeader>
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               <RegisterTeacher />
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="blue" onClick={onTeacherClose}>
+              <Button colorScheme="orange" onClick={onTeacherClose}>
                 Cerrar
               </Button>
             </ModalFooter>
@@ -175,7 +174,6 @@ const AdminDashboard = () => {
             display="flex"
             flexDirection="column"
           >
-
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               <RegisterStudent />
@@ -207,102 +205,13 @@ const AdminDashboard = () => {
               <RegisterParent />
             </ModalBody>
             <ModalFooter>
-              <Button colorScheme="white" onClick={onParentClose}>
+              <Button colorScheme="orange" onClick={onParentClose}>
                 Cerrar
               </Button>
             </ModalFooter>
           </ModalContent>
         </Modal>
 
-        {/* Modal de Estadísticas */}
-        <Modal
-          isOpen={showStats}
-          onClose={() => setShowStats(false)}
-          size="full"
-        >
-          <ModalOverlay />
-          <ModalContent
-            w="full"
-            h="full"
-            maxW="none"
-            maxH="none"
-            borderRadius="md"
-            display="flex"
-            flexDirection="column"
-          >
-            <ModalHeader>Estadísticas</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody overflowY="auto">
-              <Statistics />
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" onClick={() => setShowStats(false)}>
-                Cerrar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-
-        {/* Modal de Exportación de Datos */}
-        <Modal
-          isOpen={showExport}
-          onClose={() => setShowExport(false)}
-          size="full"
-        >
-          <ModalOverlay />
-          <ModalContent
-            w="full"
-            h="full"
-            maxW="none"
-            maxH="none"
-            borderRadius="md"
-            display="flex"
-            flexDirection="column"
-          >
-            <ModalHeader>Exportar Datos</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody overflowY="auto">
-              <ExportData data={dataToExport} />
-            </ModalBody>
-            <ModalFooter>
-              <Button colorScheme="blue" onClick={() => setShowExport(false)}>
-                Cerrar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
-
-        {/* Modal de Administración de Usuarios */}
-        <Modal
-          isOpen={showUserManagement}
-          onClose={() => setShowUserManagement(false)}
-          size="full"
-        >
-          <ModalOverlay />
-          <ModalContent
-            w="full"
-            h="full"
-            maxW="none"
-            maxH="none"
-            borderRadius="md"
-            display="flex"
-            flexDirection="column"
-          >
-            <ModalHeader>Administración de Usuarios</ModalHeader>
-            <ModalCloseButton />
-            <ModalBody overflowY="auto">
-              <UserManagement users={userData} />
-            </ModalBody>
-            <ModalFooter>
-              <Button
-                colorScheme="blue"
-                onClick={() => setShowUserManagement(false)}
-              >
-                Cerrar
-              </Button>
-            </ModalFooter>
-          </ModalContent>
-        </Modal>
         <Button mt={8} colorScheme="orange" onClick={handleLogout}>
           Cerrar Sesión
         </Button>

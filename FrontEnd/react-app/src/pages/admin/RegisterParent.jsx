@@ -14,7 +14,7 @@ import {
   useToast,
   VStack,
 } from "@chakra-ui/react";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
 import { registerParent, verifyChildByDni } from "../../services/adminService"; // Asegúrate de que la ruta sea correcta
 
@@ -27,7 +27,7 @@ const RegisterParent = () => {
     setValue,
     watch,
   } = useForm();
-  const { fields, append,  remove} = useFieldArray({
+  const { fields, append, remove } = useFieldArray({
     control,
     name: "children",
   });
@@ -37,35 +37,42 @@ const RegisterParent = () => {
   };
 
   const toast = useToast();
+  const [registrationSuccess, setRegistrationSuccess] = useState(false);
+  const [password, setPassword] = useState("");
 
   // Watch for changes in child IDs
   const children = watch("children");
 
   useEffect(() => {
     const fetchStudentData = async () => {
-      const childDNIs = children.map(child => child.childDNI).filter(dni => dni && dni.length === 8);
+      const childDNIs = children
+        .map((child) => child.childDNI)
+        .filter((dni) => dni && dni.length === 8);
       for (let index = 0; index < childDNIs.length; index++) {
         const childDNI = childDNIs[index];
         try {
           const data = await verifyChildByDni(childDNI);
           if (data) {
             console.log(`Fetched data for DNI ${childDNI}:`, data);
-            setValue(`children.${index}.childName`, data.firstName + " " +data.lastName || "");
+            setValue(
+              `children.${index}.childName`,
+              data.firstName + " " + data.lastName || ""
+            );
           }
         } catch (error) {
           console.error("Error fetching student data:", error);
         }
       }
     };
-  
+
     // Añadimos un debounce para evitar llamadas excesivas
     const timeoutId = setTimeout(() => {
       fetchStudentData();
     }, 500); // Debounce de 500ms
-  
+
     return () => clearTimeout(timeoutId); // Limpiar el timeout
   }, [children, watch, setValue]); // Observa cambios en `children`, `watch`, y `setValue`
-  
+
   const onSubmit = async (data) => {
     try {
       // Transformar la dirección en un objeto
@@ -80,8 +87,8 @@ const RegisterParent = () => {
 
       // Preparar los hijos en un array
       const children = data.children.map((child) => ({
-       // Añadido ID del hijo
-        childDNI: child.childDNI
+        // Añadido ID del hijo
+        childDNI: child.childDNI,
       }));
 
       // Preparar el objeto final
@@ -89,7 +96,7 @@ const RegisterParent = () => {
         name: data.nombres,
         lastName: data.apellidos,
         dni: data.dni,
-        phoneNumber: data.telefono,
+        phoneNumber: data.phoneNumber,
         email: data.email,
         occupation: data.occupation,
         relationshipToChild: data.relacion,
@@ -99,7 +106,11 @@ const RegisterParent = () => {
         children,
       };
 
-      await registerParent(finalData);
+      const response = await registerParent(finalData);
+      const generatedPassword = response?.password || "123456"; // Reemplaza con lógica real si es necesario
+
+      setPassword(generatedPassword);
+      setRegistrationSuccess(true);
 
       toast({
         title: "Éxito",
@@ -109,7 +120,7 @@ const RegisterParent = () => {
         isClosable: true,
       });
     } catch (error) {
-      console.error((error))
+      console.error(error);
       toast({
         title: "Error",
         description: "No se pudo registrar al padre/madre.",
@@ -122,16 +133,21 @@ const RegisterParent = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
-      <Box bg="#f4f4f4" p={6} borderRadius="xl" boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)">
-      <Heading as="h1" mb={6} textAlign="center" color="orange.500">
-        Registro de Padre/Madre
-      </Heading>
+      <Box
+        bg="#f4f4f4"
+        p={6}
+        borderRadius="xl"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
+      >
+        <Heading as="h1" mb={6} textAlign="center" color="orange.500">
+          Registro de Padre/Madre
+        </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={6} align="stretch">
             {/* Información Personal */}
             <Box>
               <Heading as="h3" size="md" mb={2}>
-              Información Personal
+                Información Personal
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               <Grid
@@ -190,18 +206,28 @@ const RegisterParent = () => {
                 </GridItem>
 
                 <GridItem colSpan={1}>
-                  <FormControl isInvalid={errors.telefono} isRequired>
-                    <FormLabel htmlFor="telefono">Celular:</FormLabel>
+                  <FormControl isInvalid={errors.phoneNumber} isRequired>
+                    <FormLabel htmlFor="phoneNumber">Celular:</FormLabel>
                     <Input
-                      id="telefono"
+                      id="phoneNumber"
                       type="tel"
-                      placeholder="Ej: 1187693452, 113465879234"
-                      {...register("telefono", {
+                      placeholder="Ej: 1187693452"
+                      {...register("phoneNumber", {
                         required: "Este campo es obligatorio",
+                        maxLength: {
+                          value: 10,
+                          message:
+                            "El número de teléfono no puede tener más de 10 dígitos",
+                        },
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message:
+                            "El número de teléfono debe tener exactamente 10 dígitos",
+                        },
                       })}
                     />
-                    {errors.telefono && (
-                      <Text color="red.500">{errors.telefono.message}</Text>
+                    {errors.phoneNumber && (
+                      <Text color="red.500">{errors.phoneNumber.message}</Text>
                     )}
                   </FormControl>
                 </GridItem>
@@ -225,7 +251,9 @@ const RegisterParent = () => {
 
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.occupation} isRequired>
-                    <FormLabel htmlFor="occupation">Ocupación laboral:</FormLabel>
+                    <FormLabel htmlFor="occupation">
+                      Ocupación laboral:
+                    </FormLabel>
                     <Input
                       id="occupation"
                       type="text"
@@ -243,7 +271,7 @@ const RegisterParent = () => {
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.relacion} isRequired>
                     <FormLabel htmlFor="relacion">
-                    Vínculo con el estudiante:
+                      Vínculo con el estudiante:
                     </FormLabel>
                     <Select
                       id="relacion"
@@ -268,7 +296,7 @@ const RegisterParent = () => {
             {/* Datos de Emergencia */}
             <Box>
               <Heading as="h3" size="md" mb={2}>
-              Datos de Emergencia
+                Datos de Emergencia
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               <Grid
@@ -297,7 +325,7 @@ const RegisterParent = () => {
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.emergencyPhone} isRequired>
                     <FormLabel htmlFor="emergencyPhone">
-                    Celular (emergencias):
+                      Celular (emergencias):
                     </FormLabel>
                     <Input
                       id="emergencyPhone"
@@ -333,7 +361,7 @@ const RegisterParent = () => {
                     isRequired
                   >
                     <FormLabel htmlFor="streetNameNumberDepartmentFloorAndNumber">
-                    Calle:
+                      Calle:
                     </FormLabel>
                     <Input
                       id="streetNameNumberDepartmentFloorAndNumber"
@@ -432,10 +460,18 @@ const RegisterParent = () => {
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               {fields.map((item, index) => (
                 <Box key={item.id} mb={4}>
-                  <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={4}>
+                  <Grid
+                    templateColumns="repeat(auto-fill, minmax(300px, 1fr))"
+                    gap={4}
+                  >
                     <GridItem colSpan={1}>
-                      <FormControl isInvalid={errors.children?.[index]?.childDNI} isRequired>
-                        <FormLabel htmlFor={`children.${index}.childDNI`}>D.N.I. del Niño/a:</FormLabel>
+                      <FormControl
+                        isInvalid={errors.children?.[index]?.childDNI}
+                        isRequired
+                      >
+                        <FormLabel htmlFor={`children.${index}.childDNI`}>
+                          D.N.I. del Niño/a:
+                        </FormLabel>
                         <Input
                           id={`children.${index}.childDNI`}
                           type="text"
@@ -445,13 +481,20 @@ const RegisterParent = () => {
                           })}
                         />
                         {errors.children?.[index]?.childDNI && (
-                          <Text color="red.500">{errors.children[index].childDNI.message}</Text>
+                          <Text color="red.500">
+                            {errors.children[index].childDNI.message}
+                          </Text>
                         )}
                       </FormControl>
                     </GridItem>
                     <GridItem colSpan={1}>
-                      <FormControl isInvalid={errors.children?.[index]?.childName} isRequired>
-                        <FormLabel htmlFor={`children.${index}.childName`}>Nombre del Niño/a:</FormLabel>
+                      <FormControl
+                        isInvalid={errors.children?.[index]?.childName}
+                        isRequired
+                      >
+                        <FormLabel htmlFor={`children.${index}.childName`}>
+                          Nombre del Niño/a:
+                        </FormLabel>
                         <Input
                           id={`children.${index}.childName`}
                           type="text"
@@ -466,17 +509,26 @@ const RegisterParent = () => {
                           _hover={{ border: "none" }}
                         />
                         {errors.children?.[index]?.childName && (
-                          <Text color="red.500">{errors.children[index].childName.message}</Text>
+                          <Text color="red.500">
+                            {errors.children[index].childName.message}
+                          </Text>
                         )}
                       </FormControl>
-                      <Button size="sm" onClick={() => remove(index)}>x</Button>
+                      <Button size="sm" onClick={() => remove(index)}>
+                        x
+                      </Button>
                     </GridItem>
                   </Grid>
                 </Box>
               ))}
-              <Button colorScheme="orange" mt={4}
+              <Button
+                colorScheme="orange"
+                mt={4}
                 onClick={() => append({ childDNI: "", childName: "" })}
-              > Añadir otro hijo</Button>
+              >
+                {" "}
+                Añadir otro hijo
+              </Button>
             </Box>
             {/* Botón de Enviar */}
             <Button type="submit" colorScheme="orange" width="full" mt={4}>
@@ -484,6 +536,21 @@ const RegisterParent = () => {
             </Button>
           </VStack>
         </form>
+        {registrationSuccess && password && (
+          <Box
+            mt={4}
+            p={4}
+            borderWidth={1}
+            borderRadius="md"
+            borderColor="green.500"
+            bg="green.50"
+          >
+            <Text color="orange">
+              ¡Registro exitoso! La contraseña generada es:{" "}
+              <strong>{password}</strong>
+            </Text>
+          </Box>
+        )}
       </Box>
     </Container>
   );
