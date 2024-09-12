@@ -70,7 +70,7 @@ const RegisterTeacher = () => {
         name: data.nombre,
         lastName: data.apellido,
         dni: data.dni,
-        phoneNumber: data.telefono,
+        phoneNumber: data.phoneNumber,
         email: data.email,
         emergencyContactName: data.emergencyContactName,
         emergencyNumber: data.emergencyNumber,
@@ -108,10 +108,15 @@ const RegisterTeacher = () => {
 
   return (
     <Container maxW="container.lg" py={8}>
-      <Box bg="#f4f4f4" p={6} borderRadius="xl" boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)">
-      <Heading as="h1" mb={6} textAlign="center" color="orange.500">
-        Registro de Profesor
-      </Heading>
+      <Box
+        bg="#f4f4f4"
+        p={6}
+        borderRadius="xl"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
+      >
+        <Heading as="h1" mb={6} textAlign="center" color="orange.500">
+          Registro de Profesor
+        </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid
             templateColumns={{ base: "1fr", md: "repeat(2, 1fr)" }}
@@ -120,7 +125,7 @@ const RegisterTeacher = () => {
           >
             {/* Información Personal */}
             <GridItem colSpan={2}>
-            <Heading as="h3" size="md" mb={2} color="#34495e">
+              <Heading as="h3" size="md" mb={2} color="#34495e">
                 Información Personal
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
@@ -189,18 +194,28 @@ const RegisterTeacher = () => {
               </FormControl>
             </GridItem>
             <GridItem>
-              <FormControl isInvalid={errors.telefono} isRequired>
-                <FormLabel htmlFor="telefono">Teléfono</FormLabel>
+              <FormControl isInvalid={errors.phoneNumber} isRequired>
+                <FormLabel htmlFor="phoneNumber">Celular:</FormLabel>
                 <Input
-                  id="telefono"
+                  id="phoneNumber"
                   type="tel"
-                  placeholder="Ej: 1134756894, "
-                  {...register("telefono", {
+                  placeholder="Ej: 1187693452"
+                  {...register("phoneNumber", {
                     required: "Este campo es obligatorio",
+                    maxLength: {
+                      value: 10,
+                      message:
+                        "El número de teléfono no puede tener más de 10 dígitos",
+                    },
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message:
+                        "El número de teléfono debe tener exactamente 10 dígitos",
+                    },
                   })}
                 />
-                {errors.telefono && (
-                  <Text color="red.500">{errors.telefono.message}</Text>
+                {errors.phoneNumber && (
+                  <Text color="red.500">{errors.phoneNumber.message}</Text>
                 )}
               </FormControl>
             </GridItem>
@@ -344,7 +359,7 @@ const RegisterTeacher = () => {
             <GridItem>
               <FormControl isInvalid={errors.academicTitles} isRequired>
                 <FormLabel htmlFor="academicTitles">
-                Títulos Académicos:
+                  Títulos Académicos:
                 </FormLabel>
                 <Input
                   id="academicTitles"
@@ -442,10 +457,10 @@ const RegisterTeacher = () => {
               </Button>
             </GridItem>
 
-               {/* Datos de Emergencia */}
-               <Box>
+            {/* Datos de Emergencia */}
+            <Box>
               <Heading as="h3" size="md" mb={2}>
-              Datos de Emergencia
+                Datos de Emergencia
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               <Grid
@@ -474,7 +489,7 @@ const RegisterTeacher = () => {
                 <GridItem colSpan={1}>
                   <FormControl isInvalid={errors.emergencyNumber} isRequired>
                     <FormLabel htmlFor="emergencyNumber">
-                    Celular (emergencias):
+                      Celular (emergencias):
                     </FormLabel>
                     <Input
                       id="emergencyNumber"

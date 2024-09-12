@@ -25,7 +25,7 @@ import btnTeacher from "../assets/registrar_profesores.webp";
 import btnStudent from "../assets/registrar_alumnos.webp";
 import btnParent from "../assets/registrar_padres.webp";
 
-import "./AdminDashboard.css";
+import "./Dashboard.css";
 
 const AdminDashboard = () => {
   const [name, setName] = useState("");
