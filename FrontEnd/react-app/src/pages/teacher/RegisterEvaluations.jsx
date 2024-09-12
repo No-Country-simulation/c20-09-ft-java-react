@@ -1,25 +1,20 @@
-import { AddIcon, CloseIcon } from "@chakra-ui/icons";
 import {
   Box,
   Button,
   Container,
-  Divider,
   FormControl,
   FormLabel,
   Grid,
-  GridItem,
   Heading,
-  IconButton,
   Input,
   Select,
-  Text,
   Textarea,
-  useToast,
+  useToast
 } from "@chakra-ui/react";
-import { useState, useEffect } from "react";
+import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { loadEvaluation } from "../../services/teacherService";
 import { verifyChildByDni } from "../../services/adminService"; // Asegúrate de que la ruta sea correcta
+import { loadEvaluation } from "../../services/teacherService";
 
 const RegisterEvaluations = () => {
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
@@ -122,52 +117,66 @@ const RegisterEvaluations = () => {
   };
 
   return (
-    <Container bg="#34495E" maxW="container.lg" py={8}>
+    <Container bg="#34495E" maxW="container.md" py={8}>
       <Box
         bg="#f4f4f4"
         p={6}
         borderRadius="xl"
-        boxShadow="0 4px 8px rgba(0, 0, 0, 0.2)"
+        boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
       >
         <Heading as="h1" mb={6} textAlign="center" color="orange.500">
           Cargar Evaluaciones
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
-          <Grid templateColumns="repeat(auto-fill, minmax(300px, 1fr))" gap={6}>
+          <Grid templateColumns="repeat(auto-fill, minmax(1, 1fr))" gap={6}>
             {/* Información del Estudiante */}
             <Box>
               <FormControl isRequired>
-                <FormLabel htmlFor="dniStudent">DNI del alumno:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="dniStudent">DNI del alumno:</FormLabel>
                 <Input
                   id="dniStudent"
                   {...register("dniStudent")}
                   placeholder="Ingresa el DNI del alumno"
                   onChange={handleDniChange}
+                  _focus={{
+                    borderColor: "#34495E",
+                    boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
+                  }}
                 />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="studentName">Nombre del alumno:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="studentName">Nombre del alumno:</FormLabel>
                 <Input
                   id="studentName"
                   {...register("studentName")}
-                  placeholder="Ingresa el nombre del alumno"
+                  placeholder="Esperando DNI..."
+                  readOnly
+                  border="none"
+                  background="transparent"
+                  _focus={{ boxShadow: "none" }}
+                  _hover={{ border: "none" }}
                 />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="studentLastName">
+                <FormLabel color="#34495E" htmlFor="studentLastName">
                   Apellido del alumno:
                 </FormLabel>
                 <Input
                   id="studentLastName"
                   {...register("studentLastName")}
-                  placeholder="Ingresa el apellido del alumno"
+                  placeholder="Esperando DNI..."
+                  readOnly
+                  border="none"
+                  background="transparent"
+                  _focus={{ boxShadow: "none" }}
+                  _hover={{ border: "none" }}
                 />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="year">Año:</FormLabel>
+                <FormLabel color="#34495E"  htmlFor="year">Año:</FormLabel>
                 <Select id="year" {...register("year")}>
                   <option value="">Selecciona el año</option>
                   <option value="1">1º</option>
@@ -179,7 +188,7 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="trimester">Trimestre:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="trimester">Trimestre:</FormLabel>
                 <Select id="trimester" {...register("trimester")}>
                   <option value="">Selecciona el trimestre</option>
                   <option value="primero">Primero</option>
@@ -189,21 +198,29 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="subject">Materia:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="subject">Materia:</FormLabel>
                 <Input
                   id="subject"
                   {...register("subject")}
                   placeholder="Ingresa la materia"
+                  _focus={{
+                    borderColor: "#34495E",
+                    boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
+                  }}
                 />
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel htmlFor="feedback">Retroalimentación:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="feedback">Retroalimentación:</FormLabel>
                 <Textarea
                   id="feedback"
                   {...register("feedback")}
                   rows={4}
                   placeholder="Escribe la retroalimentación"
+                  _focus={{
+                    borderColor: "#34495E",
+                    boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
+                  }}
                 />
               </FormControl>
 
