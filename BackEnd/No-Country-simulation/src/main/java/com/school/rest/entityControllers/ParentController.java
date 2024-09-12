@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/parent")
-//@Secured("ROLE_ADMIN")
+@Secured("ROLE_ADMIN")
 public class ParentController {
 
     private final ParentServiceImpl parentService;

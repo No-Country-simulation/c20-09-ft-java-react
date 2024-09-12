@@ -8,7 +8,6 @@ import com.school.rest.request.AuthRegisterRoleRequest;
 import com.school.rest.request.AuthRegisterUserRequest;
 import com.school.rest.response.AuthResponse;
 import com.school.service.dto.AdminRegistrationDto;
-import com.school.utility.PasswordUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,26 +22,21 @@ public class AdminServiceImpl {
     private final AdminRepository adminRepository;
     private final UserEntityRepository userEntityRepository;
     private final UserEntityServiceImpl userEntityService;
-    private final PasswordUtil passwordUtil;
     private static final Logger logger = LoggerFactory.getLogger(AdminServiceImpl.class);
 
     @Autowired
-    public AdminServiceImpl(AdminRepository adminRepository, UserEntityRepository userEntityRepository, UserEntityServiceImpl userEntityService, PasswordUtil passwordUtil) {
+    public AdminServiceImpl(AdminRepository adminRepository, UserEntityRepository userEntityRepository, UserEntityServiceImpl userEntityService) {
         this.adminRepository = adminRepository;
         this.userEntityRepository = userEntityRepository;
         this.userEntityService = userEntityService;
-        this.passwordUtil = passwordUtil;
     }
 
     @Transactional
     public AuthResponse create(AdminRegistrationDto adminRegistrationDto) {
-        logger.info("Admin registration request received: {}", adminRegistrationDto.toString());
 
         if (adminRepository.existsByDni(adminRegistrationDto.getDni())) {
             throw new IllegalArgumentException("DNI already registered: " + adminRegistrationDto.getDni());
         }
-
-        logger.info("Admin registered successfully: {}", adminRegistrationDto);
 
         // Construir el AuthRegisterUserRequest con los datos necesarios
         AuthRegisterUserRequest requestUser = AuthRegisterUserRequest.builder()
@@ -53,17 +47,19 @@ public class AdminServiceImpl {
                         .roleListName(Collections.singletonList(RoleEnum.ADMIN.name()))
                         .build())
                 .build();
-        // No se porque no puedo llamar al metodo build
 
+        String passwordAdmin = "$uP" + adminRegistrationDto.getDni();
+
+        logger.info("Password ADMIN ===> {} <===", passwordAdmin);
+        
         //Registrar usuario y obtener ID
-        Long idUser = userEntityService.registerUser(requestUser, "549T#nfR%");
+        Long idUser = userEntityService.registerUser(requestUser, passwordAdmin);
 
-        //Buscar el Parent asociado al usuario registrado
+        //Buscar el Admin asociado al usuario registrado
         Admin admin = adminRepository.findByUser(userEntityRepository.findById(idUser)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + idUser)));
 
         admin.setName(adminRegistrationDto.getName());
-        admin.setLastName(adminRegistrationDto.getLastName());
         logger.info("Student registered successfully: {}", adminRegistrationDto.getDni());
         admin.setDni(adminRegistrationDto.getDni());
         logger.info("Student registered successfully: {}", adminRegistrationDto.getDni());
