@@ -36,13 +36,16 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
     private final ParentRepository parentRepository;
     private final TeacherRepository teacherRepository;
     private final StudentRepository studentRepository;
+    private final AdminRepository adminRepository;
     private final UserEntityRepository userEntityRepository;
     private final RoleEntityRepository roleEntityRepository;
     private final JwtUtils jwtUtils;
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserEntityServiceImpl.class);
 
-    public UserEntityServiceImpl(ParentRepository parentRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, UserEntityRepository userEntityRepository, RoleEntityRepository roleEntityRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder) {
+
+    public UserEntityServiceImpl(ParentRepository parentRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, UserEntityRepository userEntityRepository, RoleEntityRepository roleEntityRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder,
+                                 AdminRepository adminRepository) {
         this.parentRepository = parentRepository;
         this.teacherRepository = teacherRepository;
         this.studentRepository = studentRepository;
@@ -50,7 +53,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
         this.roleEntityRepository = roleEntityRepository;
         this.jwtUtils = jwtUtils;
         this.passwordEncoder = passwordEncoder;
-
+        this.adminRepository = adminRepository;
     }
 
     @Override
@@ -134,6 +137,11 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
                 Teacher teacher = new Teacher();
                 teacher.setUser(registeredUser);
                 teacherRepository.save(teacher);
+                break;
+            case "ADMIN":
+                Admin admin = new Admin();
+                admin.setUser(registeredUser);
+                adminRepository.save(admin);
                 break;
             default:
                 throw new IllegalArgumentException("Invalid profile type");
