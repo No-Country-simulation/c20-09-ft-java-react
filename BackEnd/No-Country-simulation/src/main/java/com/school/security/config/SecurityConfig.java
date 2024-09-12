@@ -56,7 +56,7 @@ public class SecurityConfig {
 
                     // Permisos para evaluaciones
                     http.requestMatchers(HttpMethod.POST, "/evaluations/load").hasRole("TEACHER");
-                    http.requestMatchers(HttpMethod.GET, "/evaluations/student/{dni}").hasAnyRole("STUDENT", "PARENT");
+                    http.requestMatchers(HttpMethod.POST, "/evaluations/student").hasAnyRole("STUDENT", "PARENT");
 
                     // Denegar todas las demás solicitudes
                     http.anyRequest().denyAll();
