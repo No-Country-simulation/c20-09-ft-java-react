@@ -6,6 +6,12 @@ import com.school.rest.response.Response;
 import com.school.service.dto.TeacherRegistrationDto;
 import com.school.service.dto.UpdateTeacherDto;
 import com.school.service.implementation.TeacherServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
@@ -27,6 +33,23 @@ public class TeacherController {
     }
 
     @PostMapping("/register")
+    @Tag(name = "Entities registration", description = "Operations that deal with the registration/saving of entities")
+    @Operation(
+            summary = "Register a new Teacher",
+            description = "Registers a new teacher in the system by providing necessary details in the request body. " +
+                    "Returns an authentication response if the registration is successful.",
+            tags = {"Entities registration"},
+            requestBody = @RequestBody(
+                    description = "Teacher details",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = TeacherRegistrationDto.class))
+            ),
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Teacher registered successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
     public ResponseEntity<AuthResponse> processTeacherRegistration(@Valid @RequestBody TeacherRegistrationDto teacherRegistrationDto) {
         // Llamar al método del servicio para manejar la lógica de registro de profesores
         AuthResponse registeredUser = teacherService.create(teacherRegistrationDto);
