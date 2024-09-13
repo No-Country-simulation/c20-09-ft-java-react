@@ -35,7 +35,6 @@ public class EmailServiceImpl implements IEmailService {
 
     @Override
     public void sendPasswordRecoveryEmail(String email, String resetPasswordLink) throws EmailServiceException {
-        String username = "";
         try {
             UserEntity userEntity = userService.findUserByEmail(email);
 
@@ -60,6 +59,8 @@ public class EmailServiceImpl implements IEmailService {
     @Override
     public void sendPasswordChangeConfirmationEmail(String email) throws EmailServiceException {
         try {
+            UserEntity userEntity = userService.findUserByEmail(email);
+
             MimeMessage message = javaMailSender.createMimeMessage();
             MimeMessageHelper helper = new MimeMessageHelper(message, true, "UTF-8");
             helper.setFrom(emailSender, "Support");
@@ -68,6 +69,7 @@ public class EmailServiceImpl implements IEmailService {
 
             Context context = new Context();
             context.setVariable("email", email);
+            context.setVariable("username", userEntity.getUsername());
             String htmlContent = templateEngine.process("password-change-confirmation", context);
 
             helper.setText(htmlContent, true);

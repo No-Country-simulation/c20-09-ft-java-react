@@ -10,7 +10,7 @@ const adminService = axios.create({
 
 // Interceptor para añadir el token en cada petición si está disponible
 adminService.interceptors.request.use(config => {
-  const token = localStorage.getItem('token');
+  const token = sessionStorage.getItem('token');
   if (token) {
     config.headers['Authorization'] = `Bearer ${token}`;
   }

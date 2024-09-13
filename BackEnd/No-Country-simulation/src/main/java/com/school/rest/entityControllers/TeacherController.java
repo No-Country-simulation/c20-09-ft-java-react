@@ -17,7 +17,7 @@ import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/teacher")
-//@Secured("ROLE_ADMIN")
+@Secured("ROLE_ADMIN")
 public class TeacherController {
 
     private final TeacherServiceImpl teacherService;

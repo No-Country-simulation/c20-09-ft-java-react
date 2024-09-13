@@ -90,10 +90,16 @@ const ResetPassword = () => {
     }
 
     // Si no se cumplen los requisitos, evitar el envío
-    if (!passwordErrors.lengthValid || !passwordErrors.hasUppercase || !passwordErrors.hasLowercase || !passwordErrors.hasSpecialChar) {
+    if (
+      !passwordErrors.lengthValid ||
+      !passwordErrors.hasUppercase ||
+      !passwordErrors.hasLowercase ||
+      !passwordErrors.hasSpecialChar
+    ) {
       toast({
         title: "Error en la contraseña",
-        description: "Asegúrate de cumplir todos los requisitos de la contraseña.",
+        description:
+          "Asegúrate de cumplir todos los requisitos de la contraseña.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -107,18 +113,19 @@ const ResetPassword = () => {
       await resetPassword(token, newPassword);
       toast({
         title: "Éxito",
-        description: "La contraseña se ha restablecido con éxito. Puedes iniciar sesión con tu nueva contraseña.",
+        description:
+          "La contraseña se ha restablecido con éxito. Puedes iniciar sesión con tu nueva contraseña.",
         status: "success",
         duration: 5000,
         isClosable: true,
       });
       navigate("/");
-
     } catch (error) {
       console.error("Error al restablecer la contraseña:", error);
       toast({
         title: "Error",
-        description: "El token de restablecimiento de contraseña no es válido. Por favor, solicita un nuevo para intentar nuevamente.",
+        description:
+          "El token de restablecimiento de contraseña no es válido. Por favor, solicita un nuevo para intentar nuevamente.",
         status: "error",
         duration: 5000,
         isClosable: true,
@@ -174,7 +181,11 @@ const ResetPassword = () => {
             <Box mt={2} color="gray.500" textAlign="left">
               {newPassword.length > 0 && (
                 <>
-                  <Text color={passwordErrors.hasSpecialChar ? "green.500" : "red.500"}>
+                  <Text
+                    color={
+                      passwordErrors.hasSpecialChar ? "green.500" : "red.500"
+                    }
+                  >
                     {passwordErrors.hasSpecialChar ? (
                       <IconButton
                         isRound={true}
@@ -188,11 +199,22 @@ const ResetPassword = () => {
                         pointerEvents="none"
                       />
                     ) : (
-                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                      <span
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          marginRight: "8px",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        ✘
+                      </span>
                     )}
-                    Un carácter especial (!@#$%&/*_)
+                    Un carácter especial (!@#$%&*_)
                   </Text>
-                  <Text color={passwordErrors.lengthValid ? "green.500" : "red.500"}>
+                  <Text
+                    color={passwordErrors.lengthValid ? "green.500" : "red.500"}
+                  >
                     {passwordErrors.lengthValid ? (
                       <IconButton
                         isRound={true}
@@ -206,11 +228,24 @@ const ResetPassword = () => {
                         pointerEvents="none"
                       />
                     ) : (
-                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                      <span
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          marginRight: "8px",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        ✘
+                      </span>
                     )}
                     Entre 11 y 12 caracteres
                   </Text>
-                  <Text color={passwordErrors.hasUppercase ? "green.500" : "red.500"}>
+                  <Text
+                    color={
+                      passwordErrors.hasUppercase ? "green.500" : "red.500"
+                    }
+                  >
                     {passwordErrors.hasUppercase ? (
                       <IconButton
                         isRound={true}
@@ -224,11 +259,24 @@ const ResetPassword = () => {
                         pointerEvents="none"
                       />
                     ) : (
-                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                      <span
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          marginRight: "8px",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        ✘
+                      </span>
                     )}
                     Una letra mayúscula
                   </Text>
-                  <Text color={passwordErrors.hasLowercase ? "green.500" : "red.500"}>
+                  <Text
+                    color={
+                      passwordErrors.hasLowercase ? "green.500" : "red.500"
+                    }
+                  >
                     {passwordErrors.hasLowercase ? (
                       <IconButton
                         isRound={true}
@@ -242,7 +290,16 @@ const ResetPassword = () => {
                         pointerEvents="none"
                       />
                     ) : (
-                      <span style={{ fontSize: '20px', color: 'red', marginRight: '8px', marginLeft: '8px' }}>✘</span>
+                      <span
+                        style={{
+                          fontSize: "20px",
+                          color: "red",
+                          marginRight: "8px",
+                          marginLeft: "8px",
+                        }}
+                      >
+                        ✘
+                      </span>
                     )}
                     Una letra minúscula
                   </Text>
@@ -262,15 +319,24 @@ const ResetPassword = () => {
                   {showConfirmPassword ? <ViewOffIcon /> : <ViewIcon />}
                 </Button>
               </InputLeftElement>
-              <Input type={showConfirmPassword ? "text" : "password"} value={confirmPassword} onChange={handleConfirmPasswordChange} 
-              _focus={{
-              borderColor: passwordsMatch ? "green.500" : "#34495E",
-              boxShadow: passwordsMatch ? "0 0 0 3px green.500" : "0 0 15px rgba(52, 73, 94, 0.5)",}}
-              borderColor={passwordsMatch ? "green.500" : "red.500"}
-              borderWidth="1px"/>
+              <Input
+                type={showConfirmPassword ? "text" : "password"}
+                value={confirmPassword}
+                onChange={handleConfirmPasswordChange}
+                _focus={{
+                  borderColor: passwordsMatch ? "green.500" : "#34495E",
+                  boxShadow: passwordsMatch
+                    ? "0 0 0 3px green.500"
+                    : "0 0 15px rgba(52, 73, 94, 0.5)",
+                }}
+                borderColor={passwordsMatch ? "green.500" : "red.500"}
+                borderWidth="1px"
+              />
             </InputGroup>
             {!passwordsMatch && confirmPassword.length > 0 && (
-              <Text color="red.500" textAlign="left" marginLeft='8px' mt={1}>Las contraseñas no coinciden.</Text>
+              <Text color="red.500" textAlign="left" marginLeft="8px" mt={1}>
+                Las contraseñas no coinciden.
+              </Text>
             )}
           </FormControl>
 

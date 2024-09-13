@@ -6,6 +6,7 @@ export const loginUser = async (loginData) => {
   try {
     const response = await auth.post("/login", loginData);
     // Guardar el token en el almacenamiento local para futuras solicitudes
+    sessionStorage.setItem("name", response.data.name);
     sessionStorage.setItem("token", response.data.token);
     return response.data;
   } catch (error) {

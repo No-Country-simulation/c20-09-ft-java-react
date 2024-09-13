@@ -18,6 +18,7 @@ import { forgotPassword } from "../services/resetService"; // Cambia de resetSer
 
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
+  const [name, setName] = useState("");
   const [isResetting, setIsResetting] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
@@ -56,9 +57,13 @@ const Login = () => {
     e.preventDefault();
     try {
       const response = await loginUser(loginData);
+      console.log(response); 
+      const name = response.name;
       const token = response.token;
       const decodedToken = jwtDecode(token);
       const authorities = decodedToken.authorities || "";
+      sessionStorage.setItem("name", name);
+
       let redirectPath = "/";
 
       if (authorities.includes("ROLE_TEACHER")) {
@@ -98,7 +103,7 @@ const Login = () => {
       setIsResetting(false);
       setResetEmail(""); // Limpiar campo de email
     } catch (error) {
-      console.error(error)
+      console.error(error);
       toast({
         title: "Error",
         description: "No se pudo enviar el correo de restablecimiento.",
@@ -157,10 +162,22 @@ const Login = () => {
                 }}
               />
             </FormControl>
-            <Button mt={4} color="white" isLoading={isLoading} colorScheme="orange" width="full" onClick={handleResetPassword}>
+            <Button
+              mt={4}
+              color="white"
+              isLoading={isLoading}
+              colorScheme="orange"
+              width="full"
+              onClick={handleResetPassword}
+            >
               Enviar Enlace de Restablecimiento
             </Button>
-            <Button mt={8} color="#34495E" variant="link" onClick={() => setIsResetting(false)}>
+            <Button
+              mt={8}
+              color="#34495E"
+              variant="link"
+              onClick={() => setIsResetting(false)}
+            >
               Iniciar de Sesión
             </Button>
           </Box>
@@ -202,13 +219,13 @@ const Login = () => {
                 <Box mt={8}>
                   <Button type="submit" colorScheme="orange" width="100%">
                     Iniciar Sesión
-                    </Button>
+                  </Button>
                 </Box>
               </Stack>
             </form>
             <Box mt={8}>
               <Link color="#34495E" onClick={() => setIsResetting(true)}>
-              Olvidé mi contraseña
+                Olvidé mi contraseña
               </Link>
             </Box>
           </Box>
