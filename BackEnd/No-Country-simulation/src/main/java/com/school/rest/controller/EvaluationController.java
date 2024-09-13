@@ -1,6 +1,7 @@
 package com.school.rest.controller;
 
 import com.school.persistence.entities.Student;
+import com.school.rest.request.DniRequest;
 import com.school.service.dto.EvaluationDTO;
 import com.school.persistence.entities.Evaluation;
 import com.school.service.implementation.StudentServiceImpl;
@@ -57,15 +58,18 @@ public class EvaluationController {
     }
 
     /**
-     * Maneja las solicitudes GET para obtener evaluaciones por DNI.
+     * Maneja las solicitudes POST para obtener evaluaciones por DNI.
      * Permite el acceso a estudiantes y padres.
      *
-     * @param dni DNI del estudiante cuya evaluación se desea obtener.
+     * @param dniRequest Objeto que contiene el DNI del estudiante cuya evaluación se desea obtener.
      * @return Un ResponseEntity con una lista de evaluaciones y el estado HTTP 200 (OK)
      */
-    @GetMapping("/student/{dni}")
+    @PostMapping("/student")
     @Secured({"ROLE_STUDENT", "ROLE_PARENT"})
-    public ResponseEntity<List<Evaluation>> getEvaluationsByDni(@PathVariable String dni) {
+    public ResponseEntity<List<Evaluation>> getEvaluationsByDni(@RequestBody DniRequest dniRequest) {
+        // Obtiene el DNI desde el cuerpo de la solicitud.
+        String dni = dniRequest.getDni();
+
         // Obtiene la lista de evaluaciones filtrada por el DNI del estudiante.
         List<Evaluation> evaluations = evaluationService.getEvaluationsByDni(dni);
 
