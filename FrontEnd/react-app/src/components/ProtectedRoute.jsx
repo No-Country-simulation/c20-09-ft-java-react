@@ -1,44 +1,40 @@
-// src/components/ProtectedRoute.jsx
 import { Navigate, Outlet, useLocation } from "react-router-dom";
-import { jwtDecode } from "jwt-decode"; // Importa jwt-decode
+import { jwtDecode } from "jwt-decode";
 
 const ProtectedRoute = () => {
-  const token = sessionStorage.getItem("token"); // Obtén el token del almacenamiento local
-  const location = useLocation(); // Obtén la ubicación actual
+  const token = sessionStorage.getItem("token");
+  const location = useLocation();
 
   if (!token) {
-    // Si no hay token, redirige a la página de inicio de sesión
+    // Redirige a la página de inicio de sesión si no hay token
     return <Navigate to="/" state={{ from: location }} />;
   }
 
-  // Si hay token, decodifícalo para obtener el rol
   try {
     const decodedToken = jwtDecode(token);
     const authorities = decodedToken.authorities || "";
+    const isPasswordResetRequired =
+      decodedToken.isPasswordResetRequired || false;
 
-    if (
-      location.pathname === "/teacher-dashboard" &&
-      !authorities.includes("ROLE_TEACHER")
-    ) {
-      return <Navigate to="/" />;
-    } else if (
-      location.pathname === "/student-dashboard" &&
-      !authorities.includes("ROLE_STUDENT")
-    ) {
-      return <Navigate to="/" />;
-    } else if (
-      location.pathname === "/parent-dashboard" &&
-      !authorities.includes("ROLE_PARENT")
-    ) {
-      return <Navigate to="/" />;
-    } else if (
-      location.pathname === "/admin" &&
-      !authorities.includes("ROLE_ADMIN")
-    ) {
+    // Redirige a la página de restablecimiento de contraseña si es necesario
+    if (isPasswordResetRequired && location.pathname !== "/reset-password") {
+      return <Navigate to="/reset-password" />;
+    }
+
+    // Redirige a la página de inicio si el rol no coincide con la ruta
+    const pathRoleMap = {
+      "/teacher-dashboard": "ROLE_TEACHER",
+      "/student-dashboard": "ROLE_STUDENT",
+      "/parent-dashboard": "ROLE_PARENT",
+      "/admin": "ROLE_ADMIN",
+    };
+
+    const requiredRole = pathRoleMap[location.pathname];
+    if (requiredRole && !authorities.includes(requiredRole)) {
       return <Navigate to="/" />;
     }
 
-    // Si el rol es correcto o la ruta es pública, renderiza el contenido
+    // Permite el acceso si todas las validaciones pasan
     return <Outlet />;
   } catch (error) {
     console.error("Error decoding token:", error);

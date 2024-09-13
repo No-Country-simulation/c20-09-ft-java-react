@@ -10,44 +10,19 @@ import {
   useToast,
 } from "@chakra-ui/react";
 import { jwtDecode } from "jwt-decode";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logoSchoolManager.png";
 import { loginUser } from "../services/authService";
-import { forgotPassword } from "../services/resetService"; // Cambia de resetService a authService
+import { forgotPassword } from "../services/resetService"; // Asegúrate de que la ruta del import sea correcta
 
 const Login = () => {
   const [loginData, setLoginData] = useState({ email: "", password: "" });
-  const [name, setName] = useState("");
   const [isResetting, setIsResetting] = useState(false);
   const [resetEmail, setResetEmail] = useState("");
   const navigate = useNavigate();
   const toast = useToast();
   const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    const token = sessionStorage.getItem("token");
-    if (token) {
-      try {
-        const decodedToken = jwtDecode(token);
-        const authorities = decodedToken.authorities || "";
-
-        if (authorities.includes("ROLE_TEACHER")) {
-          navigate("/teacher-dashboard");
-        } else if (authorities.includes("ROLE_STUDENT")) {
-          navigate("/student-dashboard");
-        } else if (authorities.includes("ROLE_PARENT")) {
-          navigate("/parent-dashboard");
-        } else if (authorities.includes("ROLE_ADMIN")) {
-          navigate("/admin");
-        } else {
-          navigate("/");
-        }
-      } catch (error) {
-        console.error("Error decoding token:", error);
-      }
-    }
-  }, [navigate]);
 
   const handleChange = (e) => {
     setLoginData({ ...loginData, [e.target.name]: e.target.value });
@@ -55,37 +30,55 @@ const Login = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setIsLoading(true);
+
     try {
       const response = await loginUser(loginData);
-      console.log(response); 
-      const name = response.name;
-      const token = response.token;
-      const decodedToken = jwtDecode(token);
-      const authorities = decodedToken.authorities || "";
-      sessionStorage.setItem("name", name);
 
-      let redirectPath = "/";
+      if (response.status === false) {
+        toast({
+          title: "Cambio de Contraseña Requerido",
+          description:
+            "Parece que tu contraseña ha caducado o necesita ser actualizada. Por favor, restablece tu contraseña para continuar.",
+          status: "info",
+          duration: 6000,
+          isClosable: true,
+        });
+        setIsResetting(true);
+      } else if (response.status === true) {
+        const { name, token } = response;
+        const decodedToken = jwtDecode(token);
+        const authorities = decodedToken.authorities || "";
 
-      if (authorities.includes("ROLE_TEACHER")) {
-        redirectPath = "/teacher-dashboard";
-      } else if (authorities.includes("ROLE_STUDENT")) {
-        redirectPath = "/student-dashboard";
-      } else if (authorities.includes("ROLE_PARENT")) {
-        redirectPath = "/parent-dashboard";
-      } else if (authorities.includes("ROLE_ADMIN")) {
-        redirectPath = "/admin";
+        sessionStorage.setItem("name", name);
+        sessionStorage.setItem("token", token);
+
+        // Redirige a la ruta basada en el rol del usuario
+        let redirectPath = "/";
+        if (authorities.includes("ROLE_TEACHER")) {
+          redirectPath = "/teacher-dashboard";
+        } else if (authorities.includes("ROLE_STUDENT")) {
+          redirectPath = "/student-dashboard";
+        } else if (authorities.includes("ROLE_PARENT")) {
+          redirectPath = "/parent-dashboard";
+        } else if (authorities.includes("ROLE_ADMIN")) {
+          redirectPath = "/admin";
+        }
+
+        navigate(redirectPath);
       }
-
-      navigate(redirectPath);
     } catch (error) {
       console.error("Error logging in:", error);
       toast({
         title: "Error al iniciar sesión",
-        description: "Las credenciales son incorrectas.",
+        description:
+          "Las credenciales son incorrectas o hubo un problema con el servidor.",
         status: "error",
         duration: 5000,
         isClosable: true,
       });
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -103,7 +96,7 @@ const Login = () => {
       setIsResetting(false);
       setResetEmail(""); // Limpiar campo de email
     } catch (error) {
-      console.error(error);
+      console.error("Error sending reset email:", error);
       toast({
         title: "Error",
         description: "No se pudo enviar el correo de restablecimiento.",
@@ -160,6 +153,7 @@ const Login = () => {
                   borderColor: "#34495E",
                   boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
                 }}
+                autoComplete="email"
               />
             </FormControl>
             <Button
@@ -199,6 +193,7 @@ const Login = () => {
                       borderColor: "#34495E",
                       boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
                     }}
+                    autoComplete="email"
                   />
                 </FormControl>
                 <FormControl id="password" isRequired>

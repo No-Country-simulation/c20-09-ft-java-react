@@ -23,17 +23,14 @@ const App = () => {
       <Routes>
         {/* Ruta para la página de inicio */}
         <Route path="/" element={<LoginPage />} />
-
-        <Route path="/admin" element={<AdminDashboard />} />
-
         <Route path="/reset_password" element={<ResetPassword />} />
-
 
         {/* Ruta protegida para los dashboards */}
         <Route element={<ProtectedRoute />}>
           <Route path="/teacher-dashboard" element={<TeacherDashboard />} />
           <Route path="/student-dashboard" element={<StudentDashboard />} />
           <Route path="/parent-dashboard" element={<ParentDashboard />} />
+          <Route path="/admin" element={<AdminDashboard />} />
         </Route>
       </Routes>
     </Router>

@@ -46,7 +46,7 @@ const ResetPassword = () => {
         duration: 5000,
         isClosable: true,
       });
-      navigate("/login");
+      navigate("/");
     }
   }, [searchParams, navigate, toast]);
 
@@ -345,7 +345,6 @@ const ResetPassword = () => {
             mt="4"
             type="submit"
             colorScheme="orange"
-            isFullWidth
             isLoading={loading}
           >
             Restablecer Contraseña
