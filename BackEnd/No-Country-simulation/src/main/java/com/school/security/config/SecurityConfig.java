@@ -42,6 +42,7 @@ public class SecurityConfig {
                 .cors(Customizer.withDefaults())
                 .authorizeHttpRequests(http -> {
                     // Rutas accesibles sin autenticación
+                    http.requestMatchers(HttpMethod.GET, "/swagger-ui.html", "/v3/api-docs/**", "/webjars/**", "/swagger-ui/**").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status").permitAll();
                     http.requestMatchers(HttpMethod.GET, "/api/reset_password").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/auth/login").permitAll();
