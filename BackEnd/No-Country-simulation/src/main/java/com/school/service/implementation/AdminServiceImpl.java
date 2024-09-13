@@ -66,6 +66,6 @@ public class AdminServiceImpl {
 
         adminRepository.save(admin);
 
-        return new AuthResponse(admin.getName() ,null,"Student registered successfully",  "TBD", true);
+        return new AuthResponse(admin.getName() ,null,"Student registered successfully",  "TBD", false);
     }
 }
