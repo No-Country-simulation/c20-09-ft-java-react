@@ -1,0 +1,86 @@
+body {
+    height: 90%;
+}
+
+.container {
+    background-color: var(--background-color);
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+    width: 80%;
+    max-width: 600px;
+    color: var(--primary-color);
+    margin: 20px auto;
+}
+
+.notification-options {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.send-to, 
+.year-select, 
+.shift-select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 40px; 
+    box-sizing: border-box;
+}
+
+.year-turn-selection {
+    margin-bottom: 20px;
+}
+
+.dni-search {
+    margin-bottom: 20px;
+    text-align: left;
+}
+
+.dni  {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 40px; 
+    box-sizing: border-box;
+}
+
+.notification-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--secondary-color);
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.notification-form textarea:focus,
+.send-to:focus, 
+.year-select:focus, 
+.shift-select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 15px rgba(52, 73, 94, 0.5);
+}
+
+.send-btn,
+.search-btn {
+    background-color: var(--secondary-color); 
+    color: #f4f4f4;
+    margin: 10px 0;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.send-btn:hover,
+.search-btn:hover {
+    background-color: var(--hover-color);
+}
