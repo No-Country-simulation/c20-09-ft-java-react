@@ -186,6 +186,10 @@ const RegisterTeacher = () => {
                   placeholder="Ej: 3387456, 2945687"
                   {...register("dni", {
                     required: "Este campo es obligatorio",
+                    pattern: {
+                      value: /^[0-9]{8}$/,
+                      message: "El DNI debe tener exactamente 8 dígitos",
+                    },
                   })}
                 />
                 {errors.dni && (
@@ -497,6 +501,16 @@ const RegisterTeacher = () => {
                       placeholder="Ej: 1187693452, 113465879234"
                       {...register("emergencyNumber", {
                         required: "Este campo es obligatorio",
+                        maxLength: {
+                          value: 10,
+                          message:
+                            "El número de teléfono no puede tener más de 10 dígitos",
+                        },
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message:
+                            "El número de teléfono debe tener exactamente 10 dígitos",
+                        },
                       })}
                     />
                     {errors.emergencyNumber && (

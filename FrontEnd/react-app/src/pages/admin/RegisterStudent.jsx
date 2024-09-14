@@ -55,8 +55,9 @@ const RegisterStudent = () => {
         emergencyNumber: data.emergencyContactPhone,
         medicalInformation,
         session: data.session,
-        registrationNumber: data.registrationNumber,
       };
+      // Muestra el Objeto que se envia
+      // console.log(data);
 
       const response = await registerStudent(finalData);
       const generatedPassword = response?.password || "123456"; // Reemplaza con lógica real si es necesario
@@ -116,6 +117,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: Julio Armando"
                   {...register("firstName", {
                     required: "Este campo es obligatorio",
+                    minLength: {
+                      value: 2,
+                      message: "El nombre debe tener al menos 2 caracteres",
+                    },
                   })}
                 />
                 {errors.firstName && (
@@ -132,6 +137,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: Salvador"
                   {...register("lastName", {
                     required: "Este campo es obligatorio",
+                    minLength: {
+                      value: 2,
+                      message: "El apellido debe tener al menos 2 caracteres",
+                    },
                   })}
                 />
                 {errors.lastName && (
@@ -165,6 +174,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: 45872875"
                   {...register("dni", {
                     required: "Este campo es obligatorio",
+                    pattern: {
+                      value: /^[0-9]{8}$/,
+                      message: "El DNI debe tener exactamente 8 dígitos",
+                    },
                   })}
                 />
                 {errors.dni && (
@@ -197,6 +210,16 @@ const RegisterStudent = () => {
                   placeholder="Ej: 1154327854"
                   {...register("phoneNumber", {
                     required: "Este campo es obligatorio",
+                    maxLength: {
+                      value: 10,
+                      message:
+                        "El número de teléfono no puede tener más de 10 dígitos",
+                    },
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message:
+                        "El número de teléfono debe tener exactamente 10 dígitos",
+                    },
                   })}
                 />
                 {errors.phone && (
@@ -222,6 +245,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: Av. Corrientes 1234, Piso 2, Dpto A"
                   {...register("addressStreet", {
                     required: "Este campo es obligatorio",
+                    minLength: {
+                      value: 5,
+                      message: "La calle debe tener al menos 5 caracteres",
+                    },
                   })}
                 />
                 {errors.addressStreet && (
@@ -238,6 +265,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: Ciudad Autónoma de Buenos Aires"
                   {...register("addressCity", {
                     required: "Este campo es obligatorio",
+                    minLength: {
+                      value: 3,
+                      message: "La ciudad debe tener al menos 3 caracteres",
+                    },
                   })}
                 />
                 {errors.addressCity && (
@@ -254,6 +285,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: Buenos Aires"
                   {...register("addressProvince", {
                     required: "Este campo es obligatorio",
+                    minLength: {
+                      value: 3,
+                      message: "La provincia debe tener al menos 3 caracteres",
+                    },
                   })}
                 />
                 {errors.addressProvince && (
@@ -270,6 +305,10 @@ const RegisterStudent = () => {
                   placeholder="Ej: C1043AAE"
                   {...register("addressZipcode", {
                     required: "Este campo es obligatorio",
+                    pattern: {
+                      value: /^[A-Z0-9]{4,7}$/,
+                      message: "El código postal no es válido",
+                    },
                   })}
                 />
                 {errors.addressZipcode && (
@@ -286,23 +325,7 @@ const RegisterStudent = () => {
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
             </GridItem>
-            <GridItem>
-              <FormControl isInvalid={errors.registrationNumber} isRequired>
-                <FormLabel htmlFor="registrationNumber">
-                  Número de Matrícula:
-                </FormLabel>
-                <Input
-                  id="registrationNumber"
-                  type="text"
-                  placeholder="Ingrese el número de matrícula"
-                />
-                {errors.registrationNumber && (
-                  <Text color="red.500">
-                    {errors.registrationNumber.message}
-                  </Text>
-                )}
-              </FormControl>
-            </GridItem>
+
             <GridItem>
               <FormControl isInvalid={errors.session} isRequired>
                 <FormLabel htmlFor="session">Turno:</FormLabel>
@@ -341,6 +364,11 @@ const RegisterStudent = () => {
                   placeholder="Ej: Juan Carlos Salvador"
                   {...register("emergencyContactName", {
                     required: "Este campo es obligatorio",
+                    minLength: {
+                      value: 3,
+                      message:
+                        "El nombre del contacto debe tener al menos 3 caracteres",
+                    },
                   })}
                 />
                 {errors.emergencyContactName && (
@@ -353,7 +381,7 @@ const RegisterStudent = () => {
             <GridItem>
               <FormControl isInvalid={errors.emergencyContactPhone} isRequired>
                 <FormLabel htmlFor="emergencyNumber">
-                  Teléfono del Contacto:
+                  Celular (emergencias):
                 </FormLabel>
                 <Input
                   id="emergencyNumber"
@@ -361,6 +389,16 @@ const RegisterStudent = () => {
                   placeholder="Ej: 1163238756"
                   {...register("emergencyNumber", {
                     required: "Este campo es obligatorio",
+                    maxLength: {
+                      value: 10,
+                      message:
+                        "El número de teléfono no puede tener más de 10 dígitos",
+                    },
+                    pattern: {
+                      value: /^[0-9]{10}$/,
+                      message:
+                        "El número de teléfono debe tener exactamente 10 dígitos",
+                    },
                   })}
                 />
                 {errors.emergencyContactPhone && (
