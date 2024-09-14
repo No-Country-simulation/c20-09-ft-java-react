@@ -41,11 +41,21 @@ School Manager es una aplicación web de gestión y seguimiento académico. Una 
 - Jira
 - X-Ray
 - Postman
+- Swagger
 - GitHub
-
 - Visual Studio Code
 - MySQL Workbench
 - IntelliJ IDEA Community
+
+
+#### Jira
+
+#### Postman
+
+#### Swagger [Swagger](http://localhost:8080/swagger-ui/index.html)
+
+#### Local Host [LocalHost](http://localhost:5173)
+
 
 
 #### GitHub: Plan de Pruebas
