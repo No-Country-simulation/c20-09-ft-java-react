@@ -1,14 +1,19 @@
 package com.school.confing;
 
 import io.swagger.v3.oas.annotations.OpenAPIDefinition;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeIn;
+import io.swagger.v3.oas.annotations.enums.SecuritySchemeType;
 import io.swagger.v3.oas.annotations.info.Contact;
 import io.swagger.v3.oas.annotations.info.Info;
 import io.swagger.v3.oas.annotations.info.License;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import io.swagger.v3.oas.annotations.security.SecurityScheme;
 import io.swagger.v3.oas.annotations.servers.Server;
+import org.apache.catalina.filters.HttpHeaderSecurityFilter;
 import org.springdoc.core.models.GroupedOpenApi;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpHeaders;
 import org.springframework.web.servlet.config.annotation.ResourceHandlerRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
 
@@ -38,11 +43,16 @@ import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
                         url = "https://www.schoolmanager.com"
                 )
         },
-        security = @SecurityRequirement(
-                name = "Security Token"
-        )
+        security = @SecurityRequirement(name = "bearerAuth")
 )
 @Configuration
+@SecurityScheme(
+        name = "bearerAuth",
+        description = "Access Token For My API",
+        type = SecuritySchemeType.HTTP,
+        scheme = "bearer",
+        bearerFormat = "JWT"
+)
 public class SwaggerConfig implements WebMvcConfigurer {
 
     @Bean

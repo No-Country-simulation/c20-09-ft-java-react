@@ -6,12 +6,18 @@ import com.school.rest.response.Response;
 import com.school.service.dto.ParentRegistrationDto;
 import com.school.service.dto.UpdateParentDto;
 import com.school.service.implementation.ParentServiceImpl;
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.util.Optional;
 
@@ -26,7 +32,24 @@ public class ParentController {
         this.parentService = parentService;
     }
 
+    @Tag(name = "Entities registration", description = "Operations to register/save entities")
     @PostMapping("/register")
+    @Operation(
+            summary = "Register a new Parent",
+            description = "Registers a new parent in the system by providing necessary details in the request body. " +
+                    "Returns an authentication response if the registration is successful.",
+            tags = {"Entities registration"},
+            requestBody = @RequestBody(
+                    description = "User details",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = ParentRegistrationDto.class))
+            ),
+            responses = {
+                    @ApiResponse(responseCode = "201", description = "Teacher registered successfully"),
+                    @ApiResponse(responseCode = "400", description = "Invalid input data"),
+                    @ApiResponse(responseCode = "500", description = "Internal server error")
+            }
+    )
     public ResponseEntity<AuthResponse> processParentRegistration(@Valid @RequestBody ParentRegistrationDto parentRegistrationDto) {
         // Llamar al método del servicio para manejar la lógica de registro de padres
         AuthResponse registeredUser = parentService.create(parentRegistrationDto);
