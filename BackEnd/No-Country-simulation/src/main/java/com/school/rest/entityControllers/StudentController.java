@@ -115,11 +115,12 @@ public class StudentController {
         }
     }
 
-   @PostMapping("/verifyChild")
-public ResponseEntity<StudentResponse> verifyChildByDni(@RequestBody @Valid ChildDniRequest childDniRequest) {
-    // Llamar al servicio para verificar el hijo por DNI
-    StudentResponse studentResponse = studentService.verifyChildByDni(childDniRequest.childDNI());
+    @Secured({"ROLE_TEACHER", "ROLE_ADMIN"})
+    @PostMapping("/verifyChild")
+    public ResponseEntity<StudentResponse> verifyChildByDni(@RequestBody @Valid ChildDniRequest childDniRequest) {
+        // Llamar al servicio para verificar el hijo por DNI
+        StudentResponse studentResponse = studentService.verifyChildByDni(childDniRequest.childDNI());
 
-    return ResponseEntity.ok(studentResponse);
-}
+        return ResponseEntity.ok(studentResponse);
+    }
 }
