@@ -5,6 +5,7 @@ import com.school.rest.request.ChildDniRequest;
 import com.school.rest.response.AuthResponse;
 import com.school.rest.response.Response;
 import com.school.rest.response.StudentResponse;
+import com.school.service.dto.ParentRegistrationDto;
 import com.school.service.dto.StudentRegistrationDto;
 import com.school.service.dto.UpdateStudentDto;
 import com.school.service.implementation.StudentServiceImpl;
@@ -21,7 +22,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.util.Optional;
 
@@ -43,13 +43,18 @@ public class StudentController {
             description = "Registers a new student in the system by providing necessary details in the request body. " +
                     "Returns an authentication response if the registration is successful.",
             tags = {"Entities registration"},
-            requestBody = @RequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "User details",
                     required = true,
                     content = @Content(schema = @Schema(implementation = StudentRegistrationDto.class))
             ),
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Teacher registered successfully"),
+                    @ApiResponse(
+                            responseCode = "201", description = "Student registered successfully",
+                            content = @Content(
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    ),
                     @ApiResponse(responseCode = "400", description = "Invalid input data"),
                     @ApiResponse(responseCode = "500", description = "Internal server error")
             }
