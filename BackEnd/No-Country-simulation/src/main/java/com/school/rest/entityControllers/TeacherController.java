@@ -3,6 +3,7 @@ package com.school.rest.entityControllers;
 import com.school.persistence.entities.Teacher;
 import com.school.rest.response.AuthResponse;
 import com.school.rest.response.Response;
+import com.school.service.dto.StudentRegistrationDto;
 import com.school.service.dto.TeacherRegistrationDto;
 import com.school.service.dto.UpdateTeacherDto;
 import com.school.service.implementation.TeacherServiceImpl;
@@ -17,13 +18,13 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
 import org.springframework.web.bind.annotation.*;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
 
 import java.util.Optional;
 
 @RestController
 @RequestMapping("/admin/teacher")
 @Secured("ROLE_ADMIN")
+@Tag(name = "Entities registration", description = "Operations to register/save entities")
 public class TeacherController {
 
     private final TeacherServiceImpl teacherService;
@@ -32,20 +33,24 @@ public class TeacherController {
         this.teacherService = teacherService;
     }
 
-    @Tag(name = "Entities registration", description = "Operations to register/save entities")
     @PostMapping("/register")
     @Operation(
             summary = "Register a new Teacher",
             description = "Registers a new teacher in the system by providing necessary details in the request body. " +
                     "Returns an authentication response if the registration is successful.",
             tags = {"Entities registration"},
-            requestBody = @RequestBody(
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
                     description = "User details",
                     required = true,
                     content = @Content(schema = @Schema(implementation = TeacherRegistrationDto.class))
             ),
             responses = {
-                    @ApiResponse(responseCode = "201", description = "Teacher registered successfully"),
+                    @ApiResponse(
+                            responseCode = "201", description = "Teacher registered successfully",
+                            content = @Content(
+                                    schema = @Schema(implementation = AuthResponse.class)
+                            )
+                    ),
                     @ApiResponse(responseCode = "400", description = "Invalid input data"),
                     @ApiResponse(responseCode = "500", description = "Internal server error")
             }
