@@ -6,15 +6,8 @@ import com.school.rest.response.AuthResponse;
 import com.school.rest.response.Response;
 import com.school.rest.response.StudentResponse;
 import com.school.service.dto.StudentRegistrationDto;
-import com.school.service.dto.TeacherRegistrationDto;
 import com.school.service.dto.UpdateStudentDto;
 import com.school.service.implementation.StudentServiceImpl;
-import io.swagger.v3.oas.annotations.Operation;
-import io.swagger.v3.oas.annotations.media.Content;
-import io.swagger.v3.oas.annotations.media.Schema;
-import io.swagger.v3.oas.annotations.parameters.RequestBody;
-import io.swagger.v3.oas.annotations.responses.ApiResponse;
-import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
@@ -38,23 +31,6 @@ public class StudentController {
     }
 
     @PostMapping("/register")
-    @Tag(name = "Entities registration", description = "Operations that deal with the registration/save of entities")
-    @Operation(
-            summary = "Register a new Student",
-            description = "Registers a new student in the system by providing necessary details in the request body. " +
-                    "Returns an authentication response if the registration is successful.",
-            tags = {"Entities registration"},
-            requestBody = @RequestBody(
-                    description = "Student details",
-                    required = true,
-                    content = @Content(schema = @Schema(implementation = TeacherRegistrationDto.class))
-            ),
-            responses = {
-                    @ApiResponse(responseCode = "201", description = "Teacher registered successfully"),
-                    @ApiResponse(responseCode = "400", description = "Invalid input data"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
-            }
-    )
     public ResponseEntity<?> processStudentRegistration(@Valid @RequestBody StudentRegistrationDto studentRegistrationDto){
         logger.info("Student registration request received: {}", studentRegistrationDto.toString());
         // Llamar al método del servicio para manejar la lógica de registro
