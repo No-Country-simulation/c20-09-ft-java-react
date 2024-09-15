@@ -9,11 +9,11 @@ import {
   Input,
   Select,
   Textarea,
-  useToast
+  useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
 import { useFieldArray, useForm } from "react-hook-form";
-import { verifyChildByDni } from "../../services/adminService"; // Asegúrate de que la ruta sea correcta
+import { verifyChildByDni } from "../../services/adminService";
 import { loadEvaluation } from "../../services/teacherService";
 
 const RegisterEvaluations = () => {
@@ -89,7 +89,7 @@ const RegisterEvaluations = () => {
         evaluations,
       };
 
-      const response = await loadEvaluation(finalData);
+      const response = await loadEvaluation(finalData); // Utiliza el endpoint adecuado
 
       setConfirmationMessage(
         `Evaluaciones registradas con éxito. ${response.message || ""}`
@@ -132,7 +132,9 @@ const RegisterEvaluations = () => {
             {/* Información del Estudiante */}
             <Box>
               <FormControl isRequired>
-                <FormLabel color="#34495E" htmlFor="dniStudent">DNI del alumno:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="dniStudent">
+                  DNI del alumno:
+                </FormLabel>
                 <Input
                   id="dniStudent"
                   {...register("dniStudent")}
@@ -146,7 +148,9 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="#34495E" htmlFor="studentName">Nombre del alumno:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="studentName">
+                  Nombre del alumno:
+                </FormLabel>
                 <Input
                   id="studentName"
                   {...register("studentName")}
@@ -176,7 +180,9 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="#34495E"  htmlFor="year">Año:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="year">
+                  Año:
+                </FormLabel>
                 <Select id="year" {...register("year")}>
                   <option value="">Selecciona el año</option>
                   <option value="1">1º</option>
@@ -188,7 +194,9 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="#34495E" htmlFor="trimester">Trimestre:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="trimester">
+                  Trimestre:
+                </FormLabel>
                 <Select id="trimester" {...register("trimester")}>
                   <option value="">Selecciona el trimestre</option>
                   <option value="primero">Primero</option>
@@ -198,7 +206,9 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="#34495E" htmlFor="subject">Materia:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="subject">
+                  Materia:
+                </FormLabel>
                 <Input
                   id="subject"
                   {...register("subject")}
@@ -211,7 +221,9 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="#34495E" htmlFor="feedback">Retroalimentación:</FormLabel>
+                <FormLabel color="#34495E" htmlFor="feedback">
+                  Retroalimentación:
+                </FormLabel>
                 <Textarea
                   id="feedback"
                   {...register("feedback")}

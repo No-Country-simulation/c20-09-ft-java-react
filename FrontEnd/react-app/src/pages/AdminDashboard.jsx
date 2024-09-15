@@ -199,7 +199,6 @@ const AdminDashboard = () => {
             display="flex"
             flexDirection="column"
           >
-            <ModalHeader>Registrar Padre/Tutor</ModalHeader>
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               <RegisterParent />

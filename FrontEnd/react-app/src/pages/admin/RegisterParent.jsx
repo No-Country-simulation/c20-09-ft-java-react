@@ -43,6 +43,32 @@ const RegisterParent = () => {
   // Watch for changes in child IDs
   const children = watch("children");
 
+  const handleDniChange = async (index, event) => {
+    const dni = event.target.value;
+    if (dni.length === 8) {
+      try {
+        const studentData = await verifyChildByDni(dni);
+        if (studentData) {
+          setValue(
+            `children.${index}.childName`,
+            `${studentData.firstName || ""} ${studentData.lastName || ""}`
+          );
+        }
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Error",
+          description: "No se pudo obtener la información del estudiante.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+      }
+    } else {
+      setValue(`children.${index}.childName`, "");
+    }
+  };
+
   useEffect(() => {
     const fetchStudentData = async () => {
       const childDNIs = children
@@ -123,7 +149,7 @@ const RegisterParent = () => {
       console.error(error);
       toast({
         title: "Error",
-        description: "No se pudo registrar al padre/madre.",
+        description: "No se pudo registrar al padre/tutor.",
         status: "error",
         duration: 55000,
         isClosable: true,
@@ -140,7 +166,7 @@ const RegisterParent = () => {
         boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
       >
         <Heading as="h1" mb={6} textAlign="center" color="orange.500">
-          Registro de Padre/Madre
+          Registro de Padre/Tutor
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <VStack spacing={6} align="stretch">
@@ -197,6 +223,10 @@ const RegisterParent = () => {
                       placeholder="Ej: 35765489, 19432567"
                       {...register("dni", {
                         required: "Este campo es obligatorio",
+                        pattern: {
+                          value: /^[0-9]{8}$/,
+                          message: "El DNI debe tener exactamente 8 dígitos",
+                        },
                       })}
                     />
                     {errors.dni && (
@@ -333,6 +363,16 @@ const RegisterParent = () => {
                       placeholder="Ej: 1187693452, 113465879234"
                       {...register("emergencyPhone", {
                         required: "Este campo es obligatorio",
+                        maxLength: {
+                          value: 10,
+                          message:
+                            "El número de teléfono no puede tener más de 10 dígitos",
+                        },
+                        pattern: {
+                          value: /^[0-9]{10}$/,
+                          message:
+                            "El número de teléfono debe tener exactamente 10 dígitos",
+                        },
                       })}
                     />
                     {errors.emergencyPhone && (
@@ -455,7 +495,7 @@ const RegisterParent = () => {
             {/* Hijos */}
             <Box>
               <Heading as="h3" size="md" mb={2}>
-                Hijos
+                Estudiante
               </Heading>
               <Divider mb={4} sx={{ borderBottom: "2px solid #E67E22" }} />
               {fields.map((item, index) => (
@@ -470,7 +510,7 @@ const RegisterParent = () => {
                         isRequired
                       >
                         <FormLabel htmlFor={`children.${index}.childDNI`}>
-                          D.N.I. del Niño/a:
+                          D.N.I.:
                         </FormLabel>
                         <Input
                           id={`children.${index}.childDNI`}
@@ -479,6 +519,7 @@ const RegisterParent = () => {
                           {...register(`children.${index}.childDNI`, {
                             required: "Este campo es obligatorio",
                           })}
+                          onChange={(e) => handleDniChange(index, e)}
                         />
                         {errors.children?.[index]?.childDNI && (
                           <Text color="red.500">
@@ -493,12 +534,12 @@ const RegisterParent = () => {
                         isRequired
                       >
                         <FormLabel htmlFor={`children.${index}.childName`}>
-                          Nombre del Niño/a:
+                          Nombre/s:
                         </FormLabel>
                         <Input
                           id={`children.${index}.childName`}
                           type="text"
-                          placeholder="Nombre del niño/a"
+                          placeholder="Nombre/s"
                           {...register(`children.${index}.childName`, {
                             required: "Este campo es obligatorio",
                           })}
@@ -523,11 +564,9 @@ const RegisterParent = () => {
               ))}
               <Button
                 colorScheme="orange"
-                mt={4}
                 onClick={() => append({ childDNI: "", childName: "" })}
               >
-                {" "}
-                Añadir otro hijo
+                Añadir Hijo
               </Button>
             </Box>
             {/* Botón de Enviar */}
