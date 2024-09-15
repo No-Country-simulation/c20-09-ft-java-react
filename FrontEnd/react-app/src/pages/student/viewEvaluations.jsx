@@ -1,6 +1,7 @@
+import React, { useEffect, useState } from "react";
+import { getEvaluationsByDni } from "../../services/teacherService"; // Asegúrate de que esta ruta sea correcta
 import {
   Box,
-  Button,
   Container,
   Heading,
   Table,
@@ -15,44 +16,34 @@ import {
 } from "@chakra-ui/react";
 
 const ViewEvaluations = () => {
-  // Datos de ejemplo, puedes reemplazar esto con tus datos reales
   const studentInfo = {
     name: "Yo soy",
     lastName: "Groot",
-    dni: "0303456",
+    dni: "12222222",
   };
 
-  const evaluations = [
-    {
-      year: "3º",
-      trimester: "Primero",
-      subject: "Matemáticas",
-      feedback:
-        "Buena comprensión, pero necesita practicar más ejercicios de la unidad 2.",
-    },
-    {
-      year: "3º",
-      trimester: "Primero",
-      subject: "Lengua y Literatura",
-      feedback: "Excelente progreso, sigue practicando la lectura diaria.",
-    },
-    {
-      year: "3º",
-      trimester: "Primero",
-      subject: "Historia",
-      feedback:
-        "Necesita mejorar la participación en clase y profundizar en las unidades 1, 2 y 3.",
-    },
-    {
-      year: "3º",
-      trimester: "Primero",
-      subject: "Educación Física",
-      feedback: "Excelente rendimiento, continúa así!",
-    },
-  ];
+  const [evaluations, setEvaluations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
 
-  // Responsividad
   const isMobile = useBreakpointValue({ base: true, md: false });
+
+  useEffect(() => {
+    const fetchEvaluations = async () => {
+      try {
+        const data = await getEvaluationsByDni(studentInfo.dni);
+        console.log("Data received:", data); // Verifica los datos recibidos
+        setEvaluations(data);
+      } catch (error) {
+        console.error("Error fetching evaluations:", error); // Manejo de errores detallado
+        setError(error.message || "Error al obtener las evaluaciones");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchEvaluations();
+  }, [studentInfo.dni]);
 
   return (
     <Container maxW="container.lg" py={6}>
@@ -61,7 +52,6 @@ const ViewEvaluations = () => {
           Informe de Evaluaciones
         </Heading>
 
-        {/* Información del Estudiante en una sola línea */}
         <Flex
           mb={6}
           direction={isMobile ? "column" : "row"}
@@ -80,31 +70,42 @@ const ViewEvaluations = () => {
           </Text>
         </Flex>
 
-        {/* Tabla de Evaluaciones */}
-        <Table
-          variant="striped"
-          colorScheme="orange"
-          size={isMobile ? "sm" : "md"}
-        >
-          <Thead bg="orange.400" color="white">
-            <Tr>
-              <Th>Año</Th>
-              <Th>Trimestre</Th>
-              <Th>Materia</Th>
-              <Th>Retroalimentación</Th>
-            </Tr>
-          </Thead>
-          <Tbody>
-            {evaluations.map((evaluation, index) => (
-              <Tr key={index}>
-                <Td>{evaluation.year}</Td>
-                <Td>{evaluation.trimester}</Td>
-                <Td>{evaluation.subject}</Td>
-                <Td>{evaluation.feedback}</Td>
+        {loading && <Text textAlign="center">Cargando evaluaciones...</Text>}
+        {error && (
+          <Text color="red.500" textAlign="center">
+            {error}
+          </Text>
+        )}
+
+        {!loading && !error && evaluations.length > 0 && (
+          <Table
+            variant="striped"
+            colorScheme="orange"
+            size={isMobile ? "sm" : "md"}
+          >
+            <Thead bg="orange.400" color="white">
+              <Tr>
+                <Th>Año</Th>
+                <Th>Trimestre</Th>
+                <Th>Materia</Th>
+                <Th>Retroalimentación</Th>
               </Tr>
-            ))}
-          </Tbody>
-        </Table>
+            </Thead>
+            <Tbody>
+              {evaluations.map((evaluation, index) => (
+                <Tr key={index}>
+                  <Td>{evaluation.year}</Td>
+                  <Td>{evaluation.trimester}</Td>
+                  <Td>{evaluation.subject}</Td>
+                  <Td>{evaluation.feedback}</Td>
+                </Tr>
+              ))}
+            </Tbody>
+          </Table>
+        )}
+        {!loading && !error && evaluations.length === 0 && (
+          <Text textAlign="center">No hay evaluaciones para mostrar.</Text>
+        )}
       </Box>
     </Container>
   );
