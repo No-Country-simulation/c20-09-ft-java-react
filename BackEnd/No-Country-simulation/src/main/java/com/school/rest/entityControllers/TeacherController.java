@@ -17,6 +17,7 @@ import jakarta.validation.Valid;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.Optional;
@@ -51,8 +52,18 @@ public class TeacherController {
                                     schema = @Schema(implementation = AuthResponse.class)
                             )
                     ),
-                    @ApiResponse(responseCode = "400", description = "Invalid input data"),
-                    @ApiResponse(responseCode = "500", description = "Internal server error")
+                    @ApiResponse(
+                            responseCode = "400", description = "Invalid input data",
+                            content = @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "500", description = "Internal server error",
+                            content = @Content(
+                                    schema = @Schema(implementation = ErrorResponse.class)
+                            )
+                    )
             }
     )
     public ResponseEntity<AuthResponse> processTeacherRegistration(@Valid @RequestBody TeacherRegistrationDto teacherRegistrationDto) {

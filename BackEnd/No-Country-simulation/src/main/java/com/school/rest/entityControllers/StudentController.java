@@ -115,7 +115,7 @@ public class StudentController {
         }
     }
 
-    @Secured({"ROLE_TEACHER", "ROLE_ADMIN"})
+    @Secured({"ROLE_TEACHER", "ROLE_ADMIN", "ROLE_PARENT", "ROLE_STUDENT"})
     @PostMapping("/verifyChild")
     public ResponseEntity<StudentResponse> verifyChildByDni(@RequestBody @Valid ChildDniRequest childDniRequest) {
         // Llamar al servicio para verificar el hijo por DNI
