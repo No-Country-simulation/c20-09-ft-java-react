@@ -43,4 +43,5 @@ public class StudentRegistrationDto {
 
     private String session;
 
+    private String year;
 }

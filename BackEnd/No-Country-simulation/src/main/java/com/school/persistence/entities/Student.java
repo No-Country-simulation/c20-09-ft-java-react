@@ -41,6 +41,9 @@ public class Student extends User {
     @Column(name = "session")
     private String session;
 
+    @Column(name = "year")
+    private String year;
+
     private LocalDate dateOfBirth;
 
     @PrePersist
