@@ -47,5 +47,8 @@ public class UpdateStudentDto {
 
     @Size(max = 20, message = "Session identifier cannot exceed 20 characters")
     private String session;
+
+    @Size(max = 4, message = "Year cannot exceed 2 characters")
+    private String year;
 }
 

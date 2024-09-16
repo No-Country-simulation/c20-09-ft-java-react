@@ -90,6 +90,7 @@ public class StudentServiceImpl implements GenericService<Student, StudentRegist
         student.setEmergencyNumber(studentRegistrationDto.getEmergencyNumber());
         student.setEmergencyContactName(studentRegistrationDto.getEmergencyContactName());
         student.setMedicalInformation(studentRegistrationDto.getMedicalInformation());
+        student.setYear(studentRegistrationDto.getYear());
 
         studentRepository.save(student);
 
@@ -113,6 +114,7 @@ public class StudentServiceImpl implements GenericService<Student, StudentRegist
         existingStudent.setEmergencyNumber(updateStudentDto.getEmergencyNumber());
         existingStudent.setEmergencyContactName(updateStudentDto.getEmergencyContactName());
         existingStudent.setSession(updateStudentDto.getSession());
+        existingStudent.setYear(updateStudentDto.getYear());
 
         return studentRepository.save(existingStudent);
     }
