@@ -1,5 +1,6 @@
 package com.school.persistence.entities;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
 import lombok.*;
 
@@ -31,6 +32,7 @@ public class Teacher extends User {
     private Set<Student> students = new HashSet<>();
 
     @Embedded
+    @JsonIgnore
     private ProfessionalInformation profesionalInformation;
 
     private LocalDate dateOfBirth;

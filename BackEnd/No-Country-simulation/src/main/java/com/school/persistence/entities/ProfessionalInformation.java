@@ -18,7 +18,7 @@ public class ProfessionalInformation {
 
     private String academicTitles;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.EAGER)
     @MapKeyColumn(name = "subject_code")
     @Column(name = "subject_name")
     @CollectionTable(name = "subject_code_name_map", joinColumns = @JoinColumn(name = "professional_info_id"))

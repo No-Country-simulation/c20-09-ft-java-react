@@ -1,9 +1,7 @@
 package com.school.rest.entityControllers;
 
-import com.school.persistence.entities.Teacher;
-import com.school.rest.response.AuthResponse;
-import com.school.rest.response.Response;
-import com.school.service.dto.StudentRegistrationDto;
+import com.school.rest.response.*;
+import com.school.service.dto.TeacherDto;
 import com.school.service.dto.TeacherRegistrationDto;
 import com.school.service.dto.UpdateTeacherDto;
 import com.school.service.implementation.TeacherServiceImpl;
@@ -12,15 +10,14 @@ import io.swagger.v3.oas.annotations.media.Content;
 import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import io.swagger.v3.oas.annotations.tags.Tag;
-import jakarta.persistence.EntityNotFoundException;
 import jakarta.validation.Valid;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.annotation.Secured;
-import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/admin/teacher")
@@ -55,69 +52,170 @@ public class TeacherController {
                     @ApiResponse(
                             responseCode = "400", description = "Invalid input data",
                             content = @Content(
-                                    schema = @Schema(implementation = ErrorResponse.class)
+                                    schema = @Schema(implementation = ApiError.class)
                             )
                     ),
                     @ApiResponse(
                             responseCode = "500", description = "Internal server error",
                             content = @Content(
-                                    schema = @Schema(implementation = ErrorResponse.class)
+                                    schema = @Schema(implementation = ApiError.class)
                             )
                     )
             }
     )
     public ResponseEntity<AuthResponse> processTeacherRegistration(@Valid @RequestBody TeacherRegistrationDto teacherRegistrationDto) {
-        // Llamar al método del servicio para manejar la lógica de registro de profesores
-        AuthResponse registeredUser = teacherService.create(teacherRegistrationDto);
+        return new ResponseEntity<>(teacherService.create(teacherRegistrationDto), HttpStatus.CREATED);
+    }
 
-        // Devolver un estado CREATED si el registro es exitoso con la respuesta de autenticación
-        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+    @GetMapping("/find/{id}")
+    @Operation(
+            summary = "Find a Teacher by ID",
+            description = "Retrieves the details of a teacher by their ID.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Teacher found",
+                            content = @Content(
+                                    schema = @Schema(implementation = TeacherDto.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404", description = "Teacher not found",
+                            content = @Content(
+                                    schema = @Schema(implementation = ApiError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<TeacherDto> findTeacherById(@PathVariable Long id) {
+        return new ResponseEntity<>(teacherService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/findAll/withoutPagination")
+    @Operation(
+            summary = "Find all Teachers without Pagination",
+            description = "Retrieves a list of all teachers without pagination.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "List of teachers",
+                            content = @Content(
+                                    schema = @Schema(type = "array", implementation = TeacherDto.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<List<TeacherDto>> findAllTeachersWithoutPagination() {
+        List<TeacherDto> teachers = teacherService.findAll(); // Método en el servicio que devuelve una lista sin paginación
+        return ResponseEntity.ok(teachers);
+    }
+
+    @GetMapping("/findByLastName")
+    @Operation(
+            summary = "Find Teachers by Last Name with Pagination",
+            description = "Retrieves a paginated list of teachers filtered by last name.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Paginated list of teachers by last name",
+                            content = @Content(
+                                    schema = @Schema(implementation = Page.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<Page<TeacherDto>> findTeachersByLastName(@RequestParam String lastName, @RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<TeacherDto> teachers = teacherService.findTeachersByLastName(lastName, page, size); // Método en el servicio que filtra por apellido y devuelve una página de profesores
+        return ResponseEntity.ok(teachers);
+    }
+
+    @GetMapping("/findAll")
+    @Operation(
+            summary = "Find all Teachers with Pagination",
+            description = "Retrieves a paginated list of all teachers.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Paginated list of teachers",
+                            content = @Content(
+                                    schema = @Schema(implementation = Page.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<Page<TeacherDto>> findAllTeachersPaginated(@RequestParam(defaultValue = "0") int page, @RequestParam(defaultValue = "10") int size) {
+        Page<TeacherDto> teachers = teacherService.findAllTeachers(page, size); // Método en el servicio que devuelve una página de profesores
+        return ResponseEntity.ok(teachers);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response<Teacher>> updateTeacher(@PathVariable Long id, @Valid @RequestBody UpdateTeacherDto updateTeacherDto) {
-        // Llamar al método del servicio para actualizar el profesor
-        Teacher updatedTeacher = teacherService.update(id, updateTeacherDto);
-
-        // Crear y devolver la respuesta con el mensaje de éxito y el objeto actualizado
-        return ResponseEntity.ok(new Response<>("Teacher updated successfully", updatedTeacher));
+    @Operation(
+            summary = "Update Teacher Details",
+            description = "Updates the details of a teacher by their ID.",
+            requestBody = @io.swagger.v3.oas.annotations.parameters.RequestBody(
+                    description = "Teacher details to update",
+                    required = true,
+                    content = @Content(schema = @Schema(implementation = UpdateTeacherDto.class))
+            ),
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Teacher updated successfully",
+                            content = @Content(
+                                    schema = @Schema(implementation = UpdateResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404", description = "Teacher not found",
+                            content = @Content(
+                                    mediaType = "application/json",
+                                    schema = @Schema(implementation = ApiError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<UpdateResponse<TeacherDto>> updateTeacher(@PathVariable Long id, @Valid @RequestBody UpdateTeacherDto updateTeacherDto) {
+        return ResponseEntity.ok(teacherService.update(id, updateTeacherDto));
     }
 
-    @GetMapping("/find{id}")
-    public ResponseEntity<?> findTeacherById(@PathVariable long id) {
-
-        try {
-            // Find teacher by ID using the service
-            Optional<Teacher> optionalTeacher = teacherService.findById(id);
-
-            // If teacher is found, return it with OK status
-            return ResponseEntity.ok(optionalTeacher);
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where teacher is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching the teacher.");
-        }
+    @DeleteMapping("/delete/{id}")
+    @Operation(
+            summary = "Delete a Teacher by ID",
+            description = "Deletes a teacher by their ID.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Teacher deleted successfully",
+                            content = @Content(
+                                    schema = @Schema(implementation = DeleteResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404", description = "Teacher not found",
+                            content = @Content(
+                                    schema = @Schema(implementation = ApiError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<DeleteResponse> deleteTeacher(@PathVariable Long id) {
+        return ResponseEntity.ok(teacherService.delete(id));
     }
 
-    @DeleteMapping("/delete{id}")
-    public ResponseEntity<?> deleteTeacher(@PathVariable Long id) {
-
-        try {
-            // Delete teacher by ID
-            teacherService.delete(id);
-
-            // Return NO_CONTENT status to indicate successful deletion
-            return ResponseEntity.noContent().build();
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where teacher is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Teacher not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the teacher.");
-        }
+    @GetMapping("/verify/{dni}")
+    @Operation(
+            summary = "Verify Student by DNI",
+            description = "Verifies the existence of a Student by their DNI.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Student verification result",
+                            content = @Content(
+                                    schema = @Schema(implementation = StudentResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404", description = "Student not found",
+                            content = @Content(
+                                    schema = @Schema(implementation = ApiError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<StudentResponse> verifyStudentByDni(@PathVariable String dni) {
+        return ResponseEntity.ok(teacherService.verifyStudentByDni(dni));
     }
 }

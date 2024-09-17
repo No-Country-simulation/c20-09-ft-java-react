@@ -20,7 +20,7 @@ public class AppInitializer {
     public void init() {
 
         AdminRegistrationDto adminDto = new AdminRegistrationDto();
-        adminDto.setName("SuperAdmin");
+        adminDto.setName("Super Admin");
         adminDto.setDni("12345678");
         adminDto.setEmail("admin@gmail.com");
 

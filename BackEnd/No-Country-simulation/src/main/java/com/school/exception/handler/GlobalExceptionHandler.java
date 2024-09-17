@@ -6,10 +6,12 @@ import com.school.exception.UserAlreadyExistsException;
 import com.school.exception.UserNotFoundException;
 import jakarta.persistence.EntityNotFoundException;
 import org.hibernate.exception.ConstraintViolationException;
+import org.springframework.beans.factory.BeanCreationException;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.http.converter.HttpMessageNotWritableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -22,6 +24,11 @@ import java.util.Map;
 
 @ControllerAdvice
 public class GlobalExceptionHandler {
+
+    @ExceptionHandler(BeanCreationException.class)
+    public ResponseEntity<String> handleBeanCreationException(BeanCreationException ex) {
+        return new ResponseEntity<>("Error al crear el bean: " + ex.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+    }
 
     @ExceptionHandler(UserNotFoundException.class)
     public ResponseEntity<Map<String, Object>> handleUserNotFoundException(UserNotFoundException exception) {
@@ -102,12 +109,17 @@ public class GlobalExceptionHandler {
     public ResponseEntity<Map<String, Object>> handleConstraintViolationException(ConstraintViolationException e) {
         String message = "Constraint violation error occurred";
 
-        // Personalizar el mensaje si contiene información sobre la clave única
-        if (e.getSQLException().getMessage().contains("Duplicate entry")) {
+        // Verificar el mensaje de la excepción SQL para detectar errores de entrada duplicada
+        if (e.getSQLException() != null && e.getSQLException().getMessage().contains("Duplicate entry")) {
             message = "Duplicate entry detected. Please ensure that all unique fields are unique.";
         }
 
         return buildErrorResponse(HttpStatus.BAD_REQUEST, message);
+    }
+
+    @ExceptionHandler(HttpMessageNotWritableException.class)
+    public ResponseEntity<String> handleException(HttpMessageNotWritableException ex) {
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error al escribir JSON: " + ex.getMessage());
     }
 
     private ResponseEntity<Map<String, Object>> buildErrorResponse(HttpStatus status, String message) {

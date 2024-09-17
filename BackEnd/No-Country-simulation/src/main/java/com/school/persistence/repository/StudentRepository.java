@@ -2,6 +2,8 @@ package com.school.persistence.repository;
 
 import com.school.persistence.entities.Student;
 import com.school.persistence.entities.UserEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -27,4 +29,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
     @Query("SELECT s FROM Student s JOIN s.parents p WHERE p.dni = :dni")
     Optional<Student> findByParentDni(@Param("dni") String parentDni);
 
+
+    Page<Student> findByLastName(String lastName, Pageable pageable);
+
+    @Query("SELECT s.dni FROM Student s WHERE s.user.id = :userId")
+    String findDniByUserId(@Param("userId") Long userId);
 }

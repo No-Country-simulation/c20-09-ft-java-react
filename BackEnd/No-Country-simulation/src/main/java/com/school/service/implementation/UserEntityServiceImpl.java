@@ -43,7 +43,6 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
     private final PasswordEncoder passwordEncoder;
     private static final Logger logger = LoggerFactory.getLogger(UserEntityServiceImpl.class);
 
-
     public UserEntityServiceImpl(ParentRepository parentRepository, TeacherRepository teacherRepository, StudentRepository studentRepository, UserEntityRepository userEntityRepository, RoleEntityRepository roleEntityRepository, JwtUtils jwtUtils, PasswordEncoder passwordEncoder,
                                  AdminRepository adminRepository) {
         this.parentRepository = parentRepository;
@@ -59,7 +58,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
         // Buscar usuario por email de usuario
-        UserEntity userEntity = userEntityRepository.findUserEntityByEmail(email)
+        UserEntity userEntity = userEntityRepository.findUserEntityByEmailAndIsDeletedFalse(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
 
         // Lista para almacenar las autoridades del usuario
@@ -116,6 +115,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
                 .accountNonLocked(true)
                 .acconutNonExpired(true)
                 .credentialsNonExpired(true)
+                .isDeleted(false)
                 .build();
 
         UserEntity registeredUser = userEntityRepository.save(userEntity);
@@ -126,20 +126,24 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
             case "STUDENT":
                 Student student = new Student();
                 student.setUser(registeredUser);
+                student.setIsDeleted(false);
                 studentRepository.save(student);
                 break;
             case "PARENT":
                 Parent parent = new Parent();
                 parent.setUser(registeredUser);
+                parent.setIsDeleted(false);
                 parentRepository.save(parent);
                 break;
             case "TEACHER":
                 Teacher teacher = new Teacher();
                 teacher.setUser(registeredUser);
+                teacher.setIsDeleted(false);
                 teacherRepository.save(teacher);
                 break;
             case "ADMIN":
                 Admin admin = new Admin();
+                admin.setIsDeleted(false);
                 admin.setUser(registeredUser);
                 adminRepository.save(admin);
                 break;
@@ -166,7 +170,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
     @Transactional
     @Override
     public void updatePasswordToken(String token, String email) throws EmailServiceException {
-        Optional<UserEntity> optionalUsuario = userEntityRepository.findUserEntityByEmail(email);
+        Optional<UserEntity> optionalUsuario = userEntityRepository.findUserEntityByEmailAndIsDeletedFalse(email);
 
         if (optionalUsuario.isPresent()) {
             UserEntity user = optionalUsuario.get();
@@ -212,19 +216,27 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
         String refreshToken = jwtUtils.createRefreshToken((UsernamePasswordAuthenticationToken) authentication); //definir createRefreshToken en JwtUtils
 
         // Actualizar el refreshToken en el usuario
-        UserEntity userEntity = userEntityRepository.findUserEntityByEmail(email)
+        UserEntity userEntity = userEntityRepository.findUserEntityByEmailAndIsDeletedFalse(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + email));
         userEntity.setRefreshToken(refreshToken);
         userEntityRepository.save(userEntity);
 
-        return new LoginAuthResponse(userEntity.getUsername(), "Successful login", accessToken, refreshToken, userEntity.getPasswordChanged());
+        String dni = "TBD";
+
+        Student student = studentRepository.findByUser(userEntityRepository.findById(userEntity.getId())
+                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userEntity.getId())));
+
+        if (student != null) {
+            dni = student.getDni();
+        }
+        return new LoginAuthResponse(userEntity.getUsername(), dni, "Successful login", accessToken, refreshToken, userEntity.getPasswordChanged());
     }
 
     @Transactional
     public LoginAuthResponse refreshToken(String oldRefreshToken) throws InvalidTokenException, ExpiredJwtException {
         DecodedJWT decodedJWT = jwtUtils.validateRefreshToken(oldRefreshToken);
         String username = decodedJWT.getSubject();
-        UserEntity userEntity = userEntityRepository.findUserEntityByEmail(username)
+        UserEntity userEntity = userEntityRepository.findUserEntityByEmailAndIsDeletedFalse(username)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with username: " + username));
 
         String currentRefreshToken = userEntity.getRefreshToken();
@@ -242,8 +254,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
 
             userEntity.setRefreshToken(newRefreshToken);
             userEntityRepository.save(userEntity);
-
-            return new LoginAuthResponse(userEntity.getUsername(), "Token refreshed successfully", newAccessToken, newRefreshToken, true);
+            return new LoginAuthResponse(userEntity.getUsername(), "TBD", "Token refreshed successfully", newAccessToken, newRefreshToken, true);
         } else {
             throw new InvalidTokenException("Invalid refresh token");
         }
@@ -251,7 +262,7 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
 
     @Override
     public UserEntity findUserByEmail(String email) {
-        return userEntityRepository.findUserEntityByEmail(email)
+        return userEntityRepository.findUserEntityByEmailAndIsDeletedFalse(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
     }
 }

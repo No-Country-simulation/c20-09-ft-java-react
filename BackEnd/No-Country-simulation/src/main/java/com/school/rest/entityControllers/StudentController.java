@@ -2,12 +2,8 @@ package com.school.rest.entityControllers;
 
 import com.school.persistence.entities.Student;
 import com.school.rest.request.ChildDniRequest;
-import com.school.rest.response.AuthResponse;
-import com.school.rest.response.Response;
-import com.school.rest.response.StudentResponse;
-import com.school.service.dto.ParentRegistrationDto;
-import com.school.service.dto.StudentRegistrationDto;
-import com.school.service.dto.UpdateStudentDto;
+import com.school.rest.response.*;
+import com.school.service.dto.*;
 import com.school.service.implementation.StudentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -52,7 +48,7 @@ public class StudentController {
                     @ApiResponse(
                             responseCode = "201", description = "Student registered successfully",
                             content = @Content(
-                                    schema = @Schema(implementation = AuthResponse.class)
+                                    schema = @Schema(implementation = ApiError.class)
                             )
                     ),
                     @ApiResponse(responseCode = "400", description = "Invalid input data"),
@@ -69,50 +65,18 @@ public class StudentController {
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response<Student>> updateEntity(@PathVariable Long id, @Valid @RequestBody UpdateStudentDto updateStudentDto) {
-        // Llamar al método del servicio para actualizar el estudiante
-        Student updatedStudent = studentService.update(id, updateStudentDto);
-
-        // Crear y devolver la respuesta con el mensaje de éxito y el objeto actualizado
-        return ResponseEntity.ok(new Response<>("Student updated successfully", updatedStudent));
+    public ResponseEntity<UpdateResponse<StudentDto>> updateStudentDto(@PathVariable Long id, @Valid @RequestBody UpdateStudentDto updateStudentDto) {
+        return ResponseEntity.ok(studentService.update(id, updateStudentDto));
     }
 
     @GetMapping("/find{id}")
-    public ResponseEntity<?> findStudentById(@PathVariable long id) {
-
-        try {
-            // Find student by ID using the service
-            Optional<Student> optionalStudent = studentService.findById(id);
-
-            // If student is found, return it with OK status
-            return ResponseEntity.ok(optionalStudent);
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where student is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching the student.");
-        }
+    public ResponseEntity<StudentDto> findStudentDtoById(@PathVariable Long id) {
+        return new ResponseEntity<>(studentService.findById(id), HttpStatus.OK);
     }
 
     @DeleteMapping("/delete{id}")
-    public ResponseEntity<?> deleteStudent(@PathVariable Long id) {
-
-        try {
-            // Delete student by ID
-            studentService.delete(id);
-
-            // Return NO_CONTENT status to indicate successful deletion
-            return ResponseEntity.noContent().build();
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where student is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Student not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the student.");
-        }
+    public ResponseEntity<DeleteResponse> deleteStudent(@PathVariable Long id) {
+        return ResponseEntity.ok(studentService.delete(id));
     }
 
     @Secured({"ROLE_TEACHER", "ROLE_ADMIN", "ROLE_PARENT", "ROLE_STUDENT"})

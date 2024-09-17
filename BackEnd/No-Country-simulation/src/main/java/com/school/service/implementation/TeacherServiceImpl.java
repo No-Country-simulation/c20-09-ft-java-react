@@ -1,39 +1,53 @@
 package com.school.service.implementation;
 
 import com.school.persistence.entities.Teacher;
+import com.school.persistence.entities.UserEntity;
 import com.school.persistence.enums.RoleEnum;
 import com.school.persistence.repository.TeacherRepository;
 import com.school.persistence.repository.UserEntityRepository;
 import com.school.rest.request.AuthRegisterRoleRequest;
 import com.school.rest.request.AuthRegisterUserRequest;
 import com.school.rest.response.AuthResponse;
+import com.school.rest.response.DeleteResponse;
+import com.school.rest.response.StudentResponse;
+import com.school.rest.response.UpdateResponse;
+import com.school.service.dto.TeacherDto;
 import com.school.service.dto.TeacherRegistrationDto;
 import com.school.service.dto.UpdateTeacherDto;
 import com.school.service.interfaces.GenericService;
 import com.school.utility.PasswordUtil;
+import com.school.utility.mapper.TeacherMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.Optional;
+import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
-public class TeacherServiceImpl implements GenericService<Teacher, TeacherRegistrationDto, UpdateTeacherDto, AuthResponse> {
+public class TeacherServiceImpl implements GenericService<Teacher, TeacherRegistrationDto, UpdateTeacherDto, AuthResponse, TeacherDto, UpdateResponse<TeacherDto>, DeleteResponse> {
 
     private final PasswordUtil passwordUtil;
     private final UserEntityServiceImpl userEntityService;
     private final UserEntityRepository userEntityRepository;
     private final TeacherRepository teacherRepository;
+    private final TeacherMapper teacherMapper;
+    private final StudentServiceImpl studentService;
     private static final Logger logger = LoggerFactory.getLogger(TeacherServiceImpl.class);
 
-    public TeacherServiceImpl(PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, UserEntityRepository userEntityRepository, TeacherRepository teacherRepository) {
+    public TeacherServiceImpl(PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, UserEntityRepository userEntityRepository, TeacherRepository teacherRepository, TeacherMapper teacherMapper, StudentServiceImpl studentService) {
         this.passwordUtil = passwordUtil;
         this.userEntityService = userEntityService;
         this.userEntityRepository = userEntityRepository;
         this.teacherRepository = teacherRepository;
+        this.teacherMapper = teacherMapper;
+        this.studentService = studentService;
     }
 
     @Transactional
@@ -67,17 +81,8 @@ public class TeacherServiceImpl implements GenericService<Teacher, TeacherRegist
         Teacher teacher = teacherRepository.findByUser(userEntityRepository.findById(idUser)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + idUser)));
 
-        // Asignar los datos del DTO al objeto Teacher
-        teacher.setName(teacherRegistrationDto.getName());
-        teacher.setDateOfBirth(teacherRegistrationDto.getDateOfBirth());
-        teacher.setLastName(teacherRegistrationDto.getLastName());
-        teacher.setDni(teacherRegistrationDto.getDni());
-        teacher.setPhoneNumber(teacherRegistrationDto.getPhoneNumber());
-        teacher.setEmail(teacherRegistrationDto.getEmail());
-        teacher.setEmergencyNumber(teacherRegistrationDto.getEmergencyNumber());
-        teacher.setEmergencyContactName(teacherRegistrationDto.getEmergencyContactName());
-        teacher.setProfesionalInformation(teacherRegistrationDto.getProfessionalInformation());
-        teacher.setAddress(teacherRegistrationDto.getAddress());
+        // Registrar datos del Teacher con los datos del DTO
+        teacherMapper.createFromDto(teacherRegistrationDto, teacher);
 
         // Guardar los datos del profesor en el repositorio
         teacherRepository.save(teacher);
@@ -88,36 +93,66 @@ public class TeacherServiceImpl implements GenericService<Teacher, TeacherRegist
 
     @Override
     @Transactional
-    public Teacher update(Long id, UpdateTeacherDto updateTeacherDto) {
+    public UpdateResponse<TeacherDto> update(Long id, UpdateTeacherDto updateTeacherDto) {
 
-        // Buscar el profesor existente por ID, lanzando una excepción si no se encuentra
         Teacher existingTeacher = teacherRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Teacher with ID " + id + " not found"));
 
-        // Actualizar los campos del profesor con la información proporcionada en updateTeacherDto
-        existingTeacher.setName(updateTeacherDto.getName());
-        existingTeacher.setLastName(updateTeacherDto.getLastName());
-        existingTeacher.setDni(updateTeacherDto.getDni());
-        existingTeacher.setPhoneNumber(updateTeacherDto.getPhoneNumber());
-        existingTeacher.setEmail(updateTeacherDto.getEmail());
-        existingTeacher.setEmergencyNumber(updateTeacherDto.getEmergencyNumber());
-        existingTeacher.setEmergencyContactName(updateTeacherDto.getEmergencyContactName());
-        existingTeacher.setProfesionalInformation(updateTeacherDto.getProfesionalInformation());
+        // Usar el mapper para actualizar la entidad con los valores del DTO
+        teacherMapper.updateFromDto(updateTeacherDto, existingTeacher);
 
-        // Guardar el profesor actualizado en la base de datos
-        return teacherRepository.save(existingTeacher);
+        // Devolver la respuesta con el DTO actualizado
+        return new UpdateResponse<>("Teacher updated successfully", true, teacherMapper.convertToDto(teacherRepository.save(existingTeacher)));
     }
 
     @Override
-    public Optional<Teacher> findById(Long id) {
-        return teacherRepository.findById(id);
+    public TeacherDto findById(Long id) {
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher not found with ID: " + id));
+
+        return teacherMapper.convertToDto(teacher);
+    }
+
+    public List<TeacherDto> findAll() {
+        List<Teacher> teachers = teacherRepository.findAll();
+        return teachers.stream()
+                .map(teacherMapper::convertToDto)
+                .collect(Collectors.toList());
+    }
+
+    public Page<TeacherDto> findTeachersByLastName(String lastName, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> teacherPage = teacherRepository.findByLastName(lastName, pageable);
+        return teacherPage.map(teacherMapper::convertToDto);
+    }
+
+    public Page<TeacherDto> findAllTeachers(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        Page<Teacher> teacherPage = teacherRepository.findAll(pageable);
+        return teacherPage.map(teacherMapper::convertToDto);
     }
 
     @Override
-    public void delete(Long id) {
-        if (!teacherRepository.existsById(id)) {
-            throw new EntityNotFoundException("Teacher with ID " + id + " not found");
+    @Transactional
+    public DeleteResponse delete(Long id) {
+        Teacher teacher = teacherRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Teacher with ID " + id + " not found"));
+
+        // Marcar el registro de Teacher como eliminado
+        teacher.setIsDeleted(true);
+        teacherRepository.save(teacher);
+
+        // Marcar el registro de UserEntity como eliminado
+        UserEntity user = teacher.getUser();
+        if (user != null) {
+            user.setIsDeleted(true);
+            userEntityRepository.save(user);
         }
-        teacherRepository.deleteById(id);
+
+        return new DeleteResponse("Teacher successfully deleted", true);
+    }
+
+    public StudentResponse verifyStudentByDni(String dni) {
+        return studentService.verifyChildByDni(dni);
     }
 }

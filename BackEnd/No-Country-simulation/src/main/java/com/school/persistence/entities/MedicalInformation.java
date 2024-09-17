@@ -1,7 +1,6 @@
 package com.school.persistence.entities;
 
-import jakarta.persistence.ElementCollection;
-import jakarta.persistence.Embeddable;
+import jakarta.persistence.*;
 import jakarta.validation.constraints.Size;
 import lombok.*;
 
@@ -23,7 +22,9 @@ public class MedicalInformation {
     @Size(max = 2, message = "Blood type should not have more than two characters")
     private String bloodType;
 
-    @ElementCollection
+    @ElementCollection(fetch = FetchType.LAZY)
+    @CollectionTable(name = "allergies", joinColumns = @JoinColumn(name = "medical_information_id"))
+    @Column(name = "allergy")
     private List<String> allergies;
 
     private String additionalConditions;

@@ -1,14 +1,12 @@
 package com.school.service.interfaces;
 
-import java.util.Optional;
-
-public interface GenericService <T, D1, D2, R>  {
+public interface GenericService <T, D1, D2, R, D3, D4, D5>  {
 
     R create(D1 dto);
 
-    T update(Long id, D2 dto);
+    D4 update(Long id, D2 dto);
 
-    Optional<T> findById(Long id);
+    D3 findById(Long id);
 
-    void delete(Long id);
+    D5 delete(Long id);
 }

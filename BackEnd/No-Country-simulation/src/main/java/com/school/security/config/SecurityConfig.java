@@ -51,11 +51,14 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset_password").permitAll();
 
                     // Rutas accesibles solo con roles específicos
+                    http.requestMatchers(HttpMethod.GET, "/teacher/verifyStudent/**").hasAuthority("READ_PRIVILEGES");
+                    http.requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-student").hasAnyRole("STUDENT");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-teacher").hasAnyRole("TEACHER");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-parent").hasAnyRole("PARENT");
 
                     // Permisos para evaluaciones
+                    http.requestMatchers(HttpMethod.POST, "/admin/**").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.POST, "/evaluations/load").hasRole("TEACHER");
                     http.requestMatchers(HttpMethod.POST, "/evaluations/student").hasAnyRole("STUDENT", "PARENT");
 
@@ -85,7 +88,7 @@ public class SecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration configuration = new CorsConfiguration();
-        configuration.setAllowedOrigins(List.of("http://localhost:5173", "https://schoolmanager-nine.vercel.app"));
+        configuration.setAllowedOrigins(List.of("http://localhost:5173", "http://localhost:8080", "https://schoolmanager-nine.vercel.app"));
         configuration.setAllowedMethods(Arrays.asList("GET", "POST", "PUT", "DELETE", "OPTIONS"));
         configuration.setAllowedHeaders(Arrays.asList("Authorization", "Content-Type"));
         configuration.setAllowCredentials(true);

@@ -1,10 +1,8 @@
 package com.school.rest.entityControllers;
 
 import com.school.persistence.entities.Parent;
-import com.school.rest.response.AuthResponse;
-import com.school.rest.response.Response;
-import com.school.service.dto.ParentRegistrationDto;
-import com.school.service.dto.UpdateParentDto;
+import com.school.rest.response.*;
+import com.school.service.dto.*;
 import com.school.service.implementation.ParentServiceImpl;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.media.Content;
@@ -55,56 +53,44 @@ public class ParentController {
             }
     )
     public ResponseEntity<AuthResponse> processParentRegistration(@Valid @RequestBody ParentRegistrationDto parentRegistrationDto) {
-        // Llamar al método del servicio para manejar la lógica de registro de padres
-        AuthResponse registeredUser = parentService.create(parentRegistrationDto);
-
-        // Devolver un estado CREATED si el registro es exitoso con la respuesta de autenticación
-        return new ResponseEntity<>(registeredUser, HttpStatus.CREATED);
+        return new ResponseEntity<>(parentService.create(parentRegistrationDto), HttpStatus.CREATED);
     }
 
     @PutMapping("/update/{id}")
-    public ResponseEntity<Response<Parent>> updateParent(@PathVariable Long id, @Valid @RequestBody UpdateParentDto updateParentDto) {
-        // Llamar al método del servicio para actualizar el padre
-        Parent updatedParent = parentService.update(id, updateParentDto);
-
-        // Crear y devolver la respuesta con el mensaje de éxito y el objeto actualizado
-        return ResponseEntity.ok(new Response<>("Parent updated successfully", updatedParent));
+    public ResponseEntity<UpdateResponse<ParentDto>> updateStudentDto(@PathVariable Long id, @Valid @RequestBody UpdateParentDto updateParentDto) {
+        return ResponseEntity.ok(parentService.update(id, updateParentDto));
     }
 
     @GetMapping("/find{id}")
-    public ResponseEntity<?> findParentById(@PathVariable long id) {
-        try {
-            // Find parent by ID using the service
-            Optional<Parent> optionalParent = parentService.findById(id);
-
-            // If parent is found, return it with OK status
-            return ResponseEntity.ok(optionalParent);
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where parent is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parent not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while fetching the parent.");
-        }
+    public ResponseEntity<ParentDto> findParentById(@PathVariable long id) {
+        return new ResponseEntity<>(parentService.findById(id), HttpStatus.OK);
     }
 
-    @DeleteMapping("/delete{id}")
-    public ResponseEntity<?> deleteParent(@PathVariable Long id) {
+    @DeleteMapping("/delete/{id}")
+    public ResponseEntity<DeleteResponse> deleteParent(@PathVariable Long id) {
+        return ResponseEntity.ok(parentService.delete(id));
+    }
 
-        try {
-            // Delete parent by ID
-            parentService.delete(id);
-
-            // Return NO_CONTENT status to indicate successful deletion
-            return ResponseEntity.noContent().build();
-
-        } catch (EntityNotFoundException e) {
-            // Handle case where parent is not found
-            return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Parent not found with ID: " + id);
-        } catch (Exception e) {
-            // Handle other potential errors
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("An error occurred while deleting the parent.");
-        }
+    @GetMapping("/verify/{dni}")
+    @Operation(
+            summary = "Verify Teacher by DNI",
+            description = "Verifies the existence of a teacher by their DNI.",
+            responses = {
+                    @ApiResponse(
+                            responseCode = "200", description = "Teacher verification result",
+                            content = @Content(
+                                    schema = @Schema(implementation = StudentResponse.class)
+                            )
+                    ),
+                    @ApiResponse(
+                            responseCode = "404", description = "Teacher not found",
+                            content = @Content(
+                                    schema = @Schema(implementation = ApiError.class)
+                            )
+                    )
+            }
+    )
+    public ResponseEntity<StudentResponse> verifyChildByDni(@PathVariable String dni) {
+        return ResponseEntity.ok(parentService.verifyChildByDni(dni));
     }
 }

@@ -2,6 +2,7 @@ package com.school.service.implementation;
 
 import com.school.persistence.entities.Parent;
 import com.school.persistence.entities.Student;
+import com.school.persistence.entities.UserEntity;
 import com.school.persistence.enums.RoleEnum;
 import com.school.persistence.repository.ParentRepository;
 import com.school.persistence.repository.StudentRepository;
@@ -9,10 +10,15 @@ import com.school.persistence.repository.UserEntityRepository;
 import com.school.rest.request.AuthRegisterRoleRequest;
 import com.school.rest.request.AuthRegisterUserRequest;
 import com.school.rest.response.AuthResponse;
+import com.school.rest.response.DeleteResponse;
+import com.school.rest.response.StudentResponse;
+import com.school.rest.response.UpdateResponse;
+import com.school.service.dto.ParentDto;
 import com.school.service.dto.ParentRegistrationDto;
 import com.school.service.dto.UpdateParentDto;
 import com.school.service.interfaces.GenericService;
 import com.school.utility.PasswordUtil;
+import com.school.utility.mapper.ParentMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,10 +27,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
-import java.util.Optional;
 
 @Service
-public class ParentServiceImpl implements GenericService<Parent, ParentRegistrationDto, UpdateParentDto, AuthResponse> {
+public class ParentServiceImpl implements GenericService<Parent, ParentRegistrationDto, UpdateParentDto, AuthResponse, ParentDto, UpdateResponse<ParentDto>, DeleteResponse> {
 
     private final UserEntityRepository userEntityRepository;
     private final ParentRepository parentRepository;
@@ -32,15 +37,18 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
     private final UserEntityServiceImpl userEntityService;
     private final StudentRepository studentRepository;
     private static final Logger logger = LoggerFactory.getLogger(ParentServiceImpl.class);
+    private final ParentMapper parentMapper;
+    private final StudentServiceImpl studentService;
 
     @Autowired
-    public ParentServiceImpl(UserEntityRepository userEntityRepository, ParentRepository parentRepository,
-                             PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, StudentRepository studentRepository) {
+    public ParentServiceImpl(UserEntityRepository userEntityRepository, ParentRepository parentRepository, PasswordUtil passwordUtil, UserEntityServiceImpl userEntityService, StudentRepository studentRepository, ParentMapper parentMapper, StudentServiceImpl studentService) {
         this.userEntityRepository = userEntityRepository;
         this.parentRepository = parentRepository;
         this.passwordUtil = passwordUtil;
         this.userEntityService = userEntityService;
         this.studentRepository = studentRepository;
+        this.parentMapper = parentMapper;
+        this.studentService = studentService;
     }
 
     @Transactional
@@ -66,26 +74,15 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
                         .build())
                 .build();
 
-        // Registrar usuario y obtener el ID
+        // Registrar Parent y obtener el ID
         Long idUser = userEntityService.registerUser(requestUser, rawPassword);
 
         // Buscar el Parent asociado al usuario registrado
         Parent parent = parentRepository.findByUser(userEntityRepository.findById(idUser)
                 .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + idUser)));
 
-        parent.setName(parentRegistrationDto.getName());
-        parent.setLastName(parentRegistrationDto.getLastName());
-        parent.setDni(parentRegistrationDto.getDni());
-        parent.setPhoneNumber(parentRegistrationDto.getPhoneNumber());
-        parent.setEmail(parentRegistrationDto.getEmail());
-        parent.setEmergencyNumber(parentRegistrationDto.getEmergencyPhone());
-        parent.setEmergencyContactName(parentRegistrationDto.getEmergencyContactName());
-        parent.setRelationshipToChild(parentRegistrationDto.getRelationshipToChild());
-        parent.setOccupation(parentRegistrationDto.getOccupation());
-        parent.setAddress(parentRegistrationDto.getAddress());
-
-        // Guardar el padre en el repositorio
-        parentRepository.save(parent);
+        // Registrar datos del Parent con los datos del DTO
+        parentMapper.createFromDto(parentRegistrationDto, parent);
 
         // Asociar los hijos ya creados al padre si se proporciona la lista de hijos
         if (parentRegistrationDto.getChildren() != null) {
@@ -108,35 +105,50 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
 
     @Transactional
     @Override
-    public Parent update(Long id, UpdateParentDto updateParentDto) {
+    public UpdateResponse<ParentDto> update(Long id, UpdateParentDto updateParentDto) {
 
         // Buscar el padre existente por ID, lanzando una excepción si no se encuentra
         Parent existingParent = parentRepository.findById(id)
                 .orElseThrow(() -> new EntityNotFoundException("Parent with ID " + id + " not found"));
 
-        // Actualizar los campos del padre con la información proporcionada en updateParentDto
-        existingParent.setName(updateParentDto.getName());
-        existingParent.setLastName(updateParentDto.getLastName());
-        existingParent.setDni(updateParentDto.getDni());
-        existingParent.setPhoneNumber(updateParentDto.getPhoneNumber());
-        existingParent.setEmail(updateParentDto.getEmail());
-        existingParent.setEmergencyNumber(updateParentDto.getEmergencyNumber());
-        existingParent.setEmergencyContactName(updateParentDto.getEmergencyContactName());
+        // Usar el mapper para actualizar la entidad con los valores del DTO
+        parentMapper.updateFromDto(updateParentDto, existingParent);
 
-        // Guardar el padre actualizado en la base de datos
-        return parentRepository.save(existingParent);
+        // Guardar el padre actualizado
+        Parent updatedParent = parentRepository.save(existingParent);
+        // Retornar la respuesta con el DTO actualizado
+        return new UpdateResponse<>("Parent updated successfully", true, parentMapper.convertToDto(updatedParent));
     }
 
     @Override
-    public Optional<Parent> findById(Long id) {
-        return parentRepository.findById(id);
+    public ParentDto findById(Long id) {
+        Parent parent = parentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Parent not found with ID: " + id));
+
+        return parentMapper.convertToDto(parent);
     }
 
     @Override
-    public void delete(Long id) {
-        if (!parentRepository.existsById(id)) {
-            throw new EntityNotFoundException("Parent with ID " + id + " not found");
+    @Transactional
+    public DeleteResponse delete(Long id) {
+        Parent parent = parentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Parent with ID " + id + " not found"));
+
+        // Marcar el registro de Parent como eliminado
+        parent.setIsDeleted(true);
+        parentRepository.save(parent);
+
+        // Marcar el registro de UserEntity como eliminado
+        UserEntity user = parent.getUser();
+        if (user != null) {
+            user.setIsDeleted(true);
+            userEntityRepository.save(user);
         }
-        parentRepository.deleteById(id);
+
+        return new DeleteResponse("Parent successfully deleted", true);
+    }
+
+    public StudentResponse verifyChildByDni(String dni) {
+        return studentService.verifyChildByDni(dni);
     }
 }

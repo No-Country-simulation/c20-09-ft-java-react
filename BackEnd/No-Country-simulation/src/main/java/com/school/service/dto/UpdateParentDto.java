@@ -1,6 +1,5 @@
 package com.school.service.dto;
 
-
 import com.school.persistence.entities.Address;
 import jakarta.validation.constraints.*;
 import lombok.*;

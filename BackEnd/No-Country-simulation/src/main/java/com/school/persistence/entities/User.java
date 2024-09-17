@@ -37,4 +37,7 @@ public abstract class User {
     private String emergencyNumber;
 
     private String emergencyContactName;
+
+    @Column(name = "is_deleted")
+    private Boolean  isDeleted;
 }

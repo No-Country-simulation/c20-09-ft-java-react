@@ -52,4 +52,7 @@ public class UserEntity {
 
     @Column(name = "password_changed")
     private Boolean passwordChanged;
+
+    @Column(name = "is_deleted")
+    private Boolean  isDeleted;
 }

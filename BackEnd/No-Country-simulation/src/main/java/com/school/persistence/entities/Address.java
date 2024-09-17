@@ -9,9 +9,10 @@ import lombok.*;
 @NoArgsConstructor
 @Embeddable
 @ToString
+@Builder
 public class Address {
 
-    //private String country;
+    private String country;
 
     private String state;
 
