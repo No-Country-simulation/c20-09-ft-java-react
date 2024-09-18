@@ -1,8 +1,8 @@
 # Proyecto:
 ## Aplicación Web de Gestión y Seguimiento Académico.
 
-<div style="text-align: center;">
-    <img src="image-1.png" alt="Mi primera imagen">
+<div align="center">
+  <img src="https://github.com/No-Country-simulation/c20-09-ft-java-react/blob/develop/FrontEnd/design/img/logoSchoolManager.webp" alt="School Manager Logo" />
 </div>
 
 
