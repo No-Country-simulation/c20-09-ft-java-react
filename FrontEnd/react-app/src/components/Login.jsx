@@ -34,8 +34,9 @@ const Login = () => {
 
     try {
       const response = await loginUser(loginData);
+      console.log(response);
 
-      if (response.status === false) {
+      if (response.status === true) {
         toast({
           title: "Cambio de Contraseña Requerido",
           description:
@@ -45,12 +46,13 @@ const Login = () => {
           isClosable: true,
         });
         setIsResetting(true);
-      } else if (response.status === true) {
-        const { name, token } = response;
+      } else if (response.status === false) {
+        const { name, dni, token } = response;
         const decodedToken = jwtDecode(token);
         const authorities = decodedToken.authorities || "";
 
         sessionStorage.setItem("name", name);
+        sessionStorage.setItem("dni", dni);
         sessionStorage.setItem("token", token);
 
         // Redirige a la ruta basada en el rol del usuario
