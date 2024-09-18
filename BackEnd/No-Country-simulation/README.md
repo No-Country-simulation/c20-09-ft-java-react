@@ -1,5 +1,5 @@
 <p align="center">
-  <img src="../No-Country-simulation//.FrontEnd/design/img//banner_frontend.webp" alt="banner backend"/>
+  <img src="https://github.com/No-Country-simulation/c20-09-ft-java-react/blob/develop/FrontEnd/design/img/banner_backend.webp" alt="banner backend"/>
 </p>
 
 <div align="center">
