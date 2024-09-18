@@ -42,13 +42,15 @@ School Manager es una aplicación web de gestión y seguimiento académico. Una 
 - X-Ray
 - Postman
 - Swagger
+- Git Bash
 - GitHub
 - Visual Studio Code
 - MySQL Workbench
 - IntelliJ IDEA Community
 
 
-#### Jira
+#### Jira [Jira](https://nocountryjavareact.atlassian.net/jira/software/projects/NC/boards/3/backlog)
+
 
 #### Postman
 
@@ -58,10 +60,10 @@ School Manager es una aplicación web de gestión y seguimiento académico. Una 
 
 
 
-#### GitHub: Plan de Pruebas
+#### GitHub: [Github](https://github.com/No-Country-simulation/c20-09-ft-java-react)
 
 
-[PLAN DE PRUEBAS](ruta/al/archivo)
+[Documentación QA Tester Proyecto](https://drive.google.com/drive/folders/1JFawUgZzQCommEs8ZYLS2qZdmqfSD10a?usp=sharing)
 
 
 
@@ -72,4 +74,7 @@ School Manager es una aplicación web de gestión y seguimiento académico. Una 
 ## Autor
 #### Karina Reguera
 [Linkedin](https://www.linkedin.com/in/karina-reguera/)
+
+[Github](hhttps://github.com/KarinaReguera)
+
 
