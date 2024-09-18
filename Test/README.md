@@ -2,7 +2,7 @@
 ## Aplicación Web de Gestión y Seguimiento Académico.
 
 <div style="text-align: center;">
-    <img src="image-1.png" alt="Mi primera imagen">
+    <img src="image.png" alt="Mi primera imagen">
 </div>
 
 
