@@ -1,6 +1,6 @@
-<div style="text-align: center;">
+<p align="center">
     <img src="../FrontEnd/design/img/banner_test.webp" alt="banner test">
-</div>
+</p>
 
 <div align="center">
 
