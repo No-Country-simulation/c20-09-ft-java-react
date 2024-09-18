@@ -4,8 +4,6 @@
 
 <div align="center">
 
-### Frontend
-
 ![React 18.3.1](https://img.shields.io/badge/React%2018.3.1-20232A?logo=react&logoColor=61DAFB&color=20232A)
 ![React DOM 18.3.1](https://img.shields.io/badge/React%20DOM%2018.3.1-20232A?logo=react&logoColor=61DAFB&color=20232A)
 ![React Hook Form](https://img.shields.io/badge/React%20Hook%20Form-EC5990?logo=react&logoColor=white&color=EC5990)
