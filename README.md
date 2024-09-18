@@ -157,7 +157,7 @@ Aquí puedes acceder a la documentación específica de cada una de las áreas d
 
 - [Diseño](./FrontEnd/design/README.md)
 - [Frontend](./FrontEnd/README.md)
-- [Backend](./BackEnd/README.md)
+- [Backend](https://github.com/No-Country-simulation/c20-09-ft-java-react/blob/develop/BackEnd/No-Country-simulation/README.md)
 - [Test](./Test/README.md)
 
 ## Contribución
