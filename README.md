@@ -1,6 +1,31 @@
+<p align="center">
+  <img src="./FrontEnd/design/img/logoSchoolManager.webp" alt="Logo School Manager"/>
+</p>
+
+<div align="center">
+
+![HTML](https://img.shields.io/badge/HTML5-orange)
+![CSS](https://img.shields.io/badge/CSS3-blue)
+![JavaScript](https://img.shields.io/badge/Javascript-yellow)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB)
+![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&color=646CFF)
+![Styled Components](https://img.shields.io/badge/Styled--Components-DB7093?logo=styled-components&logoColor=white&color=DB7093)
+![Java](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&color=007396)
+![Spring Boot](https://img.shields.io/badge/Spring--Boot-6DB33F?logo=spring-boot&logoColor=white&color=6DB33F)
+![Spring Security](https://img.shields.io/badge/Spring--Security-6DB33F?logo=spring-security&logoColor=white&color=6DB33F)
+![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&color=4479A1)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&color=5A29E4)
+![React Router DOM](https://img.shields.io/badge/React--Router--DOM-CA4245?logo=react-router&logoColor=white&color=CA4245)
+![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black&color=85EA2D)
+
+</div>
+
 # School Manager
 
-Una plataforma para evaluar y hacer seguimiento del rendimiento escolar de estudiantes, construida con React y Vite en el frontend, Java con Spring Boot en el backend, y MySQL como base de datos.
+Proyecto desarrollado como parte de una simulación laboral en [No Country](https://www.nocountry.tech/simulacion-laboral).
+
+Esta aplicación está dirigida a instituciones educativas, ya sean públicas o privadas, que se encuentren en transición hacia la digitalización de la información relevante para los profesores, estudiantes y sus padres. Puede ser utilizada tanto en nivel primario como secundario. Su finalidad es sustituir el boletín de notas y el cuaderno de comunicados, permitiendo que la información llegue a los padres de forma más dinámica y que tengan un mayor control sobre la enseñanza de sus hijos.
+
 
 ## Tabla de Contenidos
 
@@ -9,8 +34,9 @@ Una plataforma para evaluar y hacer seguimiento del rendimiento escolar de estud
 - [Instalación](#instalación)
 - [Uso](#uso)
 - [Despliegue](#despliegue)
+- [Documentación](#documentación)
 - [Contribución](#contribución)
-- [Licencia](#licencia)
+- [Autores](#autores)
 
 ## Descripción
 
@@ -36,6 +62,7 @@ Esta plataforma permite a los usuarios:
 - **Otros**:
   - Axios (para hacer peticiones HTTP)
   - React Router DOM (para manejo de rutas)
+  - Swagger
 
 ## Instalación
 
@@ -114,10 +141,94 @@ Para desplegar la aplicación en un entorno de producción, realiza los siguient
 
     - Despliega el archivo JAR resultante en un servidor de aplicaciones o plataforma en la nube (AWS, Heroku, etc.).
 
+## Documentación
+
+Aquí puedes acceder a la documentación específica de cada una de las áreas del proyecto:
+
+- [Diseño](./FrontEnd/design/README.md)
+- [Frontend](./FrontEnd/README.md)
+- [Backend](./BackEnd/README.md)
+- [Test](./Test/README.md)
+
 ## Contribución
 
 ¡Las contribuciones son bienvenidas! Si deseas contribuir a este proyecto:
 
 1. **Realiza un fork** del repositorio.
 2. **Crea una rama** para tu característica (`git checkout -b feature/nueva-caracteristica`).
-3. **Realiza los cambios** y haz commit (`git commit -am 'Añadir nueva caracte
+3. **Realiza los cambios** y haz commit (`git commit -m 'Añadir nueva caracteristica`)
+
+## Autores
+
+Proyecto creado por:
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/DeyviCZ.png?size=50" alt="Fica" style="border-radius: 50%; margin-right: 10px;">
+    <p>
+      <strong>Deyvi Correa Zamora</strong> | Front-end
+    </p>
+</div>
+
+[![GitHub](https://img.shields.io/badge/GitHub-DeyviCZ-blue)](https://github.com/DeyviCZ)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Deyvi_Correa_Zamora-blue)](https://www.linkedin.com/in/deyvi-correa-zamora/)
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/DVTecno.png?size=50" alt="CVTecno" style="border-radius: 50%; margin-right: 10px;">
+    <p>
+      <strong>Diego Veras</strong> | Back-end
+    </p>
+</div>
+
+[![GitHub](https://img.shields.io/badge/GitHub-DVTecno-blue)](https://github.com/DVTecno)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Diego_Cristian_Alfredo_Veras-blue)](https://www.linkedin.com/in/diego-cristian-alfredo-v-54b459249/)
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/Jaracax.png?size=50" alt="Jaracax" style="border-radius: 50%; margin-right: 10px;">
+    <p>
+      <strong>Jose Antonio Dominguez</strong> | Back-end
+    </p>
+</div>
+
+[![GitHub](https://img.shields.io/badge/GitHub-Jaracax-blue)](https://github.com/Jaracax)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Jose_Antonio_Dominguez-blue)](https://www.linkedin.com/in/josedominguez99/)
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/AlejandroPerez24.png?size=50" alt="AlejandroPerez" style="border-radius: 50%; margin-right: 10px; width: 50px; height: 50px;">
+    <p>
+        <strong>Alejandro Perez</strong> | Back-end
+    </p>
+</div>
+
+[![GitHub](https://img.shields.io/badge/GitHub-AlejandroPerez24-blue)](https://github.com/AlejandroPerez24)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Alejandro_P.-blue)](https://www.linkedin.com/in/alejandroqperez/)
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/jhonOrr.png?size=50" alt="jorrego-runa" style="border-radius: 50%; margin-right: 10px; width: 50px; height: 50px;">
+    <p>
+        <strong>Jhon Orrego</strong> | Full-Stack
+    </p>
+</div>
+
+
+[![GitHub](https://img.shields.io/badge/GitHub-JhonOrr-blue)](https://github.com/jhonOrr)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Jhon_Orrego-blue)](https://www.linkedin.com/in/jhon-orrego-jesus/)
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/Fica-Millan.png?size=50" alt="Fica" style="border-radius: 50%; margin-right: 10px;">
+    <p>
+      <strong>Yesica Fica Millán</strong> | Full-stack
+    </p>
+</div>
+
+[![GitHub](https://img.shields.io/badge/GitHub-Fica_Millan-blue)](https://github.com/Fica-Millan)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Yesica_Fica_Millan-blue)](https://www.linkedin.com/in/yesica-fica-millan/)
+
+<div style="display: flex; align-items: center;">
+    <img src="https://github.com/KarinaReguera.png?size=50" alt="KarinaReguera" style="border-radius: 50%; margin-right: 10px; width: 50px; height: 50px;">
+    <p>
+      <strong>Karina Reguera</strong> | QA Tester
+    </p>
+</div>
+
+[![GitHub](https://img.shields.io/badge/GitHub-KarinaReguera-blue)](https://github.com/KarinaReguera)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Karina_Reguera-blue)](https://www.linkedin.com/in/karina-reguera/)

@@ -1,11 +1,12 @@
 <p align="center">
-  <img src="../design/img/logoSchoolManager.webp" alt="Logo School Manager"/>
+  <img src="./img/banner_design.webp" alt="Logo School Manager"/>
 </p>
 
 <div align="center">
 
    ![HTML](https://img.shields.io/badge/HTML5-orange)
    ![CSS](https://img.shields.io/badge/CSS3-blue)
+   ![JavaScript](https://img.shields.io/badge/Javascript-yellow)
 </div>
 
 <h1 align="center">Diseño de Interfaces</h1>
@@ -23,9 +24,7 @@
 - [Plantilla de Historial Académico](#plantilla-de-historial-académico)
 
 ## Contexto del Proyecto
-Proyecto desarrollado como parte de una simulación laboral en [No Country](https://www.nocountry.tech/simulacion-laboral). Debido a que en nuestro equipo de trabajo no contábamos con un diseñador `UX/UI` y estábamos conformados mayormente por desarrolladores backend, tomamos la decisión de desarrollar las vistas directamente en `HTML` y `CSS`. Posteriormente, el desarrollador frontend se encargará de integrar estos diseños en `React`, la tecnología elegida para nuestra plataforma School Manager.
-
-Esta aplicación está dirigida a instituciones educativas, ya sean públicas o privadas, que se encuentren en transición para informatizar información relevante tanto para los profesores, los estudiantes y los padres de estos. Puede ser utilizada tanto a nivel primario como secundario. La finalidad es sustituir el boletín de notas y el cuaderno de comunicados, para que esta información llegue a los padres de forma más dinámica y permita un mayor control sobre la enseñanza de su hijo.
+ Debido a que en nuestro equipo de trabajo no contábamos con un diseñador `UX/UI` y estábamos conformados mayormente por desarrolladores backend, tomamos la decisión de desarrollar las vistas directamente en `HTML`, `CSS` y `Javascript`. Posteriormente, el desarrollador frontend se encargará de integrar estos diseños en `React`, la tecnología elegida para nuestra plataforma School Manager.
 
 ## Justificación del Diseño
 
@@ -50,14 +49,11 @@ El código `HTML` y `CSS` se estructuró de manera que sea fácilmente adaptable
 
 El dashboard se diseñó de forma modular, permitiendo que cada opción sea fácilmente reutilizable o modificable como componente `React`. Los elementos interactivos como botones y enlaces fueron estilizados con transiciones, lo que facilita una experiencia de usuario fluida y dinámica en `React`.
 
-💥💥💥💥 AGREGAR EJEMPLOS DE COMO SE REUTILIZO 💥💥💥💥
-
-
 ## Plantilla de Inicio de Sesión
 El formulario está centrado en la pantalla, con campos claramente etiquetados. Se incluye un enlace para recuperar la contraseña, facilitando la experiencia del usuario.
 
 <p align="center">
-  <img src="../design/img/screen-login.webp" alt="login" width="400"/>
+  <img src="./img/screen-login.webp" alt="login" width="400"/>
 </p>
 
 ## Plantilla del Dashboard
@@ -67,7 +63,7 @@ El dashboard presenta un diseño simple y visualmente atractivo con una estructu
   - Opciones destacadas: Las opciones como "Historial Académico", "Rendimiento" y "Mensajes" están representadas mediante imágenes de gran tamaño para facilitar la comprensión y accesibilidad. Además, se usan sombras y transiciones para que las interacciones sean más fluidas y agradables.
 
 <p align="center">
-  <img src="../design/img/screen-dashboard.webp" alt="dashboard" width="570"/>
+  <img src="./img/screen-dashboard.webp" alt="dashboard" width="570"/>
 </p>
 
 ## Plantilla de Registro de Usuarios
@@ -77,13 +73,13 @@ Las pantallas de registro para padres/tutores, alumnos y profesores se diseñaro
 El uso de un esquema de colores neutros y tipografía clara garantiza una experiencia de usuario accesible y agradable, facilitando la lectura y navegación. Cada pantalla sigue una estructura coherente, con secciones claramente definidas para la información personal, contacto y datos adicionales, permitiendo una fácil comprensión y completado del formulario. Además, se incluyen botones dinámicos que permiten añadir campos adicionales (como hijos o materias), lo que mejora la flexibilidad del formulario sin recargar la interfaz.
 
 ### Formulario de Registro de Alumnos
-<p align="center"> <img src="../design/img/screen-student-registration.webp" alt="Student Registration" width="570"/> </p>
+<p align="center"> <img src="./img/screen-student-registration.webp" alt="Student Registration" width="570"/> </p>
 
 ### Formulario de Registro de Padres/Tutores
-<p align="center"> <img src="../design/img/screen-parent-registration.webp" alt="Parent Registration" width="570"/> </p>
+<p align="center"> <img src="./img/screen-parent-registration.webp" alt="Parent Registration" width="570"/> </p>
 
 ### Formulario de Registro de Profesores
-<p align="center"> <img src="../design/img/screen-teacher-registration.webp" alt="Teacher Registration" width="570"/> </p>
+<p align="center"> <img src="./img/screen-teacher-registration.webp" alt="Teacher Registration" width="570"/> </p>
 
 ## Plantilla de Correo Electrónico
 
@@ -92,7 +88,7 @@ La plantilla de correo electrónico diseñada para la funcionalidad de restablec
 Para lograr la máxima compatibilidad y consistencia visual, el `CSS` se incluyó directamente en el `HTML`, en lugar de usar archivos `CSS` externos. Este método garantiza que el correo se muestre de manera consistente sin importar el cliente de correo que lo reciba.
 
 ### Código de Ejemplo
-A continuación, se muestra un fragmento del código HTML con CSS embebido:
+A continuación, se muestra un fragmento del código `HTML` con `CSS` embebido:
 ```html
  <!-- Content -->
         <div class="content" style="padding: 20px; color: #333333; text-align: center;">
@@ -107,7 +103,7 @@ A continuación, se muestra un fragmento del código HTML con CSS embebido:
 ```
 
 <p align="center">
-  <img src="../design/img/screen-email-template.webp" alt="Email Template" width="600"/>
+  <img src="./img/screen-email-template.webp" alt="Email Template" width="600"/>
 </p>
 
 ## Plantilla de Notificaciones
@@ -116,10 +112,10 @@ La sección de notificaciones se compone de dos vistas:
 
 ### Vista de Notificaciones
 
-Esta vista permite al usuario ver una lista de notificaciones recientes. Cada notificación muestra la fecha, el asunto y un breve resumen del mensaje. El usuario puede regresar a la página principal utilizando el botón correspondiente.
+Esta vista permite al usuario ver una lista de notificaciones recientes. Cada notificación muestra la fecha, el asunto y la primera línea del mensaje. El usuario puede regresar a la página principal utilizando el botón correspondiente.
 
 <p align="center">
-  <img src="../design/img/screen-notification.webp" alt="Notifications List" width="570"/>
+  <img src="./img/screen-notification.webp" alt="Notifications List" width="570"/>
 </p>
 
 ### Vista de Respuesta a Notificación
@@ -127,9 +123,32 @@ Esta vista permite al usuario ver una lista de notificaciones recientes. Cada no
 En esta vista, el usuario puede responder a una notificación específica. El mensaje original se muestra en la parte superior y el usuario puede escribir y enviar su respuesta mediante un formulario. Después de enviar la respuesta, puede volver a la lista de notificaciones.
 
 <p align="center">
-  <img src="../design/img/screen-reply-notification.webp" alt="Reply to Notification" width="570"/>
+  <img src="./img/screen-reply-notification.webp" alt="Reply to Notification" width="570"/>
 </p>
 
+### Vista de Envío de Notificación
+Esta vista permite al profesor enviar notificaciones a estudiantes o padres de forma individual o a todos los usuarios seleccionados de una clase. El formulario está dividido en tres secciones principales:
+
+* Selección de Año y Turno: El usuario puede seleccionar el año y turno para filtrar el grupo de estudiantes o padres a los que se enviará la notificación.
+
+<p align="center"> <img src="./img/screen-send-notification1.webp" alt="Send Notification" width="570"/> </p>
+
+* Opción de Enviar a Todos o Individualmente: Una vez seleccionado el año y el turno, el usuario puede optar por enviar la notificación a todos los estudiantes/padres o buscar un estudiante o padre específico mediante el DNI.
+
+<p align="center"> <img src="./img/screen-send-notification2.webp" alt="Send Notification" width="570"/> </p>
+
+* Formulario de Notificación: Dependiendo de la opción seleccionada, el usuario puede escribir y enviar un mensaje personalizado a todos los destinatarios o a un destinatario específico. En el caso de búsqueda por DNI, el nombre del estudiante o padre se muestra tras la búsqueda exitosa.
+
+<p align="center">
+  <strong>Elección de "Todos los estudiantes y padres"</strong>
+</p>
+<p align="center"> <img src="./img/screen-send-notification3.webp" alt="Send Notification" width="570"/> </p>
+
+<p align="center">
+  <strong>Elección de "Estudiante en particular"</strong>
+</p>
+
+<p align="center"> <img src="./img/screen-send-notification4.webp" alt="Send Notification" width="570"/> </p>
 
 ## Plantilla de Evaluaciones
 
@@ -140,7 +159,7 @@ La sección de evaluaciones se divide en dos vistas:
 El profesor tiene acceso a una vista para cargar evaluaciones. En esta vista, el profesor puede ingresar el DNI del estudiante, seleccionar el año y trimestre, y proporcionar detalles sobre la evaluación. Esta información se envía al sistema y se guarda en la base de datos, asociada al estudiante correspondiente.
 
 <p align="center">
-  <img src="../design/img/screen-teacher-evaluation.webp" alt="Teacher Evaluation" width="570"/>
+  <img src="./img/screen-teacher-evaluation.webp" alt="Teacher Evaluation" width="570"/>
 </p>
 
 ### Vista del Estudiante
@@ -148,7 +167,7 @@ El profesor tiene acceso a una vista para cargar evaluaciones. En esta vista, el
 El estudiante puede acceder a una vista donde se muestran las evaluaciones que el profesor ha cargado. Esta vista permite al estudiante consultar sus evaluaciones previas, visualizando la información relevante como el año, trimestre, materia y feedback proporcionado por el profesor.
 
 <p align="center">
-  <img src="../design/img/screen-evaluation.webp" alt="Student Evaluation" width="570"/>
+  <img src="./img/screen-evaluation.webp" alt="Student Evaluation" width="570"/>
 </p>
 
 
@@ -165,5 +184,14 @@ Esta vista muestra:
 
 
 <p align="center">
-  <img src="../design/img/screen-academic-record.webp" alt="Academic Record" width="570"/>
+  <img src="./img/screen-academic-record.webp" alt="Academic Record" width="570"/>
 </p>
+
+## Autor
+
+Este diseño fue creado por [Fica](mailto:ficamillan@gmail.com).
+
+Puedes conectar conmigo a través de:
+
+[![GitHub](https://img.shields.io/badge/GitHub-Fica_Millan-blue)](https://github.com/Fica-Millan)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Yesica_Fica_Millan-blue)](https://www.linkedin.com/in/yesica-fica-millan/)
