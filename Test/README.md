@@ -1,7 +1,7 @@
 # Proyecto:
 ## Aplicación Web de Gestión y Seguimiento Académico.
 
-<div style="text-align: center;">
+<div align="text-align: center;">
     <img src="image.png" alt="Mi primera imagen">
 </div>
 
