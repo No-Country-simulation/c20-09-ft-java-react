@@ -221,14 +221,9 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
         userEntity.setRefreshToken(refreshToken);
         userEntityRepository.save(userEntity);
 
-        String dni = "TBD";
+        // Obtener el DNI según el rol
+        String dni = getRole(authentication, userEntity.getId());
 
-        Student student = studentRepository.findByUser(userEntityRepository.findById(userEntity.getId())
-                .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userEntity.getId())));
-
-        if (student != null) {
-            dni = student.getDni();
-        }
         return new LoginAuthResponse(userEntity.getUsername(), dni, "Successful login", accessToken, refreshToken, userEntity.getPasswordChanged());
     }
 
@@ -265,4 +260,35 @@ public class UserEntityServiceImpl implements UserDetailsService, IUserService {
         return userEntityRepository.findUserEntityByEmailAndIsDeletedFalse(email)
                 .orElseThrow(() -> new UsernameNotFoundException("User Not Found with email: " + email));
     }
+
+    private String getRole(Authentication authentication, Long userId) {
+        // Obtener el primer rol del usuario autenticado
+        String role = authentication.getAuthorities().stream()
+                .map(GrantedAuthority::getAuthority)
+                .filter(auth -> auth.startsWith("ROLE_"))
+                .findFirst()
+                .orElseThrow(() -> new IllegalStateException("No roles found for the user"));
+
+        // Comprobamos el rol y actuamos en consecuencia
+        return switch (role) {
+            case "ROLE_STUDENT" -> {
+                Student student = studentRepository.findByUser(userEntityRepository.findById(userId)
+                        .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId)));
+                yield student.getDni();
+            }
+            case "ROLE_PARENT" -> {
+                Parent parent = parentRepository.findByUser(userEntityRepository.findById(userId)
+                        .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId)));
+                yield parent.getDni();
+            }
+            case "ROLE_TEACHER" -> {
+                Teacher teacher = teacherRepository.findByUser(userEntityRepository.findById(userId)
+                        .orElseThrow(() -> new IllegalArgumentException("User not found with ID: " + userId)));
+                yield teacher.getDni();
+            }
+            case "ROLE_ADMIN" -> "Admin does not have a DNI";
+            default -> throw new IllegalArgumentException("Unknown role: " + role);
+        };
+    }
+
 }
