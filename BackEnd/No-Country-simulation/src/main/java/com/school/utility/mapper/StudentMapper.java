@@ -28,6 +28,7 @@ public class StudentMapper implements GenericMapper <Student, StudentRegistratio
                 .name(student.getName())
                 .lastName(student.getLastName())
                 .dni(student.getDni())
+                .year(student.getYear())
                 .phoneNumber(student.getPhoneNumber())
                 .email(student.getEmail())
                 .dateOfBirth(student.getDateOfBirth())
@@ -60,6 +61,7 @@ public class StudentMapper implements GenericMapper <Student, StudentRegistratio
             entity.setDni(dto.getDni());
             entity.setPhoneNumber(dto.getPhoneNumber());
             entity.setEmail(dto.getEmail());
+            entity.setYear(dto.getYear());
             entity.setDateOfBirth(dto.getDateOfBirth());
             entity.setEmergencyNumber(dto.getEmergencyNumber());
             entity.setEmergencyContactName(dto.getEmergencyContactName());

@@ -47,7 +47,7 @@ const RegisterStudent = () => {
         name: data.firstName,
         lastName: data.lastName,
         dni: data.dni,
-        phoneNumber: data.phone,
+        phoneNumber: data.phoneNumber,
         email: data.email,
         address,
         dateOfBirth: data.dateOfBirth,
@@ -115,7 +115,7 @@ const RegisterStudent = () => {
                 <Input
                   id="firstName"
                   type="text"
-                  placeholder="Ej: Julio Armando"
+                  placeholder=""
                   {...register("firstName", {
                     required: "Este campo es obligatorio",
                     minLength: {
@@ -135,7 +135,7 @@ const RegisterStudent = () => {
                 <Input
                   id="lastName"
                   type="text"
-                  placeholder="Ej: Salvador"
+                  placeholder=""
                   {...register("lastName", {
                     required: "Este campo es obligatorio",
                     minLength: {
@@ -172,7 +172,7 @@ const RegisterStudent = () => {
                 <Input
                   id="dni"
                   type="text"
-                  placeholder="Ej: 45872875"
+                  placeholder=""
                   {...register("dni", {
                     required: "Este campo es obligatorio",
                     pattern: {
@@ -192,7 +192,7 @@ const RegisterStudent = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Ej: Student@gmail.com"
+                  placeholder=""
                   {...register("email", {
                     required: "Este campo es obligatorio",
                   })}
@@ -203,12 +203,12 @@ const RegisterStudent = () => {
               </FormControl>
             </GridItem>
             <GridItem>
-              <FormControl isInvalid={errors.phone} isRequired>
+              <FormControl isInvalid={errors.phoneNumber} isRequired>
                 <FormLabel htmlFor="phoneNumber">Celular:</FormLabel>
                 <Input
                   id="phoneNumber"
                   type="tel"
-                  placeholder="Ej: 1154327854"
+                  placeholder="Ejemplo 1154327854"
                   {...register("phoneNumber", {
                     required: "Este campo es obligatorio",
                     maxLength: {
@@ -223,8 +223,8 @@ const RegisterStudent = () => {
                     },
                   })}
                 />
-                {errors.phone && (
-                  <Text color="red.500">{errors.phone.message}</Text>
+                {errors.phoneNumber && (
+                  <Text color="red.500">{errors.phoneNumber.message}</Text>
                 )}
               </FormControl>
             </GridItem>
@@ -263,7 +263,7 @@ const RegisterStudent = () => {
                 <Input
                   id="addressCity"
                   type="text"
-                  placeholder="Ej: Ciudad Autónoma de Buenos Aires"
+                  placeholder=""
                   {...register("addressCity", {
                     required: "Este campo es obligatorio",
                     minLength: {
@@ -283,7 +283,7 @@ const RegisterStudent = () => {
                 <Input
                   id="addressProvince"
                   type="text"
-                  placeholder="Ej: Buenos Aires"
+                  placeholder=""
                   {...register("addressProvince", {
                     required: "Este campo es obligatorio",
                     minLength: {
@@ -303,7 +303,7 @@ const RegisterStudent = () => {
                 <Input
                   id="addressZipcode"
                   type="text"
-                  placeholder="Ej: C1043AAE"
+                  placeholder=""
                   {...register("addressZipcode", {
                     required: "Este campo es obligatorio",
                     pattern: {
@@ -376,7 +376,7 @@ const RegisterStudent = () => {
                 <Input
                   id="emergencyContactName"
                   type="text"
-                  placeholder="Ej: Juan Carlos Salvador"
+                  placeholder=""
                   {...register("emergencyContactName", {
                     required: "Este campo es obligatorio",
                     minLength: {
@@ -395,14 +395,14 @@ const RegisterStudent = () => {
             </GridItem>
             <GridItem>
               <FormControl isInvalid={errors.emergencyContactPhone} isRequired>
-                <FormLabel htmlFor="emergencyNumber">
+                <FormLabel htmlFor="emergencyContactPhone">
                   Celular (emergencias):
                 </FormLabel>
                 <Input
-                  id="emergencyNumber"
+                  id="emergencyContactPhone"
                   type="tel"
-                  placeholder="Ej: 1163238756"
-                  {...register("emergencyNumber", {
+                  placeholder="Ejemplo 1154327854"
+                  {...register("emergencyContactPhone", {
                     required: "Este campo es obligatorio",
                     maxLength: {
                       value: 10,
@@ -438,7 +438,7 @@ const RegisterStudent = () => {
                 <Input
                   id="bloodType"
                   type="text"
-                  placeholder="Ej: O+, A-, B+, AB-"
+                  placeholder="Ingresa el grupo y factor sanguíneo."
                   {...register("bloodType", {
                     required: "Este campo es obligatorio",
                   })}
@@ -454,7 +454,7 @@ const RegisterStudent = () => {
                 <Input
                   id="allergies"
                   type="text"
-                  placeholder="Ej: Polvo, Polen, Mariscos"
+                  placeholder="Ingresa las alergias separadas por comas."
                   {...register("allergies")}
                 />
                 {errors.allergies && (
@@ -470,7 +470,7 @@ const RegisterStudent = () => {
                 <Input
                   id="additionalConditions"
                   type="text"
-                  placeholder="Ej: Ninguna"
+                  placeholder="Ingresa todos los datos relevantes."
                   {...register("additionalConditions")}
                 />
                 {errors.additionalConditions && (

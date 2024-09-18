@@ -1,5 +1,6 @@
 package com.school.service.dto;
 
+import jakarta.persistence.Column;
 import lombok.Builder;
 import lombok.Data;
 
@@ -15,6 +16,7 @@ public class StudentDto {
     private String lastName;
     private String dni;
     private String phoneNumber;
+    private String year;
     private String email;
     private LocalDate dateOfBirth;
     private String emergencyNumber;
