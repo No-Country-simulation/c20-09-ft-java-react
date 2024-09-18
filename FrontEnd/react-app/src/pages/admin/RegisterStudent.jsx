@@ -55,6 +55,7 @@ const RegisterStudent = () => {
         emergencyNumber: data.emergencyContactPhone,
         medicalInformation,
         session: data.session,
+        year: data.year,
       };
       // Muestra el Objeto que se envia
       // console.log(data);
@@ -342,6 +343,20 @@ const RegisterStudent = () => {
                 {errors.session && (
                   <Text color="red.500">{errors.session.message}</Text>
                 )}
+              </FormControl>
+            </GridItem>
+
+            <GridItem>
+              <FormControl isInvalid={errors.year} isRequired>
+                <FormLabel htmlFor="year">Año:</FormLabel>
+                <Select id="year" {...register("year")}>
+                  <option value="">Selecciona el año</option>
+                  <option value="1">1º</option>
+                  <option value="2">2º</option>
+                  <option value="3">3º</option>
+                  <option value="4">4º</option>
+                  <option value="5">5º</option>
+                </Select>
               </FormControl>
             </GridItem>
 

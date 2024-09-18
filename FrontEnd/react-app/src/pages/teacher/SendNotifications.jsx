@@ -8,82 +8,140 @@ import {
   Input,
   Select,
   Textarea,
-  useDisclosure,
   useToast,
 } from "@chakra-ui/react";
 import { useState } from "react";
+import {
+  sendNotificationToAll,
+  sendNotificationToStudent,
+  sendNotificationToParent,
+} from "../../services/notificationService"; // Asegúrate de importar correctamente tu servicio
+import { verifyChildByDni } from "../../services/adminService"; // Servicio para buscar por DNI
 import { useNavigate } from "react-router-dom";
 
 const SendNotifications = () => {
   const [year, setYear] = useState("");
-  const [shift, setShift] = useState("");
+  const [session, setSession] = useState("");
   const [sendTo, setSendTo] = useState("");
   const [dni, setDni] = useState("");
-  const [studentName, setStudentName] = useState("");
-  const [parentName, setParentName] = useState("");
+  const [fullName, setFullName] = useState(""); // Estado para el nombre completo
   const [message, setMessage] = useState("");
+  const [loading, setLoading] = useState(false);
 
-  const {
-    isOpen: isNotificationOptionsOpen,
-    onOpen: openNotificationOptions,
-    onClose: closeNotificationOptions,
-  } = useDisclosure();
-  const {
-    isOpen: isDniSearchOpen,
-    onOpen: openDniSearch,
-    onClose: closeDniSearch,
-  } = useDisclosure();
-  const {
-    isOpen: isNotificationFormOpen,
-    onOpen: openNotificationForm,
-    onClose: closeNotificationForm,
-  } = useDisclosure();
   const toast = useToast();
   const navigate = useNavigate();
 
   const handleYearChange = (e) => setYear(e.target.value);
-  const handleShiftChange = (e) => setShift(e.target.value);
+  const handleSessionChange = (e) => setSession(e.target.value);
   const handleSendToChange = (e) => {
     const value = e.target.value;
     setSendTo(value);
     if (value === "student" || value === "parent") {
-      openDniSearch();
-    } else {
-      closeDniSearch();
-    }
-    if (value !== "") {
-      openNotificationForm();
-    } else {
-      closeNotificationForm();
+      setDni(""); // Reiniciar el DNI
+      setFullName(""); // Limpiar el nombre completo
     }
   };
 
   const handleDniChange = (e) => setDni(e.target.value);
 
   const searchDni = async () => {
-    // Aquí deberías implementar la lógica para buscar el estudiante o padre por DNI.
-    // Por ejemplo, podrías hacer una llamada a una API para obtener los datos.
-    // En este ejemplo, asignamos valores ficticios.
     if (dni) {
-      setStudentName("Nombre del Estudiante");
-      setParentName("Nombre del Padre");
+      try {
+        const studentData = await verifyChildByDni(dni);
+        if (studentData) {
+          const name = `${studentData.firstName || ""} ${
+            studentData.lastName || ""
+          }`.trim();
+          setFullName(name); // Establecer el nombre completo
+        } else {
+          setFullName(""); // Limpiar si no se encuentra el estudiante
+        }
+      } catch (error) {
+        console.error(error);
+        toast({
+          title: "Error",
+          description: "No se pudo obtener la información del estudiante.",
+          status: "error",
+          duration: 5000,
+          isClosable: true,
+        });
+        setFullName(""); // Limpiar en caso de error
+      }
     } else {
-      setStudentName("");
-      setParentName("");
+      setFullName(""); // Limpiar si no hay DNI
     }
   };
 
-  const handleSend = (e) => {
-    e.preventDefault(); // Previene el comportamiento por defecto del formulario
-    // Implementa la lógica para enviar la notificación.
-    toast({
-      title: "Notificación Enviada",
-      description: "La notificación se ha enviado correctamente.",
-      status: "success",
-      duration: 5000,
-      isClosable: true,
-    });
-    setMessage("");
+  const handleSend = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      // Validar que todos los campos requeridos estén completos
+      if (!year || !session || !sendTo || !message) {
+        throw new Error("Por favor, completa todos los campos.");
+      }
+
+      let payload;
+
+      // Crea el payload según el grupo destinatario
+      if (sendTo === "all") {
+        payload = {
+          year,
+          session,
+          targetGroup: "course", // Agregar el targetGroup
+          message,
+        };
+        console.log("Enviando notificación a todos:", payload); // Log de la data
+        await sendNotificationToAll(payload);
+      } else if (sendTo === "student") {
+        payload = {
+          year,
+          session,
+          dni,
+          targetGroup: "student",
+          message,
+        };
+        console.log("Enviando notificación al estudiante:", payload); // Log de la data
+        await sendNotificationToStudent(payload);
+      } else if (sendTo === "parent") {
+        payload = {
+          year,
+          session,
+          dni,
+          targetGroup: "parent",
+          message,
+        };
+        console.log("Enviando notificación al padre:", payload); // Log de la data
+        await sendNotificationToParent(payload);
+      }
+
+      toast({
+        title: "Notificación Enviada",
+        description: "La notificación se ha enviado correctamente.",
+        status: "success",
+        duration: 5000,
+        isClosable: true,
+      });
+
+      // Limpiar estados
+      setYear("");
+      setSession("");
+      setSendTo("");
+      setDni("");
+      setFullName("");
+      setMessage("");
+    } catch (error) {
+      toast({
+        title: "Error",
+        description:
+          error.message || "Hubo un problema al enviar la notificación.",
+        status: "error",
+        duration: 5000,
+        isClosable: true,
+      });
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
@@ -98,9 +156,7 @@ const SendNotifications = () => {
           Enviar Notificación
         </Heading>
 
-        {/* Envuelve el formulario en una etiqueta <form> */}
         <form onSubmit={handleSend}>
-          {/* Selección de Año y Turno */}
           <Box mb={6}>
             <FormControl mb={4}>
               <FormLabel color="#34495E">Año:</FormLabel>
@@ -116,15 +172,18 @@ const SendNotifications = () => {
 
             <FormControl>
               <FormLabel color="#34495E">Turno:</FormLabel>
-              <Select id="shift" value={shift} onChange={handleShiftChange}>
+              <Select
+                id="session"
+                value={session}
+                onChange={handleSessionChange}
+              >
                 <option value="">Seleccionar turno</option>
-                <option value="mañana">Mañana</option>
-                <option value="tarde">Tarde</option>
+                <option value="Mañana">Mañana</option>
+                <option value="Tarde">Tarde</option>
               </Select>
             </FormControl>
           </Box>
 
-          {/* Opción de enviar a todos o a un estudiante/padre en particular */}
           <Box mb={6}>
             <FormControl>
               <FormLabel color="#34495E">Enviar a:</FormLabel>
@@ -139,13 +198,10 @@ const SendNotifications = () => {
             </FormControl>
           </Box>
 
-          {/* Busqueda por DNI para estudiantes o padres */}
-          {sendTo === "student" || sendTo === "parent" ? (
-            <Box mb={6} display={isDniSearchOpen ? "block" : "none"}>
+          {(sendTo === "student" || sendTo === "parent") && (
+            <Box mb={6}>
               <FormControl mb={4}>
-                <FormLabel color="#34495E">
-                  Buscar por DNI del estudiante:
-                </FormLabel>
+                <FormLabel color="#34495E">Buscar por DNI:</FormLabel>
                 <Input
                   id="dni"
                   value={dni}
@@ -153,27 +209,21 @@ const SendNotifications = () => {
                   placeholder="Ingrese el DNI"
                 />
               </FormControl>
-              <Button onClick={searchDni} colorScheme="blue">
+              <Button onClick={searchDni} colorScheme="blue" isDisabled={!dni}>
                 Buscar
               </Button>
               <Box mt={4}>
-                {studentName && (
-                  <>
-                    <p>
-                      <strong>Nombre del estudiante:</strong> {studentName}
-                    </p>
-                    <p>
-                      <strong>Nombre del padre:</strong> {parentName}
-                    </p>
-                  </>
+                {fullName && (
+                  <p>
+                    <strong>Nombre del estudiante:</strong> {fullName}
+                  </p>
                 )}
               </Box>
             </Box>
-          ) : null}
+          )}
 
-          {/* Formulario para redactar el mensaje */}
-          {sendTo ? (
-            <Box mb={6} display={isNotificationFormOpen ? "block" : "none"}>
+          {sendTo && (
+            <Box mb={6}>
               <FormControl mb={4}>
                 <Textarea
                   rows={4}
@@ -182,17 +232,17 @@ const SendNotifications = () => {
                   onChange={(e) => setMessage(e.target.value)}
                 />
               </FormControl>
-              {/* Cambia el botón a tipo submit */}
               <Button
                 mb={2}
                 type="submit"
                 colorScheme="orange"
-                w="full" // Esto establece el ancho del botón a 200 píxeles
+                w="full"
+                isLoading={loading}
               >
                 Enviar
               </Button>
             </Box>
-          ) : null}
+          )}
         </form>
       </Box>
     </Container>
