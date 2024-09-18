@@ -136,7 +136,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="nombre"
                   type="text"
-                  placeholder="Ej: Jorge Fabian, Daniel, Sonia"
+                  placeholder=""
                   {...register("nombre", {
                     required: "Este campo es obligatorio",
                   })}
@@ -152,7 +152,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="apellido"
                   type="text"
-                  placeholder="Ej: Vargas, Granado"
+                  placeholder=""
                   {...register("apellido", {
                     required: "Este campo es obligatorio",
                   })}
@@ -183,7 +183,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="dni"
                   type="text"
-                  placeholder="Ej: 3387456, 2945687"
+                  placeholder=""
                   {...register("dni", {
                     required: "Este campo es obligatorio",
                     pattern: {
@@ -203,7 +203,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="phoneNumber"
                   type="tel"
-                  placeholder="Ej: 1187693452"
+                  placeholder="Ejemplo 1187693452"
                   {...register("phoneNumber", {
                     required: "Este campo es obligatorio",
                     maxLength: {
@@ -229,7 +229,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="email"
                   type="email"
-                  placeholder="Ej: profesor@gmail.com"
+                  placeholder=""
                   {...register("email", {
                     required: "Este campo es obligatorio",
                   })}
@@ -277,7 +277,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="city"
                   type="text"
-                  placeholder="Ej: C.A.B.A, Ciudadela, Moreno, Palomar, Haedo"
+                  placeholder=""
                   {...register("city", {
                     required: "Este campo es obligatorio",
                   })}
@@ -293,7 +293,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="state"
                   type="text"
-                  placeholder="Ej: Buenos Aires, Salta, Neuquen, San Luis"
+                  placeholder=""
                   {...register("state", {
                     required: "Este campo es obligatorio",
                   })}
@@ -309,7 +309,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="zipCode"
                   type="text"
-                  placeholder="Ej: B1712, B1668"
+                  placeholder=""
                   {...register("zipCode", {
                     required: "Este campo es obligatorio",
                   })}
@@ -325,7 +325,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="country"
                   type="text"
-                  placeholder="Ej: Argentina, Colombia, Uruguay, Chile, Venezuela"
+                  placeholder=""
                   {...register("country", {
                     required: "Este campo es obligatorio",
                   })}
@@ -350,7 +350,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="professorId"
                   type="text"
-                  placeholder="Ej: MAT-2024-00123"
+                  placeholder="MAT-2024-00123"
                   {...register("professorId", {
                     required: "Este campo es obligatorio",
                   })}
@@ -368,7 +368,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="academicTitles"
                   type="text"
-                  placeholder="Ej: Licenciado en Matemáticas, Master en Educación, Doctorado en Física"
+                  placeholder=""
                   {...register("academicTitles", {
                     required: "Este campo es obligatorio",
                   })}
@@ -402,7 +402,7 @@ const RegisterTeacher = () => {
                         <Input
                           id={`subjects.${index}.subjectCode`}
                           type="text"
-                          placeholder="Ej: MAT-101, HIS-202"
+                          placeholder="MAT-101, HIS-202"
                           {...register(`subjects.${index}.subjectCode`, {
                             required: "Este campo es obligatorio",
                           })}
@@ -424,7 +424,7 @@ const RegisterTeacher = () => {
                         <Input
                           id={`subjects.${index}.subjectName`}
                           type="text"
-                          placeholder="Ej: Matemáticas, Historia"
+                          placeholder=""
                           {...register(`subjects.${index}.subjectName`, {
                             required: "Este campo es obligatorio",
                           })}
@@ -479,7 +479,7 @@ const RegisterTeacher = () => {
                     <Input
                       id="emergencyContactName"
                       type="text"
-                      placeholder="Ej: Juan Pérez (tío), María Gómez (vecina), Ana Rodríguez (madre)"
+                      placeholder=""
                       {...register("emergencyContactName")}
                     />
                     {errors.emergencyContactName && (
@@ -498,7 +498,7 @@ const RegisterTeacher = () => {
                     <Input
                       id="emergencyNumber"
                       type="tel"
-                      placeholder="Ej: 1187693452, 113465879234"
+                      placeholder="Ejemplo 1187693452"
                       {...register("emergencyNumber", {
                         required: "Este campo es obligatorio",
                         maxLength: {
@@ -537,7 +537,7 @@ const RegisterTeacher = () => {
                 <Input
                   id="workingHours"
                   type="text"
-                  placeholder="Ej: Lunes a Viernes de 9:00 a 17:00 horas"
+                  placeholder=""
                   {...register("workingHours", {
                     required: "Este campo es obligatorio",
                   })}

@@ -192,7 +192,7 @@ const RegisterParent = () => {
                   <Input
                     id="nombres"
                     type="text"
-                    placeholder="Ej: Juan Carlos, Alfredo"
+                    placeholder=""
                     {...register("nombres", {
                       required: "Este campo es obligatorio",
                     })}
@@ -209,7 +209,7 @@ const RegisterParent = () => {
                   <Input
                     id="apellidos"
                     type="text"
-                    placeholder="Ej: Gil, Benitez, Retamozo"
+                    placeholder=""
                     {...register("apellidos", {
                       required: "Este campo es obligatorio",
                     })}
@@ -226,7 +226,7 @@ const RegisterParent = () => {
                   <Input
                     id="dni"
                     type="text"
-                    placeholder="Ej: 35765489, 19432567"
+                    placeholder=""
                     {...register("dni", {
                       required: "Este campo es obligatorio",
                       pattern: {
@@ -247,7 +247,7 @@ const RegisterParent = () => {
                   <Input
                     id="phoneNumber"
                     type="tel"
-                    placeholder="Ej: 1187693452"
+                    placeholder="Ejemplo 1187693452"
                     {...register("phoneNumber", {
                       required: "Este campo es obligatorio",
                       maxLength: {
@@ -274,7 +274,7 @@ const RegisterParent = () => {
                   <Input
                     id="email"
                     type="email"
-                    placeholder="Ej: padre@hotmail.com"
+                    placeholder=""
                     {...register("email", {
                       required: "Este campo es obligatorio",
                     })}
@@ -291,7 +291,7 @@ const RegisterParent = () => {
                   <Input
                     id="occupation"
                     type="text"
-                    placeholder="Ej: Médico, Profesor, Empresario, Enfermero, Abogado, Ingeniero, Farmacéutico, Técnico"
+                    placeholder=""
                     {...register("occupation", {
                       required: "Este campo es obligatorio",
                     })}
@@ -309,7 +309,7 @@ const RegisterParent = () => {
                   </FormLabel>
                   <Select
                     id="relacion"
-                    placeholder="Seleccione el vínculo con el estudiante"
+                    placeholder=""
                     {...register("relacion", {
                       required: "Este campo es obligatorio",
                     })}
@@ -346,7 +346,7 @@ const RegisterParent = () => {
                   <Input
                     id="emergencyContactName"
                     type="text"
-                    placeholder="Ej: Juan Pérez (tío), María Gómez (vecina), Ana Rodríguez (madre)"
+                    placeholder=""
                     {...register("emergencyContactName")}
                   />
                   {errors.emergencyContactName && (
@@ -365,7 +365,7 @@ const RegisterParent = () => {
                   <Input
                     id="emergencyPhone"
                     type="tel"
-                    placeholder="Ej: 1187693452, 113465879234"
+                    placeholder="Ejemplo 113465879234"
                     {...register("emergencyPhone", {
                       required: "Este campo es obligatorio",
                       maxLength: {
@@ -429,7 +429,7 @@ const RegisterParent = () => {
                   <Input
                     id="state"
                     type="text"
-                    placeholder="Buenos Aires"
+                    placeholder=""
                     {...register("state", {
                       required: "Este campo es obligatorio",
                     })}
@@ -446,7 +446,7 @@ const RegisterParent = () => {
                   <Input
                     id="city"
                     type="text"
-                    placeholder="Ciudad Autónoma de Buenos Aires"
+                    placeholder=""
                     {...register("city", {
                       required: "Este campo es obligatorio",
                     })}
@@ -463,7 +463,7 @@ const RegisterParent = () => {
                   <Input
                     id="zipCode"
                     type="text"
-                    placeholder="C1043AAE"
+                    placeholder=""
                     {...register("zipCode", {
                       required: "Este campo es obligatorio",
                     })}
@@ -480,7 +480,7 @@ const RegisterParent = () => {
                   <Input
                     id="country"
                     type="text"
-                    placeholder="Argentina"
+                    placeholder=""
                     {...register("country", {
                       required: "Este campo es obligatorio",
                     })}
@@ -518,7 +518,7 @@ const RegisterParent = () => {
                       <Input
                         id={`children.${index}.childDNI`}
                         type="text"
-                        placeholder="Ej: 35765489, 19432567"
+                        placeholder=""
                         {...register(`children.${index}.childDNI`, {
                           required: "Este campo es obligatorio",
                         })}
@@ -542,7 +542,7 @@ const RegisterParent = () => {
                       <Input
                         id={`children.${index}.childName`}
                         type="text"
-                        placeholder="Nombre/s"
+                        placeholder="..."
                         {...register(`children.${index}.childName`, {
                           required: "Este campo es obligatorio",
                         })}
