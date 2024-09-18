@@ -4,19 +4,19 @@
 
 <div align="center">
 
-![HTML](https://img.shields.io/badge/HTML5-orange)
-![CSS](https://img.shields.io/badge/CSS3-blue)
-![JavaScript](https://img.shields.io/badge/Javascript-yellow)
-![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&color=646CFF)
-![Styled Components](https://img.shields.io/badge/Styled--Components-DB7093?logo=styled-components&logoColor=white&color=DB7093)
+![Estado del Proyecto](https://img.shields.io/badge/Estado-Terminado-green)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green)
+<br>
+
 ![Java](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&color=007396)
 ![Spring Boot](https://img.shields.io/badge/Spring--Boot-6DB33F?logo=spring-boot&logoColor=white&color=6DB33F)
-![Spring Security](https://img.shields.io/badge/Spring--Security-6DB33F?logo=spring-security&logoColor=white&color=6DB33F)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&color=4479A1)
-![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&color=5A29E4)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white&color=336791)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB)
 ![React Router DOM](https://img.shields.io/badge/React--Router--DOM-CA4245?logo=react-router&logoColor=white&color=CA4245)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&color=5A29E4)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black&color=85EA2D)
+![JWT](https://img.shields.io/badge/JWT-black?logo=json-web-tokens&logoColor=white&color=black)
 
 </div>
 
@@ -49,20 +49,30 @@ Esta plataforma permite a los usuarios:
 
 ## Tecnologías
 
-- **Frontend**:
-  - React
-  - Vite
-  - Styled Components
+- **Backend:**
+  - Java 17
+  - Spring Boot 3.3.3, con módulos:
+    - Actuator
+    - Data JPA
+    - Security
+    - Validation
+    - Web
+    - Thymeleaf
+  - Springdoc OpenAPI (para documentación)
+  - MySQL / PostgreSQL (base de datos)
+  - JWT (Auth0 Java JWT para autenticación)
 
-- **Backend**:
-  - Java con Spring Boot
-  - MySQL
-  - Spring Security (para autenticación y autorización)
-
-- **Otros**:
-  - Axios (para hacer peticiones HTTP)
+- **Frontend:**
+  - React 18.3.1
+  - Chakra UI y Emotion (para estilos) 
+  - React Hook Form (para manejo de formularios)
+  - Framer Motion (animaciones)
+  - Axios (para peticiones HTTP)
   - React Router DOM (para manejo de rutas)
-  - Swagger
+
+- **Otros:**
+  - Swagger (para documentación de API)
+  - Postman / Insomnia (para pruebas de API)
 
 ## Instalación
 
