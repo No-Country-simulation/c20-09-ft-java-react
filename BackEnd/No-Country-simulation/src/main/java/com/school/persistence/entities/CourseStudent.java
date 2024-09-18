@@ -4,6 +4,8 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 
+import java.sql.Timestamp;
+
 @Entity
 @Getter
 @Setter
@@ -22,4 +24,7 @@ public class CourseStudent {
     private Student student;
 
     private double nota;
+
+    private String comments;
+    private Timestamp fecha;
 }

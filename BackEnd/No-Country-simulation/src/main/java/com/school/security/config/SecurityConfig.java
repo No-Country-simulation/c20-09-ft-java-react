@@ -52,6 +52,7 @@ public class SecurityConfig {
 
                     http.requestMatchers(Arrays.toString(HttpMethod.values()), "/api/v1/subject/**").permitAll();
                     http.requestMatchers(Arrays.toString(HttpMethod.values()), "/api/v1/course/**").permitAll();
+                    http.requestMatchers(Arrays.toString(HttpMethod.values()), "/api/v1/course-student/**").permitAll();
 
 
 
