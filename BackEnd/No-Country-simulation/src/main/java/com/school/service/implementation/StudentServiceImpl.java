@@ -157,7 +157,7 @@ public class StudentServiceImpl implements GenericService
                         "Child not found with DNI: " + dni));
 
         // Devolver la información del hijo como DTO
-        return new StudentResponse(student.getDni(), student.getName(), student.getLastName());
+        return new StudentResponse(student.getDni(), student.getName(), student.getLastName(), student.getYear(), student.getSession());
     }
 
     public Optional<Student> findStudentByDni(String dni) {
