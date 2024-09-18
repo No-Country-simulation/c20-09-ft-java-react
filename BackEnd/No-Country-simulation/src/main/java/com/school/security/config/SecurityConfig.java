@@ -50,6 +50,12 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/auth/refresh-token").permitAll();
                     http.requestMatchers(HttpMethod.POST, "/api/forgot-password", "/api/reset_password").permitAll();
 
+                    http.requestMatchers(Arrays.toString(HttpMethod.values()), "/api/v1/subject/**").permitAll();
+                    http.requestMatchers(Arrays.toString(HttpMethod.values()), "/api/v1/course/**").permitAll();
+                    http.requestMatchers(Arrays.toString(HttpMethod.values()), "/api/v1/course-student/**").permitAll();
+
+
+
                     // Rutas accesibles solo con roles específicos
                     http.requestMatchers(HttpMethod.GET, "/teacher/verifyStudent/**").hasAuthority("READ_PRIVILEGES");
                     http.requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN");
