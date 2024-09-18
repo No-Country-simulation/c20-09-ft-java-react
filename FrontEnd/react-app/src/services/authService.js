@@ -5,8 +5,10 @@ import auth from "./auth";
 export const loginUser = async (loginData) => {
   try {
     const response = await auth.post("/login", loginData);
+    console.log(response.data);
     // Guardar el token en el almacenamiento local para futuras solicitudes
     sessionStorage.setItem("name", response.data.name);
+    sessionStorage.setItem("dni", response.data.dni);
     sessionStorage.setItem("token", response.data.token);
     return response.data;
   } catch (error) {

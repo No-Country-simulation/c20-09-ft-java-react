@@ -78,7 +78,9 @@ const AdminDashboard = () => {
       style={{
         backgroundColor: "#34495E", // Fondo de la página
         minHeight: "100vh", // Asegura que el fondo cubra toda la altura de la vista
-        padding: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Container
@@ -86,6 +88,7 @@ const AdminDashboard = () => {
         maxW="container.lg"
         className="dashboard-container"
         centerContent
+        style={{ marginTop: "0", paddingTop: "0" }}
       >
         <header className="header-container">
           <div className="logo-container">
@@ -109,7 +112,6 @@ const AdminDashboard = () => {
               alt="Registrar Alumnos"
               className="option-img"
             />
-            <span>Registrar Alumnos</span>
           </a>
           <a href="#" onClick={onParentOpen}>
             <Image
@@ -117,7 +119,6 @@ const AdminDashboard = () => {
               alt="Registrar Padres"
               className="option-img"
             />
-            <span>Registrar Padres</span>
           </a>
           <a href="#" onClick={onTeacherOpen}>
             <Image
@@ -125,7 +126,6 @@ const AdminDashboard = () => {
               alt="Registrar Profesores"
               className="option-img"
             />
-            <span>Registrar Profesores</span>
           </a>
         </div>
 

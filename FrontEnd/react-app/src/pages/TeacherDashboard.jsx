@@ -112,6 +112,14 @@ const TeacherDashboard = () => {
               className="option-img"
             />
           </a>
+          {/* Agregar el onClick={btnNotifications} */}
+          <a href="#" >
+            <Image
+              src={btnMensajes} //Cambiar por Nueva Imagen
+              alt="Mensajes y Notificaciones"
+              className="option-img"
+            />
+          </a>
         </div>
 
         {/* Modal de Historial Académico */}

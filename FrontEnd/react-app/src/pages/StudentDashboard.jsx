@@ -22,8 +22,9 @@ import logo from "../assets/logoDonorinoSchoolBlack.webp";
 import btnHistorial from "../assets/tu_historial_academico.webp";
 import btnRendimiento from "../assets/tu_rendimiento.webp";
 import btnMensajes from "../assets/tus_mensajes.webp";
-import ViewEvaluations from "./student/viewEvaluations";
+import ViewEvaluations from "./student/ViewEvaluations";
 import "./Dashboard.css";
+import ViewNotifications from "./student/ViewNotifications";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -162,7 +163,7 @@ const TeacherDashboard = () => {
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Rendimiento */}
-              <ViewEvaluations dniStudent={dniStudent} />
+              <ViewEvaluations />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onRendimientoClose}>
@@ -189,10 +190,7 @@ const TeacherDashboard = () => {
             <ModalHeader color="white">Mensajes</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Mensajes */}
-              <Text mb={4}>
-                Aquí puedes revisar y enviar mensajes a estudiantes y otros
-                profesores.
-              </Text>
+              <ViewNotifications />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onMensajesClose}>

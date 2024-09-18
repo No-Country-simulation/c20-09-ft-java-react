@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { getEvaluationsByDni } from "../../services/teacherService"; // Asegúrate de que esta ruta sea correcta
+import { getEvaluationsByDni } from "../../services/teacherService";
 import {
   Box,
   Container,
@@ -16,34 +16,42 @@ import {
 } from "@chakra-ui/react";
 
 const ViewEvaluations = () => {
-  const studentInfo = {
-    name: "Yo soy",
-    lastName: "Groot",
-    dni: "12222222",
-  };
-
   const [evaluations, setEvaluations] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [studentInfo, setStudentInfo] = useState({});
 
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
+    // Leer el DNI desde sessionStorage
+    const dni = sessionStorage.getItem("dni");
+    const name = sessionStorage.getItem("name");
+
+    if (dni) {
+      setStudentInfo({ name, dni });
+    }
+
     const fetchEvaluations = async () => {
-      try {
-        const data = await getEvaluationsByDni(studentInfo.dni);
-        console.log("Data received:", data); // Verifica los datos recibidos
-        setEvaluations(data);
-      } catch (error) {
-        console.error("Error fetching evaluations:", error); // Manejo de errores detallado
-        setError(error.message || "Error al obtener las evaluaciones");
-      } finally {
+      if (dni) {
+        try {
+          const data = await getEvaluationsByDni(dni);
+          console.log("Data received:", data);
+          setEvaluations(data);
+        } catch (error) {
+          console.error("Error fetching evaluations:", error);
+          setError(error.message || "Error al obtener las evaluaciones");
+        } finally {
+          setLoading(false);
+        }
+      } else {
+        setError("DNI no encontrado en sessionStorage.");
         setLoading(false);
       }
     };
 
     fetchEvaluations();
-  }, [studentInfo.dni]);
+  }, []);
 
   return (
     <Container maxW="container.lg" py={6}>
@@ -61,9 +69,6 @@ const ViewEvaluations = () => {
         >
           <Text>
             <strong>Nombre:</strong> {studentInfo.name}
-          </Text>
-          <Text>
-            <strong>Apellido:</strong> {studentInfo.lastName}
           </Text>
           <Text>
             <strong>DNI:</strong> {studentInfo.dni}
