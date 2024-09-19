@@ -27,7 +27,7 @@ public class CourseStudentController {
     }
 
     @GetMapping("/{studentId}")
-    public ResponseEntity<?> getCourseStudentByStudent(@PathVariable("studentId") Long studentId ){
+    public ResponseEntity<?> getCourseStudentByStudent(@PathVariable("studentId") String studentId ){
         List<CourseStudentDto> courses = courseStudentService.getCourseStudentByStudent(studentId);
         if(courses.isEmpty()){
             return ResponseEntity.status(HttpStatus.BAD_REQUEST).body("Incorrect student id");

@@ -8,9 +8,9 @@ import java.sql.Timestamp;
 @Getter
 @Setter
 public class CourseStudentDto {
-    private Long courseId;
+    private String materia;
     private Long studentId;
     private double nota;
-    private String comments;
+    private String estado;
     private Timestamp fecha;
 }

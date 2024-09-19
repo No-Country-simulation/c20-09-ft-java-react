@@ -34,7 +34,7 @@ public class CourseStudentService implements ICourseStudentService {
                             courseStudentBd.setStudent(student);
                             courseStudentBd.setCourse(course);
                             courseStudentBd.setNota(registro.getNota());
-                            courseStudentBd.setComments(registro.getComments());
+                            courseStudentBd.setEstado(getEstado(registro.getNota()));
                             courseStudentBd.setFecha(getTimestamp());
                             return courseStudentToDto(courseStudentRepository.save(courseStudentBd));
                         })
@@ -43,8 +43,8 @@ public class CourseStudentService implements ICourseStudentService {
 
 
     @Override
-    public List<CourseStudentDto> getCourseStudentByStudent(Long studentId) {
-        return studentRepository.findById(studentId)
+    public List<CourseStudentDto> getCourseStudentByStudent(String studentId) {
+        return studentRepository.findByDni(studentId)
                 .map(student -> courseStudentRepository.findByStudent(student)
                         .stream()
                         .map(courseStudent -> courseStudentToDto(courseStudent))
@@ -54,10 +54,10 @@ public class CourseStudentService implements ICourseStudentService {
 
     private CourseStudentDto courseStudentToDto(CourseStudent courseStudent){
         CourseStudentDto courseStudentDto = new CourseStudentDto();
-        courseStudentDto.setCourseId(courseStudent.getCourse().getId());
+        courseStudentDto.setMateria(courseStudent.getCourse().getSubject().getName());
         courseStudentDto.setStudentId(courseStudent.getStudent().getId());
         courseStudentDto.setNota(courseStudent.getNota());
-        courseStudentDto.setComments(courseStudent.getComments());
+        courseStudentDto.setEstado(courseStudent.getEstado());
         courseStudentDto.setFecha(courseStudent.getFecha());
         return courseStudentDto;
     }
@@ -65,5 +65,9 @@ public class CourseStudentService implements ICourseStudentService {
     private Timestamp getTimestamp(){
         long currentTime = System.currentTimeMillis();
         return new Timestamp(currentTime);
+    }
+
+    private String getEstado(double nota){
+        return nota > 10 ? "APROBADO" : "DESAPROBADO";
     }
 }

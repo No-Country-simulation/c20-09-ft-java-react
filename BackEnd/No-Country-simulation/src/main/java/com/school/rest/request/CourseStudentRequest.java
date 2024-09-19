@@ -9,5 +9,4 @@ public class CourseStudentRequest {
     private Long courseId;
     private Long studentId;
     private double nota;
-    private String comments;
 }

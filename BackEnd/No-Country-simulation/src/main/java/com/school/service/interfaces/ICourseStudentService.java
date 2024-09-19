@@ -8,5 +8,5 @@ import java.util.Optional;
 
 public interface ICourseStudentService {
     Optional<CourseStudentDto> createCourseStudent(CourseStudentRequest courseStudentRequest);
-    List<CourseStudentDto> getCourseStudentByStudent(Long studentId);
+    List<CourseStudentDto> getCourseStudentByStudent(String studentDni);
 }

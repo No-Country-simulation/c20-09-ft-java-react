@@ -25,6 +25,6 @@ public class CourseStudent {
 
     private double nota;
 
-    private String comments;
+    private String estado;
     private Timestamp fecha;
 }
