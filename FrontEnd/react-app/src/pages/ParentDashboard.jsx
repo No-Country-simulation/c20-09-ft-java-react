@@ -23,6 +23,9 @@ import btnHistorial from "../assets/tu_historial_academico.webp";
 import btnRendimiento from "../assets/tu_rendimiento.webp";
 import btnMensajes from "../assets/tus_mensajes.webp";
 import "./Dashboard.css";
+import ViewNotifications from "./parent/ViewNotifications";
+import AcademicRecord from "./parent/ViewAcademicRecord";
+import ViewEvaluations from "./parent/ViewEvaluations";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -132,9 +135,7 @@ const TeacherDashboard = () => {
             <ModalHeader color="white">Historial Académico</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Historial Académico */}
-              <Text mb={4}>
-                Aquí puedes consultar el historial académico de tus estudiantes.
-              </Text>
+              <AcademicRecord />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onHistorialClose}>
@@ -164,9 +165,7 @@ const TeacherDashboard = () => {
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Rendimiento */}
-              <Text mb={4}>
-                Ver Evaluations
-              </Text>
+              <ViewEvaluations />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onRendimientoClose}>
@@ -193,9 +192,7 @@ const TeacherDashboard = () => {
             <ModalHeader color="white">Mensajes</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Mensajes */}
-              <Text mb={4}>
-                Ver Notificaciones.
-              </Text>
+              <ViewNotifications />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onMensajesClose}>
