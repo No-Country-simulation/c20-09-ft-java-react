@@ -40,12 +40,19 @@ Esta aplicación está dirigida a instituciones educativas, ya sean públicas o 
 
 ## Descripción
 
-Esta plataforma permite a los usuarios:
+Esta plataforma ofrece las siguientes funcionalidades a los usuarios:
 
-- Iniciar sesión y gestionar sus sesiones.
-- Ver y editar perfiles de estudiantes.
-- Consultar el rendimiento académico.
-- Administrar usuarios y roles (para administradores).
+- **Administradores**: Administrar usuarios y roles.
+- **Alumnos, Padres y Profesores**: Iniciar sesión y gestionar sus cuentas.
+- **Profesores**: Registrar el rendimiento académico, proporcionar retroalimentación y enviar notificaciones.
+- **Alumnos y Padres**: Consultar el rendimiento académico, la retroalimentación recibida y las notificaciones.
+
+### Características
+
+- **Administradores**: Control total sobre los usuarios y roles dentro de la plataforma.
+- **Alumnos, Padres y Profesores**: Acceso a sus respectivas cuentas para gestionar información personal y académica.
+- **Profesores**: Capacidad para ingresar notas, ofrecer comentarios y comunicar novedades a los estudiantes y sus familias.
+- **Alumnos y Padres**: Visualización de información académica, retroalimentación de los profesores y notificaciones importantes.
 
 ## Tecnologías
 
@@ -166,7 +173,7 @@ Aquí puedes acceder a la documentación específica de cada una de las áreas d
 
 1. **Realiza un fork** del repositorio.
 2. **Crea una rama** para tu característica (`git checkout -b feature/nueva-caracteristica`).
-3. **Realiza los cambios** y haz commit (`git commit -m 'Añadir nueva caracteristica`)
+3. **Realiza los cambios** y haz commit (`git commit -m "Añadir nueva caracteristica"`)
 
 ## Autores
 
