@@ -9,13 +9,6 @@ import {
   useToast,
   Flex,
   Spinner,
-  Modal,
-  ModalOverlay,
-  ModalContent,
-  ModalHeader,
-  ModalBody,
-  ModalCloseButton,
-  ModalFooter,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
 
@@ -23,42 +16,44 @@ import { useEffect, useState } from "react";
 const simulatedRecords = [
   {
     id: 1,
-    studentId: "s001",
-    studentName: "Juan Pérez",
-    teacherName: "Prof. Ana López",
-    courseCode: "MAT101",
-    courseName: "Matemáticas",
-    subject: "Álgebra",
-    grade: "A",
-    percentage: 92,
-    year: 2023,
-    evaluationDate: "2023-06-15",
-    comments: "Excelente desempeño en el examen final.",
-    status: "Finalizado",
+    year: "3°",
+    subject: "Matemáticas",
+    grade: "8.5",
+    status: "PENDIENTE",
+    date: "12/09/2024",
   },
   {
     id: 2,
-    studentId: "s002",
-    studentName: "María García",
-    teacherName: "Prof. Juan Martínez",
-    courseCode: "CIE102",
-    courseName: "Ciencias",
-    subject: "Biología",
-    grade: "B",
-    percentage: 85,
-    year: 2023,
-    evaluationDate: "2023-05-10",
-    comments: "Necesita mejorar en los trabajos prácticos.",
-    status: "Finalizado",
+    year: "3°",
+    subject: "Lengua y Literatura",
+    grade: "9.0",
+    status: "APROBADA",
+    date: "12/07/2024",
   },
+  {
+    id: 3,
+    year: "3°",
+    subject: "Historia",
+    grade: "6.0",
+    status: "PENDIENTE",
+    date: "19/09/2024",
+  },
+  {
+    id: 4,
+    year: "3°",
+    subject: "Educación Física",
+    grade: "6.0",
+    status: "APROBADA",
+    date: "22/07/2024",
+  },
+
   // ... otros registros
 ];
 
 const AcademicRecord = () => {
   const [records, setRecords] = useState([]);
   const [loading, setLoading] = useState(true);
-  const [selectedRecord, setSelectedRecord] = useState(null);
-  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [selectedDetails, setSelectedDetails] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
@@ -69,14 +64,10 @@ const AcademicRecord = () => {
     }, 1000); // Simular un retraso de 1 segundo
   }, []);
 
-  const handleRecordClick = (record) => {
-    setSelectedRecord(record);
-    setIsModalOpen(true);
-  };
-
-  const handleCloseModal = () => {
-    setIsModalOpen(false);
-    setSelectedRecord(null);
+  const handleRecordClick = () => {
+    // Aquí puedes definir cómo manejar el clic en un registro
+    // Para este ejemplo, simplemente setearé los detalles manualmente
+    setSelectedDetails();
   };
 
   if (loading) {
@@ -96,7 +87,7 @@ const AcademicRecord = () => {
         boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
       >
         <Heading as="h2" mb={4} textAlign="center" color="orange.500">
-          Registro Académico
+          Historial Académico
         </Heading>
         {records.length === 0 ? (
           <Text>No hay registros académicos disponibles.</Text>
@@ -111,59 +102,21 @@ const AcademicRecord = () => {
                 bg="white"
                 boxShadow="md"
                 cursor="pointer"
-                onClick={() => handleRecordClick(record)} // Manejar clic en el registro
+                onClick={handleRecordClick} // Manejar clic en el registro
               >
-                <Text fontWeight="bold">{record.courseName}</Text>
-                <Text>Asignatura: {record.subject}</Text>
+                <Text fontWeight="bold">Año: {record.year}</Text>
+                <Text fontWeight="bold">Asignatura: {record.subject}</Text>
                 <Text>Calificación: {record.grade}</Text>
-                <Text>Año: {record.year}</Text>
+                <Text>Año: {record.date}</Text>
               </ListItem>
             ))}
           </List>
         )}
-        <Button
-          mt={6}
-          colorScheme="orange"
-          onClick={() => {
-            /* Acción para añadir un nuevo registro */
-          }}
-        >
-          Añadir Registro Académico
-        </Button>
-      </Box>
 
-      {/* Modal para mostrar los detalles del registro seleccionado */}
-      <Modal isOpen={isModalOpen} onClose={handleCloseModal}>
-        <ModalOverlay />
-        <ModalContent>
-          <ModalHeader>Detalle del Registro Académico</ModalHeader>
-          <ModalCloseButton />
-          <ModalBody>
-            {selectedRecord && (
-              <Box>
-                <Text fontWeight="bold">
-                  Nombre del Estudiante: {selectedRecord.studentName}
-                </Text>
-                <Text>Asignatura: {selectedRecord.subject}</Text>
-                <Text>Calificación: {selectedRecord.grade}</Text>
-                <Text>Porcentaje: {selectedRecord.percentage}%</Text>
-                <Text>Año: {selectedRecord.year}</Text>
-                <Text>Código del Curso: {selectedRecord.courseCode}</Text>
-                <Text>
-                  Fecha de Evaluación: {selectedRecord.evaluationDate}
-                </Text>
-                <Text>Comentarios: {selectedRecord.comments}</Text>
-                <Text>Estado: {selectedRecord.status}</Text>
-              </Box>
-            )}
-          </ModalBody>
-          <ModalFooter>
-            <Button colorScheme="blue" onClick={handleCloseModal}>
-              Cerrar
-            </Button>
-          </ModalFooter>
-        </ModalContent>
-      </Modal>
+        {/* <Button mt={6} colorScheme="orange"  onClick={() => {}}>
+          Añadir Registro Académico
+        </Button> */}
+      </Box>
     </Container>
   );
 };

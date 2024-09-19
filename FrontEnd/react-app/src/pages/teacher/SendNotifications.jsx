@@ -25,7 +25,9 @@ const SendNotifications = () => {
   const [sendTo, setSendTo] = useState("");
   const [dni, setDni] = useState("");
   const [fullName, setFullName] = useState("");
+  const [parentFullName, setParentFullName] = useState("");
   const [message, setMessage] = useState("");
+  const [subject, setSubject] = useState(""); // Estado para el asunto
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
@@ -39,6 +41,7 @@ const SendNotifications = () => {
     if (value === "student" || value === "parent") {
       setDni("");
       setFullName("");
+      setParentFullName("");
     }
   };
 
@@ -49,12 +52,22 @@ const SendNotifications = () => {
       try {
         const studentData = await verifyChildByDni(dni);
         if (studentData) {
-          const name = `${studentData.firstName || ""} ${
+          const nameStudent = `${studentData.firstName || ""} ${
             studentData.lastName || ""
           }`.trim();
-          setFullName(name);
+          setFullName(nameStudent);
+          setParentFullName(
+            `${studentData.parentName || ""} ${
+              studentData.parentLastName || ""
+            }`.trim()
+          );
+          setYear(studentData.year);
+          setSession(studentData.session);
         } else {
           setFullName("");
+          setParentFullName("");
+          setYear("");
+          setSession("");
         }
       } catch (error) {
         console.error(error);
@@ -66,9 +79,15 @@ const SendNotifications = () => {
           isClosable: true,
         });
         setFullName("");
+        setParentFullName("");
+        setYear("");
+        setSession("");
       }
     } else {
       setFullName("");
+      setParentFullName("");
+      setYear("");
+      setSession("");
     }
   };
 
@@ -76,7 +95,8 @@ const SendNotifications = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      if (!year || !session || !sendTo || !message) {
+      if (!year || !session || !sendTo || !message || !subject) {
+        // Verificar si el asunto está presente
         throw new Error("Por favor, completa todos los campos.");
       }
 
@@ -87,9 +107,9 @@ const SendNotifications = () => {
           year,
           session,
           targetGroup: "course",
+          subject, // Añadir el asunto
           message,
         };
-        console.log("Enviando notificación a todos:", payload);
         await sendNotificationToAll(payload);
       } else if (sendTo === "student") {
         if (!dni)
@@ -99,9 +119,9 @@ const SendNotifications = () => {
           session,
           dni,
           targetGroup: "student",
+          subject, // Añadir el asunto
           message,
         };
-        console.log("Enviando notificación al estudiante:", payload);
         await sendNotificationToStudent(payload);
       } else if (sendTo === "parent") {
         if (!dni) throw new Error("DNI es requerido para enviar a un padre.");
@@ -110,11 +130,13 @@ const SendNotifications = () => {
           session,
           dni,
           targetGroup: "parent",
+          subject, // Añadir el asunto
           message,
         };
-        console.log("Enviando notificación al padre:", payload);
         await sendNotificationToParent(payload);
       }
+
+      console.log("Datos a enviar:", payload);
 
       toast({
         title: "Notificación Enviada",
@@ -129,7 +151,9 @@ const SendNotifications = () => {
       setSendTo("");
       setDni("");
       setFullName("");
+      setParentFullName("");
       setMessage("");
+      setSubject(""); // Limpiar el asunto
     } catch (error) {
       toast({
         title: "Error",
@@ -160,13 +184,13 @@ const SendNotifications = () => {
           <Box mb={6}>
             <FormControl mb={4}>
               <FormLabel color="#34495E">Año:</FormLabel>
-              <Select id="year" value={year} onChange={handleYearChange}>
+              <Select id="year" value={year} onChange={handleYearChange} isReadOnly>
                 <option value="">Seleccionar año</option>
-                <option value="1º">1º</option>
-                <option value="2º">2º</option>
-                <option value="3º">3º</option>
-                <option value="4º">4º</option>
-                <option value="5º">5º</option>
+                <option value="1">1º</option>
+                <option value="2">2º</option>
+                <option value="3">3º</option>
+                <option value="4">4º</option>
+                <option value="5">5º</option>
               </Select>
             </FormControl>
 
@@ -176,6 +200,7 @@ const SendNotifications = () => {
                 id="session"
                 value={session}
                 onChange={handleSessionChange}
+                isReadOnly
               >
                 <option value="">Seleccionar turno</option>
                 <option value="Mañana">Mañana</option>
@@ -218,12 +243,25 @@ const SendNotifications = () => {
                     <strong>Nombre del estudiante:</strong> {fullName}
                   </p>
                 )}
+                {parentFullName && (
+                  <p>
+                    <strong>Nombre del padre:</strong> {parentFullName}
+                  </p>
+                )}
               </Box>
             </Box>
           )}
 
           {sendTo && (
             <Box mb={6}>
+              <FormControl mb={4}>
+                <FormLabel color="#34495E">Asunto</FormLabel>
+                <Input
+                  value={subject}
+                  onChange={(e) => setSubject(e.target.value)} // Capturar el valor del asunto
+                  placeholder="Ingrese el asunto"
+                />
+              </FormControl>
               <FormControl mb={4}>
                 <Textarea
                   rows={4}

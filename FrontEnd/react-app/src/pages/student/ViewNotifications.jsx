@@ -17,17 +17,6 @@ import {
 import { useEffect, useState } from "react";
 import { getNotificationsForStudent } from "../../services/notificationService"; // Asegúrate de tener esta función
 
-const mockSubject = () => {
-  const subjects = [
-    "Actualización del horario",
-    "Nuevo material disponible",
-    "Examen final",
-    "Reunión de padres",
-    "Cambio de aula",
-  ];
-  return subjects[Math.floor(Math.random() * subjects.length)];
-};
-
 const ViewNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -52,14 +41,7 @@ const ViewNotifications = () => {
 
       try {
         const data = await getNotificationsForStudent(dni);
-        const notificationsWithSubject = data.map((notification) => ({
-          ...notification,
-          date: new Date(
-            Date.now() - Math.random() * 10000000000
-          ).toISOString(),
-          subject: mockSubject(),
-        }));
-        setNotifications(notificationsWithSubject);
+        setNotifications(data); // Suponemos que `data` ya contiene `subject` y `sentAt`
       } catch (error) {
         console.error(error);
         toast({
@@ -137,14 +119,13 @@ const ViewNotifications = () => {
               >
                 <p>
                   <strong>Fecha:</strong>{" "}
-                  {new Date(notification.date).toLocaleDateString()}
+                  {new Date(notification.sentAt).toLocaleDateString()}
                 </p>
                 <p>
                   <strong>Asunto:</strong> {notification.subject}
                 </p>
                 <p>
-                  <strong>Mensaje: </strong>
-                  {notification.message}
+                  <strong>Mensaje:</strong> {notification.message}
                 </p>
               </div>
             ))}
@@ -170,7 +151,7 @@ const ViewNotifications = () => {
               <Box mb={4} p={4} borderWidth={1} borderRadius="md" bg="#f4f4f4">
                 <Text>
                   <strong>Fecha:</strong>{" "}
-                  {new Date(selectedNotification.date).toLocaleDateString()}
+                  {new Date(selectedNotification.sentAt).toLocaleDateString()}
                 </Text>
                 <Text>
                   <strong>Asunto:</strong> {selectedNotification.subject}
