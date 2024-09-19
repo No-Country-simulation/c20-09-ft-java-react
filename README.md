@@ -4,19 +4,19 @@
 
 <div align="center">
 
-![HTML](https://img.shields.io/badge/HTML5-orange)
-![CSS](https://img.shields.io/badge/CSS3-blue)
-![JavaScript](https://img.shields.io/badge/Javascript-yellow)
-![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB)
-![Vite](https://img.shields.io/badge/Vite-646CFF?logo=vite&logoColor=white&color=646CFF)
-![Styled Components](https://img.shields.io/badge/Styled--Components-DB7093?logo=styled-components&logoColor=white&color=DB7093)
+![Estado del Proyecto](https://img.shields.io/badge/Estado-Terminado-green)
+![PRs Welcome](https://img.shields.io/badge/PRs-welcome-green)
+<br>
+
 ![Java](https://img.shields.io/badge/Java-007396?logo=java&logoColor=white&color=007396)
 ![Spring Boot](https://img.shields.io/badge/Spring--Boot-6DB33F?logo=spring-boot&logoColor=white&color=6DB33F)
-![Spring Security](https://img.shields.io/badge/Spring--Security-6DB33F?logo=spring-security&logoColor=white&color=6DB33F)
 ![MySQL](https://img.shields.io/badge/MySQL-4479A1?logo=mysql&logoColor=white&color=4479A1)
-![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&color=5A29E4)
+![PostgreSQL](https://img.shields.io/badge/PostgreSQL-336791?logo=postgresql&logoColor=white&color=336791)
+![React](https://img.shields.io/badge/React-20232A?logo=react&logoColor=61DAFB&color=61DAFB)
 ![React Router DOM](https://img.shields.io/badge/React--Router--DOM-CA4245?logo=react-router&logoColor=white&color=CA4245)
+![Axios](https://img.shields.io/badge/Axios-5A29E4?logo=axios&logoColor=white&color=5A29E4)
 ![Swagger](https://img.shields.io/badge/Swagger-85EA2D?logo=swagger&logoColor=black&color=85EA2D)
+![JWT](https://img.shields.io/badge/JWT-black?logo=json-web-tokens&logoColor=white&color=black)
 
 </div>
 
@@ -40,29 +40,46 @@ Esta aplicación está dirigida a instituciones educativas, ya sean públicas o 
 
 ## Descripción
 
-Esta plataforma permite a los usuarios:
+Esta plataforma ofrece las siguientes funcionalidades a los usuarios:
 
-- Iniciar sesión y gestionar sus sesiones.
-- Ver y editar perfiles de estudiantes.
-- Consultar el rendimiento académico.
-- Administrar usuarios y roles (para administradores).
+- **Administradores**: Administrar usuarios y roles.
+- **Alumnos, Padres y Profesores**: Iniciar sesión y gestionar sus cuentas.
+- **Profesores**: Registrar el rendimiento académico, proporcionar retroalimentación y enviar notificaciones.
+- **Alumnos y Padres**: Consultar el rendimiento académico, la retroalimentación recibida y las notificaciones.
+
+#### Características
+
+- **Administradores**: Control total sobre los usuarios y roles dentro de la plataforma.
+- **Alumnos, Padres y Profesores**: Acceso a sus respectivas cuentas para gestionar información personal y académica.
+- **Profesores**: Capacidad para ingresar notas, ofrecer comentarios y comunicar novedades a los estudiantes y sus familias.
+- **Alumnos y Padres**: Visualización de información académica, retroalimentación de los profesores y notificaciones importantes.
 
 ## Tecnologías
 
-- **Frontend**:
-  - React
-  - Vite
-  - Styled Components
+- **Backend:**
+  - Java 17
+  - Spring Boot 3.3.3, con módulos:
+    - Actuator
+    - Data JPA
+    - Security
+    - Validation
+    - Web
+    - Thymeleaf
+  - Springdoc OpenAPI (para documentación)
+  - MySQL / PostgreSQL (base de datos)
+  - JWT (Auth0 Java JWT para autenticación)
 
-- **Backend**:
-  - Java con Spring Boot
-  - MySQL
-  - Spring Security (para autenticación y autorización)
-
-- **Otros**:
-  - Axios (para hacer peticiones HTTP)
+- **Frontend:**
+  - React 18.3.1
+  - Chakra UI y Emotion (para estilos) 
+  - React Hook Form (para manejo de formularios)
+  - Framer Motion (animaciones)
+  - Axios (para peticiones HTTP)
   - React Router DOM (para manejo de rutas)
-  - Swagger
+
+- **Otros:**
+  - Swagger (para documentación de API)
+  - Postman / Insomnia (para pruebas de API)
 
 ## Instalación
 
@@ -147,7 +164,7 @@ Aquí puedes acceder a la documentación específica de cada una de las áreas d
 
 - [Diseño](./FrontEnd/design/README.md)
 - [Frontend](./FrontEnd/README.md)
-- [Backend](./BackEnd/README.md)
+- [Backend](https://github.com/No-Country-simulation/c20-09-ft-java-react/blob/develop/BackEnd/No-Country-simulation/README.md)
 - [Test](./Test/README.md)
 
 ## Contribución
@@ -156,7 +173,7 @@ Aquí puedes acceder a la documentación específica de cada una de las áreas d
 
 1. **Realiza un fork** del repositorio.
 2. **Crea una rama** para tu característica (`git checkout -b feature/nueva-caracteristica`).
-3. **Realiza los cambios** y haz commit (`git commit -m 'Añadir nueva caracteristica`)
+3. **Realiza los cambios** y haz commit (`git commit -m "Añadir nueva caracteristica"`)
 
 ## Autores
 

@@ -19,6 +19,7 @@ import { loadEvaluation } from "../../services/teacherService";
 const RegisterEvaluations = () => {
   const [registrationSuccess, setRegistrationSuccess] = useState(false);
   const [confirmationMessage, setConfirmationMessage] = useState("");
+  const [loading, setLoading] = useState(false);
   const toast = useToast();
 
   const {
@@ -32,7 +33,7 @@ const RegisterEvaluations = () => {
       dniStudent: "",
       studentName: "",
       studentLastName: "",
-      year: "",
+      studentYear: "",
       trimester: "",
       subject: "",
       feedback: "",
@@ -48,11 +49,16 @@ const RegisterEvaluations = () => {
   const handleDniChange = async (event) => {
     const dni = event.target.value;
     if (dni.length === 8) {
+      setLoading(true);
       try {
         const studentData = await verifyChildByDni(dni);
+        console.log(studentData); // Verifica la respuesta
         if (studentData) {
           setValue("studentName", studentData.firstName || "");
           setValue("studentLastName", studentData.lastName || "");
+          setValue("studentYear", studentData.year || ""); // Asegúrate de que esto sea 'studentData.year'
+        } else {
+          clearStudentFields();
         }
       } catch (error) {
         console.error(error);
@@ -63,14 +69,23 @@ const RegisterEvaluations = () => {
           duration: 5000,
           isClosable: true,
         });
+        clearStudentFields();
+      } finally {
+        setLoading(false);
       }
     } else {
-      setValue("studentName", "");
-      setValue("studentLastName", "");
+      clearStudentFields();
     }
   };
 
+  const clearStudentFields = () => {
+    setValue("studentName", "");
+    setValue("studentLastName", "");
+    setValue("studentYear", "");
+  };
+
   const onSubmit = async (data) => {
+    setLoading(true);
     try {
       const evaluations = data.evaluations.map((evaluation) => ({
         subjectCode: evaluation.subjectCode,
@@ -82,14 +97,14 @@ const RegisterEvaluations = () => {
         dniStudent: data.dniStudent,
         studentName: data.studentName,
         studentLastName: data.studentLastName,
-        year: data.year,
+        year: data.studentYear,
         trimester: data.trimester,
         subject: data.subject,
         feedback: data.feedback,
         evaluations,
       };
 
-      const response = await loadEvaluation(finalData); // Utiliza el endpoint adecuado
+      const response = await loadEvaluation(finalData);
 
       setConfirmationMessage(
         `Evaluaciones registradas con éxito. ${response.message || ""}`
@@ -113,6 +128,8 @@ const RegisterEvaluations = () => {
         isClosable: true,
       });
       setRegistrationSuccess(false);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -129,7 +146,6 @@ const RegisterEvaluations = () => {
         </Heading>
         <form onSubmit={handleSubmit(onSubmit)}>
           <Grid templateColumns="repeat(auto-fill, minmax(1, 1fr))" gap={6}>
-            {/* Información del Estudiante */}
             <Box>
               <FormControl isRequired>
                 <FormLabel color="#34495E" htmlFor="dniStudent">
@@ -137,14 +153,15 @@ const RegisterEvaluations = () => {
                 </FormLabel>
                 <Input
                   id="dniStudent"
-                  {...register("dniStudent")}
-                  placeholder="Ingresa el DNI del alumno"
+                  {...register("dniStudent", { required: true })}
+                  placeholder=""
                   onChange={handleDniChange}
                   _focus={{
                     borderColor: "#34495E",
                     boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
                   }}
                 />
+                {errors.dniStudent && <span>DNI es requerido.</span>}
               </FormControl>
 
               <FormControl isRequired>
@@ -154,7 +171,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="studentName"
                   {...register("studentName")}
-                  placeholder="Esperando DNI..."
+                  placeholder=""
                   readOnly
                   border="none"
                   background="transparent"
@@ -170,7 +187,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="studentLastName"
                   {...register("studentLastName")}
-                  placeholder="Esperando DNI..."
+                  placeholder=""
                   readOnly
                   border="none"
                   background="transparent"
@@ -180,29 +197,35 @@ const RegisterEvaluations = () => {
               </FormControl>
 
               <FormControl isRequired>
-                <FormLabel color="#34495E" htmlFor="year">
+                <FormLabel color="#34495E" htmlFor="studentYear">
                   Año:
                 </FormLabel>
-                <Select id="year" {...register("year")}>
-                  <option value="">Selecciona el año</option>
-                  <option value="1">1º</option>
-                  <option value="2">2º</option>
-                  <option value="3">3º</option>
-                  <option value="4">4º</option>
-                  <option value="5">5º</option>
-                </Select>
+                <Input
+                  id="studentYear"
+                  {...register("studentYear")}
+                  placeholder=""
+                  readOnly
+                  border="none"
+                  background="transparent"
+                  _focus={{ boxShadow: "none" }}
+                  _hover={{ border: "none" }}
+                />
               </FormControl>
 
               <FormControl isRequired>
                 <FormLabel color="#34495E" htmlFor="trimester">
                   Trimestre:
                 </FormLabel>
-                <Select id="trimester" {...register("trimester")}>
+                <Select
+                  id="trimester"
+                  {...register("trimester", { required: true })}
+                >
                   <option value="">Selecciona el trimestre</option>
                   <option value="primero">Primero</option>
                   <option value="segundo">Segundo</option>
                   <option value="tercero">Tercero</option>
                 </Select>
+                {errors.trimester && <span>Trimestre es requerido.</span>}
               </FormControl>
 
               <FormControl isRequired>
@@ -211,13 +234,14 @@ const RegisterEvaluations = () => {
                 </FormLabel>
                 <Input
                   id="subject"
-                  {...register("subject")}
-                  placeholder="Ingresa la materia"
+                  {...register("subject", { required: true })}
+                  placeholder=""
                   _focus={{
                     borderColor: "#34495E",
                     boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
                   }}
                 />
+                {errors.subject && <span>Materia es requerida.</span>}
               </FormControl>
 
               <FormControl isRequired>
@@ -226,7 +250,7 @@ const RegisterEvaluations = () => {
                 </FormLabel>
                 <Textarea
                   id="feedback"
-                  {...register("feedback")}
+                  {...register("feedback", { required: true })}
                   rows={4}
                   placeholder="Escribe la retroalimentación"
                   _focus={{
@@ -234,6 +258,9 @@ const RegisterEvaluations = () => {
                     boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
                   }}
                 />
+                {errors.feedback && (
+                  <span>Retroalimentación es requerida.</span>
+                )}
               </FormControl>
 
               <Button type="submit" colorScheme="orange" width="full" mt={4}>

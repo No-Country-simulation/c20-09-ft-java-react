@@ -26,6 +26,7 @@ import btnMensajes from "../assets/tus_mensajes.webp";
 import "./Dashboard.css";
 import RegisterEvaluations from "./teacher/RegisterEvaluations";
 import SendNotifications from "./teacher/sendNotifications";
+import AcademicRecord from "./teacher/AcademicRecord";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -66,14 +67,16 @@ const TeacherDashboard = () => {
       style={{
         backgroundColor: "#34495E", // Fondo de la página
         minHeight: "100vh", // Asegura que el fondo cubra toda la altura de la vista
-        padding: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Container
         bg="#f4f4f4"
         maxW="container.lg"
         className="dashboard-container"
-        centerContent
+        style={{ marginTop: "0", paddingTop: "0" }}
       >
         <header className="header-container">
           <div className="logo-container">
@@ -113,7 +116,7 @@ const TeacherDashboard = () => {
             />
           </a>
           {/* Agregar el onClick={btnNotifications} */}
-          <a href="#" >
+          <a href="#">
             <Image
               src={btnMensajes} //Cambiar por Nueva Imagen
               alt="Mensajes y Notificaciones"
@@ -136,12 +139,9 @@ const TeacherDashboard = () => {
             flexDirection="column"
           >
             <ModalCloseButton />
-            <ModalHeader color="white">Historial Académico</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Historial Académico */}
-              <Text mb={4}>
-                Aquí puedes consultar el historial académico de tus estudiantes.
-              </Text>
+              <AcademicRecord />
               {/* Aquí puedes incluir el componente o el contenido específico */}
             </ModalBody>
             <ModalFooter>
@@ -172,7 +172,7 @@ const TeacherDashboard = () => {
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Rendimiento */}
-              <RegisterEvaluations/>
+              <RegisterEvaluations />
               {/* Aquí puedes incluir el componente o el contenido específico */}
             </ModalBody>
             <ModalFooter>
@@ -197,7 +197,6 @@ const TeacherDashboard = () => {
             flexDirection="column"
           >
             <ModalCloseButton />
-            <ModalHeader color="white">Mensajes</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Mensajes */}
               <SendNotifications />

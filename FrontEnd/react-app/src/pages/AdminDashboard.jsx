@@ -14,12 +14,9 @@ import {
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import ConfirmModal from "../components/ConfirmModal";
-import ExportData from "../components/ExportData";
-import Statistics from "../components/Statistics";
 import RegisterParent from "./admin/RegisterParent";
 import RegisterStudent from "./admin/RegisterStudent";
 import RegisterTeacher from "./admin/RegisterTeacher";
-import UserManagement from "./admin/UserManagement";
 import logo from "../assets/logoDonorinoSchoolBlack.webp";
 import btnTeacher from "../assets/registrar_profesores.webp";
 import btnStudent from "../assets/registrar_alumnos.webp";

@@ -58,5 +58,11 @@ public class Notification {
     private LocalDateTime sentAt;
 
     // Lista de respuestas a la notificación, si se han agregado
-    private List<String> responses;
+    //private List<String> responses;
+
+    private String subject;
+
+    private LocalDateTime responseTime;
+
+    private String responseText;
 }

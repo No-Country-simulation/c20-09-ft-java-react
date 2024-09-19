@@ -22,6 +22,7 @@
 - [Plantilla de Notificaciones](#plantilla-de-notificaciones)
 - [Plantilla de Evaluaciones](#plantilla-de-evaluaciones)
 - [Plantilla de Historial Académico](#plantilla-de-historial-académico)
+- [Autor](#autor)
 
 ## Contexto del Proyecto
  Debido a que en nuestro equipo de trabajo no contábamos con un diseñador `UX/UI` y estábamos conformados mayormente por desarrolladores backend, tomamos la decisión de desarrollar las vistas directamente en `HTML`, `CSS` y `Javascript`. Posteriormente, el desarrollador frontend se encargará de integrar estos diseños en `React`, la tecnología elegida para nuestra plataforma School Manager.

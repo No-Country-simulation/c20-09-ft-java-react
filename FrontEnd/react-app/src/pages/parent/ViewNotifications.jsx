@@ -15,7 +15,7 @@ import {
   Textarea,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getNotificationsForStudent } from "../../services/notificationService"; // Asegúrate de tener esta función
+import { getNotificationsForParent } from "../../services/notificationService"; // Asegúrate de tener esta función
 
 const mockSubject = () => {
   const subjects = [
@@ -51,7 +51,7 @@ const ViewNotifications = () => {
       }
 
       try {
-        const data = await getNotificationsForStudent(dni);
+        const data = await getNotificationsForParent(dni);
         const notificationsWithSubject = data.map((notification) => ({
           ...notification,
           date: new Date(

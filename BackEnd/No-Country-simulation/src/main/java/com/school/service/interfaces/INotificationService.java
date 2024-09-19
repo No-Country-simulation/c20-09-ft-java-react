@@ -30,4 +30,6 @@ public interface INotificationService {
      * @param notificationDTO El objeto DTO que contiene los detalles de la notificación.
      */
     void sendNotificationToParent(NotificationDTO notificationDTO);
+
+    void addResponse(Long notificationId, String responseText);
 }

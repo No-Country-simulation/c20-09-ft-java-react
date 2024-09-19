@@ -15,8 +15,8 @@ import {
   sendNotificationToAll,
   sendNotificationToStudent,
   sendNotificationToParent,
-} from "../../services/notificationService"; // Asegúrate de importar correctamente tu servicio
-import { verifyChildByDni } from "../../services/adminService"; // Servicio para buscar por DNI
+} from "../../services/notificationService";
+import { verifyChildByDni } from "../../services/adminService";
 import { useNavigate } from "react-router-dom";
 
 const SendNotifications = () => {
@@ -24,7 +24,7 @@ const SendNotifications = () => {
   const [session, setSession] = useState("");
   const [sendTo, setSendTo] = useState("");
   const [dni, setDni] = useState("");
-  const [fullName, setFullName] = useState(""); // Estado para el nombre completo
+  const [fullName, setFullName] = useState("");
   const [message, setMessage] = useState("");
   const [loading, setLoading] = useState(false);
 
@@ -37,24 +37,24 @@ const SendNotifications = () => {
     const value = e.target.value;
     setSendTo(value);
     if (value === "student" || value === "parent") {
-      setDni(""); // Reiniciar el DNI
-      setFullName(""); // Limpiar el nombre completo
+      setDni("");
+      setFullName("");
     }
   };
 
   const handleDniChange = (e) => setDni(e.target.value);
 
   const searchDni = async () => {
-    if (dni) {
+    if (dni.length === 8) {
       try {
         const studentData = await verifyChildByDni(dni);
         if (studentData) {
           const name = `${studentData.firstName || ""} ${
             studentData.lastName || ""
           }`.trim();
-          setFullName(name); // Establecer el nombre completo
+          setFullName(name);
         } else {
-          setFullName(""); // Limpiar si no se encuentra el estudiante
+          setFullName("");
         }
       } catch (error) {
         console.error(error);
@@ -65,10 +65,10 @@ const SendNotifications = () => {
           duration: 5000,
           isClosable: true,
         });
-        setFullName(""); // Limpiar en caso de error
+        setFullName("");
       }
     } else {
-      setFullName(""); // Limpiar si no hay DNI
+      setFullName("");
     }
   };
 
@@ -76,24 +76,24 @@ const SendNotifications = () => {
     e.preventDefault();
     setLoading(true);
     try {
-      // Validar que todos los campos requeridos estén completos
       if (!year || !session || !sendTo || !message) {
         throw new Error("Por favor, completa todos los campos.");
       }
 
       let payload;
 
-      // Crea el payload según el grupo destinatario
       if (sendTo === "all") {
         payload = {
           year,
           session,
-          targetGroup: "course", // Agregar el targetGroup
+          targetGroup: "course",
           message,
         };
-        console.log("Enviando notificación a todos:", payload); // Log de la data
+        console.log("Enviando notificación a todos:", payload);
         await sendNotificationToAll(payload);
       } else if (sendTo === "student") {
+        if (!dni)
+          throw new Error("DNI es requerido para enviar a un estudiante.");
         payload = {
           year,
           session,
@@ -101,9 +101,10 @@ const SendNotifications = () => {
           targetGroup: "student",
           message,
         };
-        console.log("Enviando notificación al estudiante:", payload); // Log de la data
+        console.log("Enviando notificación al estudiante:", payload);
         await sendNotificationToStudent(payload);
       } else if (sendTo === "parent") {
+        if (!dni) throw new Error("DNI es requerido para enviar a un padre.");
         payload = {
           year,
           session,
@@ -111,7 +112,7 @@ const SendNotifications = () => {
           targetGroup: "parent",
           message,
         };
-        console.log("Enviando notificación al padre:", payload); // Log de la data
+        console.log("Enviando notificación al padre:", payload);
         await sendNotificationToParent(payload);
       }
 
@@ -123,7 +124,6 @@ const SendNotifications = () => {
         isClosable: true,
       });
 
-      // Limpiar estados
       setYear("");
       setSession("");
       setSendTo("");

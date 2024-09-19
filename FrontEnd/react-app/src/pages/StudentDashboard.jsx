@@ -23,8 +23,9 @@ import btnHistorial from "../assets/tu_historial_academico.webp";
 import btnRendimiento from "../assets/tu_rendimiento.webp";
 import btnMensajes from "../assets/tus_mensajes.webp";
 import ViewEvaluations from "./student/ViewEvaluations";
-import "./Dashboard.css";
 import ViewNotifications from "./student/ViewNotifications";
+import "./Dashboard.css";
+import AcademicRecord from "./student/ViewAcademicRecord";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -66,7 +67,9 @@ const TeacherDashboard = () => {
       style={{
         backgroundColor: "#34495E", // Fondo de la página
         minHeight: "100vh", // Asegura que el fondo cubra toda la altura de la vista
-        padding: "20px",
+        display: "flex",
+        justifyContent: "center",
+        alignItems: "center",
       }}
     >
       <Container
@@ -74,6 +77,7 @@ const TeacherDashboard = () => {
         maxW="container.lg"
         className="dashboard-container"
         centerContent
+        style={{ marginTop: "0", paddingTop: "0" }}
       >
         <header className="header-container">
           <div className="logo-container">
@@ -128,12 +132,9 @@ const TeacherDashboard = () => {
             flexDirection="column"
           >
             <ModalCloseButton />
-            <ModalHeader color="white">Historial Académico</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Historial Académico */}
-              <Text mb={4}>
-                Aquí puedes consultar el historial académico de tus estudiantes.
-              </Text>
+              <AcademicRecord />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onHistorialClose}>
@@ -187,7 +188,6 @@ const TeacherDashboard = () => {
             flexDirection="column"
           >
             <ModalCloseButton />
-            <ModalHeader color="white">Mensajes</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Mensajes */}
               <ViewNotifications />
