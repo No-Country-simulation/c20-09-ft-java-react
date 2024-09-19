@@ -154,7 +154,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="dniStudent"
                   {...register("dniStudent", { required: true })}
-                  placeholder="Ingresa el DNI del alumno"
+                  placeholder=""
                   onChange={handleDniChange}
                   _focus={{
                     borderColor: "#34495E",
@@ -171,7 +171,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="studentName"
                   {...register("studentName")}
-                  placeholder="Esperando DNI..."
+                  placeholder=""
                   readOnly
                   border="none"
                   background="transparent"
@@ -187,7 +187,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="studentLastName"
                   {...register("studentLastName")}
-                  placeholder="Esperando DNI..."
+                  placeholder=""
                   readOnly
                   border="none"
                   background="transparent"
@@ -203,7 +203,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="studentYear"
                   {...register("studentYear")}
-                  placeholder="Año del alumno"
+                  placeholder=""
                   readOnly
                   border="none"
                   background="transparent"
@@ -235,7 +235,7 @@ const RegisterEvaluations = () => {
                 <Input
                   id="subject"
                   {...register("subject", { required: true })}
-                  placeholder="Ingresa la materia"
+                  placeholder=""
                   _focus={{
                     borderColor: "#34495E",
                     boxShadow: "0 0 15px rgba(52, 73, 94, 0.5)",
