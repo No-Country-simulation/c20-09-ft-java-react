@@ -3,6 +3,8 @@ package com.school.service.dto;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 
+import java.time.LocalDateTime;
+
 /**
  * NotificationDTO es un registro que encapsula los datos necesarios para enviar una notificación
  * a un estudiante, padre o grupo de curso. Este DTO es utilizado para recibir las solicitudes
@@ -28,5 +30,13 @@ public record NotificationDTO(
         // El DNI del estudiante para identificarlo en la base de datos (obligatorio y debe ser un número de 8 dígitos).
         @NotBlank(message = "El DNI no puede estar vacío")
         @Pattern(regexp = "\\d{8}", message = "El DNI debe ser un número de 8 dígitos")
-        String dni ) {
+        String dni,
+
+       LocalDateTime sentAt,
+
+        String subject,
+
+        String responseText,
+
+        LocalDateTime responseTime) {
 }

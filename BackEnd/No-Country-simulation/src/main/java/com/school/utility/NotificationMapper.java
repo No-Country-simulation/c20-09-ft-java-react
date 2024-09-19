@@ -29,7 +29,11 @@ public class NotificationMapper {
                 notification.getSession(),
                 notification.getMessage(),
                 notification.getTargetGroup(),
-                notification.getDni());
+                notification.getDni(),
+                notification.getSentAt(),
+                notification.getSubject(),
+                notification.getResponseText(),
+                notification.getResponseTime());
     }
 
     /**
@@ -56,6 +60,9 @@ public class NotificationMapper {
         notification.setMessage(notificationDTO.message());
         notification.setTargetGroup(notificationDTO.targetGroup());
         notification.setDni(notificationDTO.dni());
+        notification.setSubject(notificationDTO.subject());
+        notification.setResponseText(notificationDTO.responseText());
+        notification.setResponseTime(notificationDTO.responseTime());
         return notification;
     }
 }

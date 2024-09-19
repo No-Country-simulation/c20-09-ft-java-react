@@ -194,4 +194,14 @@ public class NotificationController {
 
         return ResponseEntity.ok(notificationDTOs);
     }
+
+    @Secured({"ROLE_STUDENT", "ROLE_PARENT"})
+    @PostMapping("/{id}/responses")
+    public ResponseEntity<String> respondToNotification(@PathVariable Long id, @RequestParam String responseText) {
+
+        notificationService.addResponse(id, responseText);
+
+        return ResponseEntity.ok("Respuesta añadida a la notificación.");
+    }
+
 }

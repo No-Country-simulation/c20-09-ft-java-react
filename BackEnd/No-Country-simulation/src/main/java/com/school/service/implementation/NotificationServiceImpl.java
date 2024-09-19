@@ -11,7 +11,12 @@ import com.school.utility.NotificationMapper;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Set;
 
 @Service
@@ -27,7 +32,7 @@ public class NotificationServiceImpl implements INotificationService {
 
     /**
      * Envía una notificación a todos los estudiantes y padres de un curso.
-     *
+     * <p>
      * Convierte el objeto {@code NotificationDTO} en una entidad {@code Notification}.
      * Verifica que el año y el turno estén presentes y establece el grupo objetivo
      * como "course". Finalmente, guarda la notificación en la base de datos.
@@ -51,13 +56,13 @@ public class NotificationServiceImpl implements INotificationService {
 
     /**
      * Envía una notificación a un estudiante específico y su padre.
-     *
+     * <p>
      * Verifica el DNI del estudiante, busca al estudiante y su padre en la base de datos,
      * y asigna estos a la notificación. Finalmente, guarda la notificación en la base de datos.
      *
      * @param notification La notificación que se va a enviar.
      * @throws IllegalArgumentException Si el DNI del estudiante es inválido.
-     * @throws EntityNotFoundException Si el estudiante o el padre no son encontrados.
+     * @throws EntityNotFoundException  Si el estudiante o el padre no son encontrados.
      */
     @Override
     public void sendNotificationToStudent(Notification notification) {
@@ -78,6 +83,7 @@ public class NotificationServiceImpl implements INotificationService {
         notification.setStudent(student);
         notification.setParent(parent);
         notification.setTargetGroup("student");
+        notification.setSentAt(LocalDateTime.now());
 
         // Guarda la notificación
         notificationRepository.save(notification);
@@ -85,7 +91,7 @@ public class NotificationServiceImpl implements INotificationService {
 
     /**
      * Envía una notificación a un padre específico basado en el DNI del estudiante.
-     *
+     * <p>
      * Convierte el objeto {@code NotificationDTO} en una entidad {@code Notification}.
      * Verifica que el DNI, el año y el turno estén presentes. Luego, busca al estudiante
      * y al padre en la base de datos, asigna el padre a la notificación y establece el grupo
@@ -93,7 +99,7 @@ public class NotificationServiceImpl implements INotificationService {
      *
      * @param notificationDTO El DTO que contiene los detalles de la notificación.
      * @throws IllegalArgumentException Si el DNI, el año o el turno están vacíos.
-     * @throws EntityNotFoundException Si el estudiante o el padre no son encontrados.
+     * @throws EntityNotFoundException  Si el estudiante o el padre no son encontrados.
      */
     @Override
     public void sendNotificationToParent(NotificationDTO notificationDTO) {
@@ -116,6 +122,7 @@ public class NotificationServiceImpl implements INotificationService {
         Parent parent = parents.iterator().next(); // Accede al primer padre
         notification.setParent(parent);
         notification.setTargetGroup("parent");
+        notification.setSentAt(LocalDateTime.now());
 
         // Guarda la notificación
         notificationRepository.save(notification);
@@ -162,5 +169,20 @@ public class NotificationServiceImpl implements INotificationService {
                 throw new IllegalArgumentException("El DNI debe tener 8 dígitos.");
             }
         }
+    }
+
+    @Transactional
+    @Override
+    public void addResponse(Long notificationId, String responseText) {
+        // Busca la notificación por ID
+        Notification notification = notificationRepository.findById(notificationId)
+                .orElseThrow(() -> new EntityNotFoundException("Notificación no encontrada con ID: " + notificationId));
+
+        // Asigna los valores de la respuesta
+        notification.setResponseTime(LocalDateTime.now());
+        notification.setResponseText(responseText);
+
+        // Guarda la notificación actualizada en la base de datos
+        notificationRepository.save(notification);
     }
 }
