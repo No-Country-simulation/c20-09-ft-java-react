@@ -47,7 +47,7 @@ Esta plataforma ofrece las siguientes funcionalidades a los usuarios:
 - **Profesores**: Registrar el rendimiento académico, proporcionar retroalimentación y enviar notificaciones.
 - **Alumnos y Padres**: Consultar el rendimiento académico, la retroalimentación recibida y las notificaciones.
 
-### Características
+#### Características
 
 - **Administradores**: Control total sobre los usuarios y roles dentro de la plataforma.
 - **Alumnos, Padres y Profesores**: Acceso a sus respectivas cuentas para gestionar información personal y académica.
