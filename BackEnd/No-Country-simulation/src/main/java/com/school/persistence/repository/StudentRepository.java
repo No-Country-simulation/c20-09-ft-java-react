@@ -17,6 +17,9 @@ public interface StudentRepository extends JpaRepository<Student, Long> {
 
     boolean existsByDni(String dni);
 
+    @Query("SELECT s FROM Student s LEFT JOIN FETCH s.parents WHERE s.dni = :dni")
+    Optional<Student> findByDniWithParents(@Param("dni") String dni);
+
     Optional<Student> findByDni(String dni);
 
     // Busca un estudiante junto con su información de padres utilizando JOIN FETCH para evitar el problema de "N+1 queries".
