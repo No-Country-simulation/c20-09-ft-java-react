@@ -1,0 +1,150 @@
+body {
+    height: 90%;
+}
+
+.user-form-container {
+    width: 80%; 
+    max-width: 800px;
+    margin: 50px auto;
+    padding: 20px;
+    background-color: var(--background-color);
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+}
+
+.user-form-container h2 {
+    text-align: center;
+    color: var(--primary-color);
+}
+
+.user-form-container h3 {
+    color: var(--primary-color); 
+    font-size: 1.5em; 
+    font-weight: bold; 
+    margin: 20px 0 10px; 
+    text-align: left; 
+    border-bottom: 2px solid var(--secondary-color); 
+    padding-bottom: 5px; 
+}
+
+.input-group {
+    margin-bottom: 15px;
+}
+
+.input-group.row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+}
+
+.input-group-inline {
+    flex: 1;
+    min-width: 200px;
+}
+
+.input-group label {
+    display: block;
+    margin-bottom: 5px;
+    color: var(--primary-color);
+}
+
+.input-group input, 
+.input-group select {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 40px; 
+    box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group select:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 15px rgba(52, 73, 94, 0.5);
+}
+
+#children-container .child-input,
+#subjects-container .subject-input {
+    display: flex;
+    gap: 15px;
+    margin-bottom: 10px;
+}
+
+#add-child-btn,
+#add-subject-btn {
+    background-color: var(--secondary-color); 
+    color: #f4f4f4; 
+    padding: 10px 20px; 
+    border: none; 
+    border-radius: 5px; 
+    cursor: pointer; 
+    font-size: 16px; 
+    transition: background-color 0.3s ease, box-shadow 0.3s ease; 
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1); 
+}
+
+#add-child-btn:hover {
+    background-color: var(--hover-color);
+    box-shadow: 0 6px 8px rgba(0, 0, 0, 0.2);
+}
+
+
+/* Estilos generales del campo de entrada */
+input[type="text"], 
+input[type="email"], 
+input[type="tel"], 
+input[type="date"], 
+select {
+    font-family: "Lato", sans-serif; 
+    font-size: 15px; 
+    color: var(--primary-color); 
+    box-sizing: border-box;
+    padding: 10px;
+    border-radius: 5px;
+}
+
+input[type="date"] {
+    background-color: var(--background-color); 
+    border: 1px solid var(--border-color); 
+}
+
+input[type="date"]:focus {
+    border-color: var(--primary-color); 
+    box-shadow: 0 0 15px rgba(52, 73, 94, 0.5); 
+}
+
+
+/* Estilo para el grupo de checkboxes */
+.checkbox-group {
+    display: flex;
+    gap: 20px; 
+    align-items: center;
+}
+
+.checkbox-item {
+    display: flex;
+    align-items: center;
+    gap: 10px; 
+}
+
+.checkbox-item label {
+    font-size: 15px; 
+    color: var(--primary-color); 
+    margin: 0;
+}
+
+.input-group-inline label {
+    font-size: 15px; 
+    color: var(--primary-color); 
+}
+
+.checkbox-item input[type="checkbox"] {
+    width: 20px; 
+    height: 20px;
+    margin-right: 5px;
+    accent-color: var(--primary-color);
+}
+

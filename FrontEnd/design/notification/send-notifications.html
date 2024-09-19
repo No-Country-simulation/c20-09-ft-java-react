@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Enviar Notificación</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="./send-notifications.css">
+</head>
+<body>
+    <div class="container">
+        <h1>Enviar Notificación</h1>
+        
+        <!-- Selección de Año y Turno -->
+        <div class="year-turn-selection">
+            <label for="year">Año:</label>
+            <select id="year" class="year-select">
+                <option value="">Seleccionar año</option>
+                <option value="1º">1º</option>
+                <option value="2º">2º</option>
+                <option value="3º">3º</option>
+                <option value="4º">4º</option>
+                <option value="5º">5º</option>
+            </select>
+            
+            <label for="shift">Turno:</label>
+            <select id="shift" class="shift-select">
+                <option value="">Seleccionar turno</option>
+                <option value="mañana">Mañana</option>
+                <option value="tarde">Tarde</option>
+            </select>
+        </div>
+
+        <!-- Opción de enviar a todos o a un estudiante/padre en particular -->
+        <div class="notification-options" id="notification-options" style="display: none;">
+            <label for="send-to">Enviar a:</label>
+            <select id="send-to" class="send-to" name="send-to">
+                <option value="" disabled selected>Elige una opción</option>
+                <option value="all">Todos los estudiantes y padres</option>
+                <option value="student">Estudiante en particular</option>
+                <option value="parent">Padre en particular</option>
+            </select>
+        </div>
+
+        <!-- Busqueda por DNI para estudiantes o padres -->
+        <div class="dni-search" id="dni-search" style="display: none;">
+            <label for="dni">Buscar por DNI del estudiante:</label>
+            <input type="text" id="dni" class="dni" name="dni" placeholder="Ingrese el DNI">
+            <button type="button" id="search-btn" class="search-btn">Buscar</button>
+        </div>
+
+        <!-- Resultado de la búsqueda de estudiante/padre -->
+        <div id="search-result" style="display: none;">
+            <p><strong>Nombre del estudiante:</strong> <span id="student-name"></span></p>
+            <p><strong>Nombre del padre:</strong> <span id="parent-name"></span></p>
+        </div>
+
+        <!-- Formulario para redactar el mensaje -->
+        <div class="notification-form" id="notification-form" style="display: none;">
+            <textarea rows="4" placeholder="Escribe el mensaje aquí..."></textarea>
+            <button class="send-btn">Enviar</button>
+        </div>
+
+        <button onclick="window.location.href='pagina-principal.html'" class="back-btn">Volver</button>
+    </div>
+
+    <!-- Script para manejar la lógica -->
+    <script>
+        document.getElementById('year').addEventListener('change', checkYearAndShift);
+        document.getElementById('shift').addEventListener('change', checkYearAndShift);
+        document.getElementById('send-to').addEventListener('change', handleSendToChange);
+        document.getElementById('search-btn').addEventListener('click', handleSearch);
+
+        function checkYearAndShift() {
+            var year = document.getElementById('year').value;
+            var shift = document.getElementById('shift').value;
+            var notificationOptions = document.getElementById('notification-options');
+            
+            // Mostrar opciones de envío solo si se seleccionan año y turno
+            if (year !== "" && shift !== "") {
+                notificationOptions.style.display = 'block';
+            } else {
+                notificationOptions.style.display = 'none';
+                document.getElementById('dni-search').style.display = 'none';
+                document.getElementById('search-result').style.display = 'none';
+                document.getElementById('notification-form').style.display = 'none';
+            }
+        }
+
+        function handleSendToChange() {
+            var sendTo = document.getElementById('send-to').value;
+            var dniSearch = document.getElementById('dni-search');
+            var notificationForm = document.getElementById('notification-form');
+            var searchResult = document.getElementById('search-result');
+
+            if (sendTo === 'student' || sendTo === 'parent') {
+                dniSearch.style.display = 'block';
+                searchResult.style.display = 'none';
+                notificationForm.style.display = 'none'; // Esconde el formulario hasta que se busque el estudiante
+            } else {
+                dniSearch.style.display = 'none';
+                searchResult.style.display = 'none';
+                notificationForm.style.display = 'block'; // Muestra el formulario si se envía a todos
+            }
+        }
+
+        function handleSearch() {
+            // Simulando que se encuentra al estudiante/padre
+            var studentName = document.getElementById('student-name');
+            var parentName = document.getElementById('parent-name');
+            
+            // Aquí se debería implementar la lógica para buscar el estudiante y padre en el backend
+            studentName.textContent = "Juan Pérez"; // Nombre del estudiante encontrado
+            parentName.textContent = "Carlos Pérez"; // Nombre del padre encontrado
+            
+            // Mostrar los resultados y el formulario para enviar el mensaje
+            document.getElementById('search-result').style.display = 'block';
+            document.getElementById('notification-form').style.display = 'block';
+        }
+    </script>
+
+</body>
+</html>
+

@@ -1,0 +1,61 @@
+.notification-container {
+    background-color: var(--background-color); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+    width: 100%;
+    max-width: 600px;
+    color: var(--primary-color);
+    margin: 20px auto;
+}
+
+.notification {
+    background-color: var(--secondary-color); 
+    color: var(--background-color);
+    padding: 10px;
+    margin-bottom: 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.notification:hover {
+    background-color: var(--hover-color);
+}
+
+.reply-form {
+    margin-top: 10px;
+    padding: 10px 0;
+    background-color: #f4f4f4;
+    border-radius: 5px;
+}
+
+.reply-form textarea {
+    width: 100%;
+    padding: 10px;
+    border: 1px solid var(--secondary-color); 
+    border-radius: 5px;
+    margin-bottom: 10px;
+    box-sizing: border-box;
+}
+
+.reply-form textarea:focus  {
+    border-color: var(--primary-color); 
+    outline: none;
+    box-shadow: 0 0 15px rgba(52, 73, 94, 0.5); 
+}
+
+.send-btn {
+    background-color: var(--secondary-color); 
+    color: #f4f4f4;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+    transition: background-color 0.3s ease;
+}
+
+.send-btn:hover {
+    background-color: var(--hover-color); 
+}

@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cargar Evaluaciones</title>
+
+    <!-- Google Font -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    
+    <!-- Estilos -->
+    <link rel="stylesheet" href="../styles.css">
+    <link rel="stylesheet" href="./evaluation.css">
+
+</head>
+<body>
+    <div class="container">
+        <h1>Cargar Evaluaciones</h1>
+
+        <!-- Formulario de carga de evaluaciones -->
+        <form action="#" method="post">
+            <div class="input-group">
+                <label for="dni">DNI del alumno:</label>
+                <input type="text" id="dni" name="dni" placeholder="Ingresa el DNI del alumno" required>
+            </div>
+            <div class="input-group">
+                <label for="student-name">Nombre del alumno:</label>
+                <input type="text" id="student-name" name="student-name" placeholder="Ingresa el nombre del alumno" required>
+            </div>
+
+            <div class="input-group">
+                <label for="student-lastname">Apellido del alumno:</label>
+                <input type="text" id="student-lastname" name="student-lastname" placeholder="Ingresa el apellido del alumno" required>
+            </div>
+
+            <div class="input-group">
+                <label for="year">Año:</label>
+                <select id="year" name="year" required>
+                    <option value="">Selecciona el año</option>
+                    <option value="1">1º</option>
+                    <option value="2">2º</option>
+                    <option value="3">3º</option>
+                    <option value="4">4º</option>
+                    <option value="5">5º</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="trimester">Trimestre:</label>
+                <select id="trimester" name="trimester" required>
+                    <option value="">Selecciona el trimestre</option>
+                    <option value="primero">Primero</option>
+                    <option value="segundo">Segundo</option>
+                    <option value="tercero">Tercero</option>
+                </select>
+            </div>
+
+            <div class="input-group">
+                <label for="subject">Materia:</label>
+                <input type="text" id="subject" name="subject" placeholder="Ingresa la materia" required>
+            </div>
+
+            <div class="input-group">
+                <label for="feedback">Retroalimentación:</label>
+                <textarea id="feedback" name="feedback" rows="4" placeholder="Escribe la retroalimentación" required></textarea>
+            </div>
+
+            <div class="button-group">
+                <button type="submit" class="login-btn">Guardar</button>
+                <button type="button" class="back-btn" onclick="window.location.href='pagina-principal.html'">Volver</button>
+            </div>
+        </form>
+    </div>
+</body>
+</html>
