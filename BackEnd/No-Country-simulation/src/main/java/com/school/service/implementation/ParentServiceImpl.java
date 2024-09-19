@@ -23,10 +23,13 @@ import jakarta.persistence.EntityNotFoundException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Collections;
+import java.util.Set;
 
 @Service
 public class ParentServiceImpl implements GenericService<Parent, ParentRegistrationDto, UpdateParentDto, AuthResponse, ParentDto, UpdateResponse<ParentDto>, DeleteResponse> {
@@ -150,5 +153,25 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
 
     public StudentResponse verifyChildByDni(String dni) {
         return studentService.verifyChildByDni(dni);
+    }
+
+    public StudentResponse verifyStudentByParentDni(String dni) {
+        // Buscar el padre por DNI
+        Parent parent = parentRepository.findByDniWithChildren(dni)
+                .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
+                        "Parent not found with DNI: " + dni));
+
+        // Obtener los hijos del padre
+        Set<Student> children = parent.getChildren();
+
+        if (children == null || children.isEmpty()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
+                    "No children found for the parent with DNI: " + dni);
+        }
+
+        Student student = children.iterator().next();
+
+        // Devolver la información del hijo como DTO
+        return new StudentResponse(student.getDni(), student.getName(), student.getLastName(), student.getYear(), student.getSession(), parent.getName(), parent.getLastName());
     }
 }

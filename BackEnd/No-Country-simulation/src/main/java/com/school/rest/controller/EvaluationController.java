@@ -2,8 +2,10 @@ package com.school.rest.controller;
 
 import com.school.persistence.entities.Student;
 import com.school.rest.request.DniRequest;
+import com.school.rest.response.StudentResponse;
 import com.school.service.dto.EvaluationDTO;
 import com.school.persistence.entities.Evaluation;
+import com.school.service.implementation.ParentServiceImpl;
 import com.school.service.implementation.StudentServiceImpl;
 import com.school.service.interfaces.IEvaluationService;
 import com.school.utility.EvaluationMapper;
@@ -32,6 +34,12 @@ public class EvaluationController {
 
     @Autowired
     private StudentServiceImpl studentService;
+
+    private final ParentServiceImpl  parentService;
+
+    public EvaluationController(ParentServiceImpl parentService) {
+        this.parentService = parentService;
+    }
 
     /**
      * Maneja las solicitudes POST para crear una nueva evaluación.
@@ -75,5 +83,11 @@ public class EvaluationController {
 
         // Retorna la lista de evaluaciones con el estado HTTP 200 (OK).
         return new ResponseEntity<>(evaluations, HttpStatus.OK);
+    }
+
+    @Secured({"ROLE_PARENT"})
+    @GetMapping("/students/parent/{dni}")
+    public ResponseEntity<StudentResponse> verifyStudentByParentDni(@PathVariable String dni) {
+        return ResponseEntity.ok(parentService.verifyStudentByParentDni(dni));
     }
 }

@@ -74,7 +74,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.POST, "/notifications/send/parent").hasRole("TEACHER");
                     http.requestMatchers(HttpMethod.GET, "/notifications/course-notifications").hasAnyRole("STUDENT", "PARENT", "TEACHER");
                     http.requestMatchers(HttpMethod.GET, "/notifications/student/{dni}").hasRole("STUDENT");
-                    http.requestMatchers(HttpMethod.GET, "/notifications/parent/{dni}").hasRole("PARENT");
+                    http.requestMatchers(HttpMethod.GET, "/notifications/parent/{dni}", "/evaluations/students/parent/{dni}").hasRole("PARENT");
 
                     // Denegar todas las demás solicitudes
                     http.anyRequest().denyAll();
