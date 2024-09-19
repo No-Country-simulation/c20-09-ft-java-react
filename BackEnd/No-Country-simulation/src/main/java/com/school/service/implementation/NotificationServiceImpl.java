@@ -144,7 +144,7 @@ public class NotificationServiceImpl implements INotificationService {
         }
 
         // Verificar que el año esté en el formato correcto
-        if (!year.matches("[1-5]º")) {
+        if (!year.matches("[1-5]")) {
             throw new IllegalArgumentException("El año debe estar en el formato '1º', '2º', '3º', '4º' o '5º'.");
         }
 
