@@ -55,6 +55,15 @@ const Login = () => {
         sessionStorage.setItem("dni", dni);
         sessionStorage.setItem("token", token);
 
+        // Muestra el toast de inicio de sesión exitoso
+        toast({
+          title: "Inicio de Sesión Exitoso",
+          description: `Bienvenido, ${name}!`,
+          status: "success",
+          duration: 5000,
+          isClosable: true,
+        });
+
         // Redirige a la ruta basada en el rol del usuario
         let redirectPath = "/";
         if (authorities.includes("ROLE_TEACHER")) {

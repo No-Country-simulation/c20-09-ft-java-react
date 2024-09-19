@@ -6,18 +6,27 @@ import {
   ListItem,
   Text,
   useToast,
+  Modal,
+  ModalOverlay,
+  ModalContent,
+  ModalHeader,
+  ModalCloseButton,
+  ModalBody,
+  ModalFooter,
+  Button,
 } from "@chakra-ui/react";
 import { useEffect, useState } from "react";
-import { getNotificationsForStudent } from "../../services/notificationService"; // Asegúrate de importar correctamente tu servicio
+import { getNotificationsForStudent } from "../../services/notificationService";
 
 const ViewNotifications = () => {
   const [notifications, setNotifications] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [selectedNotification, setSelectedNotification] = useState(null);
   const toast = useToast();
 
   useEffect(() => {
     const fetchNotifications = async () => {
-      const dni = sessionStorage.getItem("dni"); // Obtener el DNI de sessionStorage
+      const dni = sessionStorage.getItem("dni");
       if (!dni) {
         toast({
           title: "Error",
@@ -31,7 +40,7 @@ const ViewNotifications = () => {
       }
 
       try {
-        const data = await getNotificationsForStudent(dni); // Usar el DNI para obtener las notificaciones
+        const data = await getNotificationsForStudent(dni);
         setNotifications(data);
       } catch (error) {
         console.error(error);
@@ -47,8 +56,16 @@ const ViewNotifications = () => {
       }
     };
 
-    fetchNotifications(); // Llamar a la función para obtener las notificaciones
+    fetchNotifications();
   }, [toast]);
+
+  const handleNotificationClick = (notification) => {
+    setSelectedNotification(notification);
+  };
+
+  const closeModal = () => {
+    setSelectedNotification(null);
+  };
 
   if (loading) {
     return <Text>Cargando notificaciones...</Text>;
@@ -69,19 +86,40 @@ const ViewNotifications = () => {
           <Text>No tienes notificaciones.</Text>
         ) : (
           <List spacing={3}>
-            {notifications.map((notification) => (
+            {notifications.map((notification, index) => (
               <ListItem
                 key={notification.id}
                 p={4}
                 borderWidth={1}
                 borderRadius="md"
+                cursor="pointer"
+                onClick={() => handleNotificationClick(notification)}
               >
-                <Text>{notification.message}</Text>
+                <Text>{`Mensaje ${index + 1}`}</Text>
               </ListItem>
             ))}
           </List>
         )}
       </Box>
+
+      {selectedNotification && (
+        <Modal isOpen={!!selectedNotification} onClose={closeModal}>
+          <ModalOverlay />
+          <ModalContent>
+            <ModalHeader>Detalle Mensaje</ModalHeader>
+            <ModalCloseButton />
+            <ModalBody>
+              <Text>{selectedNotification.message}</Text>{" "}
+              {/* Muestra el mensaje completo */}
+            </ModalBody>
+            <ModalFooter>
+              <Button colorScheme="orange" onClick={closeModal}>
+                Cerrar
+              </Button>
+            </ModalFooter>
+          </ModalContent>
+        </Modal>
+      )}
     </Container>
   );
 };
