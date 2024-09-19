@@ -26,6 +26,7 @@ import btnMensajes from "../assets/tus_mensajes.webp";
 import "./Dashboard.css";
 import RegisterEvaluations from "./teacher/RegisterEvaluations";
 import SendNotifications from "./teacher/sendNotifications";
+import AcademicRecord from "./teacher/AcademicRecord";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -138,12 +139,9 @@ const TeacherDashboard = () => {
             flexDirection="column"
           >
             <ModalCloseButton />
-            <ModalHeader color="white">Historial Académico</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Historial Académico */}
-              <Text mb={4}>
-                Aquí puedes consultar el historial académico de tus estudiantes.
-              </Text>
+              <AcademicRecord />
               {/* Aquí puedes incluir el componente o el contenido específico */}
             </ModalBody>
             <ModalFooter>
@@ -199,7 +197,6 @@ const TeacherDashboard = () => {
             flexDirection="column"
           >
             <ModalCloseButton />
-            <ModalHeader color="white">Mensajes</ModalHeader>
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Mensajes */}
               <SendNotifications />
