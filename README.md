@@ -262,5 +262,7 @@ Proyecto creado por:
     </p>
 </div>
 
+Paloma acompañó al equipo como Team Leader, guiándonos en el proceso y ofreciendo soporte. Aunque no participó en la escritura de código ni en la toma de decisiones técnicas, su presencia y liderazgo fueron fundamentales para el éxito del proyecto.
+
 [![Behance](https://img.shields.io/badge/Behance-Paloma_Carnaghi-blue)](https://www.behance.net/palomacarnaghi1)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Paloma_Carnaghi-blue)](https://www.linkedin.com/in/paloma-carnaghi/)
