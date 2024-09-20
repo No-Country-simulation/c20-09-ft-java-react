@@ -154,21 +154,12 @@ public class StudentServiceImpl implements GenericService
 
     public StudentResponse verifyChildByDni(String dni) {
         // Buscar el hijo por DNI
-        Student student = studentRepository.findByDniWithParents(dni)
+        Student student = studentRepository.findByDni(dni)
                 .orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND,
                         "Child not found with DNI: " + dni));
 
-        // Obtener la lista de padres
-        Set<Parent> parents = student.getParents();
-
-        if (parents == null || parents.isEmpty()) {
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND,
-                    "No parents found for the child with DNI: " + dni);
-        }
-        Parent parent = parents.iterator().next();
-
         // Devolver la información del hijo como DTO
-        return new StudentResponse(student.getDni(), student.getName(), student.getLastName(), student.getYear(), student.getSession(), parent.getName(), parent.getLastName());
+        return new StudentResponse(student.getDni(), student.getName(), student.getLastName(), student.getYear(), student.getSession(), null, null);
     }
 
     public Optional<Student> findStudentByDni(String dni) {
