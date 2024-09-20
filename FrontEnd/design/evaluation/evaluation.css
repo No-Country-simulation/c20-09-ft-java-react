@@ -1,0 +1,71 @@
+body {
+    height: 90%;
+}
+
+.container {
+    background-color: var(--background-color); 
+    padding: 30px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.9);
+    width: 100%;
+    max-width: 600px;
+    text-align: center;
+    color: var(--primary-color);
+}
+
+/* Estilos para la información del alumno */
+.student-info {
+    display: flex;
+    justify-content: space-between; 
+    margin-bottom: 20px;
+}
+
+.student-info p {
+    margin: 0;
+    flex: 1;
+}
+
+/* Estilos para la tabla */
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-bottom: 20px;
+}
+
+th, td {
+    padding: 12px;
+    text-align: left;
+    border-bottom: 1px solid #BDC3C7; 
+}
+
+th {
+    background-color: var(--secondary-color); 
+    color: white;
+}
+
+
+.input-group input, 
+.input-group select,
+.input-group textarea {
+    width: 100%;
+    padding: 10px;
+    font-size: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 5px;
+    height: 40px; 
+    box-sizing: border-box;
+}
+
+.input-group input:focus,
+.input-group select:focus,
+.input-group textarea:focus {
+    border-color: var(--primary-color);
+    outline: none;
+    box-shadow: 0 0 15px rgba(52, 73, 94, 0.5);
+}
+
+.input-group textarea {
+    height: auto; 
+    min-height: 80px; 
+    resize: vertical; 
+}

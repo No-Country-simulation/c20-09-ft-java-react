@@ -1,0 +1,65 @@
+/* src/components/Login.css */
+
+:root {
+  --primary-color: #34495e; /* Color principal */
+  --secondary-color: #e67e22; /* Color secundario */
+  --hover-color: #d35400; /* Color para el estado hover */
+  --border-color: #bdc3c7; /* Color del borde */
+  --background-color: #f4f4f4; /* Color de fondo */
+  --text-color: #34495e; /* Color del texto */
+  --button-secondary-color: #95a5a6; /* Color del botón Volver */
+  --button-secondary-hover-color: #7f8c8d; /* Color hover del botón Volver */
+}
+
+/* Estilos específicos para el contenedor del Login */
+.login-container {
+  background-color: var(--background-color);
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+/* Estilos para el encabezado */
+.login-container h1 {
+  color: var(--secondary-color);
+  margin-bottom: 20px;
+}
+
+/* Estilos para el formulario */
+.login-container form {
+  background-color: var(--background-color);
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+/* Estilos para los grupos de entrada */
+.input-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+.input-group label {
+  display: block;
+  color: var(--primary-color);
+  margin-bottom: 5px;
+}
+
+.input-group input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid var(--border-color);
+  border-radius: 5px;
+  box-sizing: border-box;
+}
+
+.input-group input:focus {
+  border-color: var(--primary-color);
+  outline: none;
+  box-shadow: 0 0 15px rgba(52, 73, 94, 0.5);
+}
+
