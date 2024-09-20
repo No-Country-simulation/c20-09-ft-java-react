@@ -23,6 +23,18 @@
 
 <h1 align="center">Back-End</h1>
 
+## Tabla de Contenidos
+
+- [Paquete Configuración](#configuración)
+- [Carga de Datos](#carga-de-datos)
+- [Manejo de Excepciones](#manejo-de-excepciones)
+- [Persistencia](#persistencia)
+- [Controladores REST](#controladores-rest)
+- [Configuración de Seguridad](#configuración-de-seguridad)
+- [Servicios](#servicios)
+- [Utilidades](#utilidades)
+- [Agradecimientos](#agradecimientos)
+
 ## Estructura del Proyecto
 
 El proyecto está organizado en varios paquetes, cada uno de los cuales contiene clases que manejan diferentes aspectos de la lógica de la aplicación. A continuación se presenta un resumen de los paquetes y las clases más importantes.
@@ -35,7 +47,6 @@ El proyecto está organizado en varios paquetes, cada uno de los cuales contiene
 - [Security](#configuración-de-seguridad)
 - [Service](#servicios)
 - [Utility](#utilidades)
-- [Agradecimientos](#agradecimientos)
 
 ## Configuración 
 ### Paquete `com.school.confing`
@@ -76,7 +87,6 @@ Este paquete asegura que la aplicación esté protegida mediante autenticación 
 Este paquete se encarga de la configuración y carga inicial de datos en la aplicación, específicamente para los roles de usuario.
 
 ### Clases
-
 #### 1. `DataLoader`
 - **Descripción**: Componente que se utiliza para cargar datos iniciales al arrancar la aplicación.
 - **Funcionalidad**:
@@ -85,7 +95,6 @@ Este paquete se encarga de la configuración y carga inicial de datos en la apli
 - **Propósito**: Asegurar que los roles de usuario estén configurados correctamente en la base de datos antes de que la aplicación empiece a recibir solicitudes.
 
 Este paquete facilita la configuración automática de roles, lo que simplifica la gestión de permisos y la seguridad de la aplicación.
-
 
 ## Manejo de Excepciones 
 ### Paquete `com.school.exception`
@@ -138,67 +147,65 @@ Este paquete asegura que todos los errores sean manejados de manera uniforme y q
 ### Paquete `com.school.persistence.entities`
 
 Este paquete contiene las entidades que representan las tablas de la base de datos, utilizando JPA para la persistencia de datos. A continuación se describen las principales clases:
+### Clases
 
-#### Clases
-
-##### 1. `Address`
+#### 1. `Address`
 Representa la dirección de un usuario, con campos como país, estado, ciudad, código postal y dirección.
 
-##### 2. `Admin`
+#### 2. `Admin`
 Extiende de la clase `User`. Representa a un administrador del sistema y contiene una relación uno a uno con `UserEntity`.
 
-##### 3. `Course`
+#### 3. `Course`
 Representa un curso académico. Está relacionado con las entidades `Subject` (materia) y `Teacher` (profesor).
 
-##### 4. `CourseStudent`
+#### 4. `CourseStudent`
 Asocia estudiantes con cursos, incluyendo la nota y comentarios, así como la fecha de la evaluación.
 
-##### 5. `Evaluation`
+#### 5. `Evaluation`
 Almacena información sobre las evaluaciones de los estudiantes, incluyendo nombre, apellido, DNI, año, trimestre, materia y retroalimentación.
 
-##### 6. `MedicalInformation`
+#### 6. `MedicalInformation`
 Contiene información médica relevante, como tipo de sangre, alergias y condiciones adicionales.
 
-##### 7. `Notification`
+#### 7. `Notification`
 Modelo para las notificaciones enviadas a estudiantes, padres o profesores, incluyendo detalles como el grupo objetivo, mensaje y fecha de envío.
 
-##### 8. `Parent`
+#### 8. `Parent`
 Extiende de la clase `User`. Representa a un padre o tutor, con una relación de muchos a muchos con los estudiantes y campos adicionales como la relación con el niño y ocupación.
 
-##### 9. `PermissionEntity`
+#### 9. `PermissionEntity`
 Define permisos que pueden ser asignados a roles dentro del sistema.
 
-##### 10. `ProfessionalInformation`
+#### 10. `ProfessionalInformation`
 Almacena información profesional de un profesor, incluyendo títulos académicos, materias que enseña y horas de trabajo.
 
-##### 11. `RoleEntity`
+#### 11. `RoleEntity`
 Representa roles dentro del sistema, que pueden tener uno o más permisos asociados.
 
-##### 12. `Student`
+#### 12. `Student`
 Extiende de la clase `User`. Representa a un estudiante, con relaciones con padres y profesores, así como información médica y de inscripción.
 
-##### 13. `Subject`
+#### 13. `Subject`
 Representa una materia en el sistema.
 
-##### 14. `Teacher`
+#### 14. `Teacher`
 Extiende de la clase `User`. Representa a un profesor, con relaciones con estudiantes y un campo para información profesional.
 
-##### 15. `User`
+#### 15. `User`
 Clase abstracta que contiene campos comunes para usuarios, como nombre, apellido, DNI, correo electrónico, número de teléfono y dirección.
 
-##### 16. `UserEntity`
+#### 16. `UserEntity`
 Modelo de usuario que gestiona la autenticación y autorización en el sistema, incluyendo roles, tokens y estados de la cuenta.
 
 ### Paquete `com.school.persistence.enums`
-#### Clases
-##### `PermissionEnum`
+### Clases
+#### 1. `PermissionEnum`
 Define los permisos disponibles en el sistema:
 - `READ_PRIVILEGES`: Permiso para leer información.
 - `WRITE_PRIVILEGES`: Permiso para escribir información.
 - `DELETE_PRIVILEGES`: Permiso para eliminar información.
 - `UPDATE_PRIVILEGES`: Permiso para actualizar información.
-
-#### `RoleEnum`
+#### 2. `RoleEnum`
 Define los roles disponibles en el sistema:
 - `STUDENT`: Rol para estudiantes.
 - `PARENT`: Rol para padres.
@@ -208,46 +215,45 @@ Define los roles disponibles en el sistema:
 ### Paquete `com.school.persistence.repository`
 
 Este paquete contiene las interfaces de repositorio que permiten realizar operaciones de acceso a datos en las entidades del sistema.
-
-#### Clases 
-##### `AdminRepository`
+### Clases 
+#### 1. `AdminRepository`
 Permite realizar operaciones CRUD sobre la entidad `Admin`.
 - `findByUser(UserEntity userEntity)`: Busca un administrador por su entidad de usuario.
 - `existsByDni(String dni)`: Verifica si existe un administrador con el DNI proporcionado.
 
-##### `CourseRepository`
+#### 2. `CourseRepository`
 Permite realizar operaciones CRUD sobre la entidad `Course`.
 
-##### `CourseStudentRepository`
+#### 3. `CourseStudentRepository`
 Permite realizar operaciones CRUD sobre la entidad `CourseStudent`.
 - `findByStudent(Student student)`: Busca todas las inscripciones de un estudiante en cursos.
 
-##### `EvaluationRepository`
+#### 4. `EvaluationRepository`
 Permite realizar operaciones CRUD sobre la entidad `Evaluation`.
 - `findByDniStudent(String dniStudent)`: Busca todas las evaluaciones de un estudiante por su DNI.
 
-##### `NotificationRepository`
+#### 5. `NotificationRepository`
 Permite realizar operaciones CRUD sobre la entidad `Notification`.
 - `findByStudentDni(String dni)`: Busca notificaciones enviadas a un estudiante por su DNI.
 - `findByParentDni(String dni)`: Busca notificaciones enviadas a un padre por su DNI.
 - `findCourseNotifications(String year, String session, String dni)`: Busca notificaciones de un curso en un año y turno específicos.
 
-##### `ParentRepository`
+#### 6.`ParentRepository`
 Permite realizar operaciones CRUD sobre la entidad `Parent`.
 - `findByUser(UserEntity user)`: Busca un padre por su entidad de usuario.
 - `existsByDni(String dni)`: Verifica si existe un padre con el DNI proporcionado.
 - `findByLastName(String lastName, Pageable pageable)`: Busca padres por apellido con paginación.
 
-##### `PermissionRepository`
+#### 7. `PermissionRepository`
 Permite realizar operaciones CRUD sobre la entidad `PermissionEntity`.
 - `findByName(String name)`: Busca un permiso por su nombre.
 
-##### `RoleEntityRepository`
+#### 8. `RoleEntityRepository`
 Permite realizar operaciones CRUD sobre la entidad `RoleEntity`.
 - `findRoleEntitiesByRoleEnumIn(List<String> roleNameList)`: Busca roles por una lista de nombres de rol.
 - `findByRoleEnum(RoleEnum roleEnum)`: Busca un rol por su enumeración.
 
-##### `StudentRepository`
+#### 9. `StudentRepository`
 Permite realizar operaciones CRUD sobre la entidad `Student`.
 - `findByUser(UserEntity userEntity)`: Busca un estudiante por su entidad de usuario.
 - `existsByDni(String dni)`: Verifica si existe un estudiante con el DNI proporcionado.
@@ -255,17 +261,17 @@ Permite realizar operaciones CRUD sobre la entidad `Student`.
 - `findByParentDni(String dni)`: Busca estudiantes asociados con un padre por el DNI del padre.
 - `findByLastName(String lastName, Pageable pageable)`: Busca estudiantes por apellido con paginación.
 
-##### `SubjectRepository`
+#### 10. `SubjectRepository`
 Permite realizar operaciones CRUD sobre la entidad `Subject`.
 - `existsByName(String name)`: Verifica si existe una materia por su nombre.
 
-##### `TeacherRepository`
+#### 11. `TeacherRepository`
 Permite realizar operaciones CRUD sobre la entidad `Teacher`.
 - `existsByDni(String dni)`: Verifica si existe un profesor con el DNI proporcionado.
 - `findByUser(UserEntity userEntity)`: Busca un profesor por su entidad de usuario.
 - `findByLastName(String lastName, Pageable pageable)`: Busca profesores por apellido con paginación.
 
-##### `UserEntityRepository`
+#### 12. `UserEntityRepository`
 Permite realizar operaciones CRUD sobre la entidad `UserEntity`.
 - `findUserEntityByEmailAndIsDeletedFalse(String email)`: Busca un usuario por email que no haya sido eliminado.
 - `existsByEmail(String email)`: Verifica si existe un usuario por su email.
@@ -274,36 +280,36 @@ Permite realizar operaciones CRUD sobre la entidad `UserEntity`.
 ## Controladores REST
 ### Paquete `com.school.rest.controller`
 Este paquete contiene controladores REST que manejan las solicitudes HTTP y coordinan la interacción entre el cliente y los servicios de la aplicación.
-
-#### `AuthenticationController`
+### Clases
+#### 1. `AuthenticationController`
 - **Descripción**: Maneja la autenticación de usuarios.
 - **Endpoints**:
   - `POST /auth/login`: Inicia sesión y devuelve un token de autenticación.
   - `POST /auth/refresh-token`: Permite refrescar el token de autenticación.
 
-#### `ControllerTeacher`
+#### 2. `ControllerTeacher`
 - **Descripción**: Controlador dedicado a las operaciones relacionadas con los profesores.
 - **Endpoints**:
   - `GET /teacher/verifyStudent/{dni}`: Verifica la existencia de un estudiante por su DNI.
 
-#### `CourseController`
+#### 3. `CourseController`
 - **Descripción**: Maneja la creación y gestión de cursos.
 - **Endpoints**:
   - `POST /api/v1/course/create`: Crea un nuevo curso.
 
-#### `CourseStudentController`
+#### 4. `CourseStudentController`
 - **Descripción**: Relaciona estudiantes con cursos.
 - **Endpoints**:
   - `POST /api/v1/course-student/create`: Crea una asociación entre un curso y un estudiante.
   - `GET /api/v1/course-student/{studentId}`: Obtiene los cursos asociados a un estudiante.
 
-#### `EvaluationController`
+#### 5. `EvaluationController`
 - **Descripción**: Administra las evaluaciones.
 - **Endpoints**:
   - `POST /evaluations/load`: Carga una nueva evaluación para un estudiante.
   - `POST /evaluations/student`: Obtiene las evaluaciones de un estudiante por su DNI.
 
-#### `NotificationController`
+#### 6. `NotificationController`
 - **Descripción**: Administra el envío y recuperación de notificaciones para estudiantes y padres.
 - **Endpoints**:
   - `POST /notifications/send/all`: Envía una notificación a todos los estudiantes y padres de un curso.
@@ -311,17 +317,17 @@ Este paquete contiene controladores REST que manejan las solicitudes HTTP y coor
   - `GET /notifications/student/{dni}`: Obtiene notificaciones específicas para un estudiante.
   - `GET /notifications/parent/{dni}`: Obtiene notificaciones relevantes para un padre.
 
-#### `StatusServerController`
+#### 7. `StatusServerController`
 - **Descripción**: Proporciona información sobre el estado del servidor.
 - **Endpoints**:
   - `GET /api/v1/status`: Verifica si el servidor está en funcionamiento.
 
-#### `SubjectController`
+#### 8. `SubjectController`
 - **Descripción**: Maneja la creación de asignaturas.
 - **Endpoints**:
   - `POST /api/v1/subject/create`: Crea una nueva asignatura.
 
-#### `UserPasswordResetController`
+#### 9. `UserPasswordResetController`
 - **Descripción**: Maneja las solicitudes de recuperación de contraseña.
 - **Endpoints**:
   - `POST /api/forgot-password`: Inicia el proceso de recuperación de contraseña.
@@ -334,8 +340,8 @@ Este paquete contiene controladores REST que manejan las solicitudes HTTP y coor
 ### Paquete `com.school.rest.entityController`
 
 Este paquete contiene controladores REST para gestionar el registro y administración de entidades en el sistema escolar. Los controladores permiten registrar administradores, padres, estudiantes y profesores, así como realizar operaciones de actualización, búsqueda y eliminación.
-
-#### AdminController
+### Clases
+#### 1. `AdminController`
 
 - **URL**: `/admin`
 - **Funciones**:
@@ -346,7 +352,7 @@ Este paquete contiene controladores REST para gestionar el registro y administra
       - `400`: Datos de entrada inválidos.
       - `500`: Error interno del servidor.
 
-#### ParentController
+#### 2. `ParentController`
 
 - **URL**: `/admin/parent`
 - **Funciones**:
@@ -361,7 +367,7 @@ Este paquete contiene controladores REST para gestionar el registro y administra
   - **DELETE /delete/{id}**: Elimina un padre por ID.
   - **GET /verify/{dni}**: Verifica la existencia de un niño por su DNI.
 
-#### StudentController
+#### 3. `StudentController`
 
 - **URL**: `/admin/student`
 - **Funciones**:
@@ -376,7 +382,7 @@ Este paquete contiene controladores REST para gestionar el registro y administra
   - **DELETE /delete{id}**: Elimina un estudiante por ID.
   - **POST /verifyChild**: Verifica un niño por su DNI.
 
-#### TeacherController
+#### 4. `TeacherController`
 
 - **URL**: `/admin/teacher`
 - **Funciones**:
@@ -398,20 +404,21 @@ Este paquete contiene controladores REST para gestionar el registro y administra
 
 Este paquete contiene las clases de solicitud (request) que se utilizan para manejar las entradas de los usuarios en el sistema. Estas clases incluyen validaciones para asegurar que los datos proporcionados sean correctos.
 
-#### AuthLoginRequest
+### Clases
+#### 1. `AuthLoginRequest`
 
 - **Descripción**: Solicitud de inicio de sesión con validaciones.
 - **Campos**:
   - `email`: Correo electrónico del usuario (requerido, debe ser válido).
   - `password`: Contraseña del usuario (requerida, debe tener entre 11 y 12 caracteres, con al menos una letra mayúscula, una letra minúscula y un carácter especial).
 
-#### AuthRegisterRoleRequest
+#### 2. `AuthRegisterRoleRequest`
 
 - **Descripción**: Solicitud para registrar roles de usuario.
 - **Campos**:
   - `roleListName`: Lista de roles (máximo uno).
 
-#### AuthRegisterUserRequest
+#### 3. `AuthRegisterUserRequest`
 
 - **Descripción**: Solicitud para registrar un nuevo usuario.
 - **Campos**:
@@ -421,20 +428,20 @@ Este paquete contiene las clases de solicitud (request) que se utilizan para man
   - `roleRequest`: Detalles de los roles a asignar (opcional).
   - `profileType`: Tipo de perfil (requerido).
 
-#### ChildDniRequest
+#### 4. `ChildDniRequest`
 
 - **Descripción**: Solicitud para verificar el DNI de un niño.
 - **Campos**:
   - `childDNI`: DNI del niño (requerido).
 
-#### CourseRequest
+#### 5. `CourseRequest`
 
 - **Descripción**: Solicitud para crear o actualizar un curso.
 - **Campos**:
   - `subjectId`: ID de la asignatura.
   - `teacherId`: ID del profesor.
 
-#### CourseStudentRequest
+#### 6. `CourseStudentRequest`
 
 - **Descripción**: Solicitud para asociar un estudiante a un curso.
 - **Campos**:
@@ -443,32 +450,32 @@ Este paquete contiene las clases de solicitud (request) que se utilizan para man
   - `nota`: Calificación del estudiante.
   - `comments`: Comentarios sobre el estudiante.
 
-#### DniRequest
+#### 7. `DniRequest`
 
 - **Descripción**: Solicitud para validar el DNI.
 - **Campos**:
   - `dni`: DNI del usuario (requerido, debe ser un número válido).
 
-#### PasswordRecoveryRequest
+#### 8. `PasswordRecoveryRequest`
 
 - **Descripción**: Solicitud para recuperar la contraseña.
 - **Campos**:
   - `email`: Correo electrónico del usuario (requerido).
 
-#### PasswordResetRequest
+#### 9. `PasswordResetRequest`
 
 - **Descripción**: Solicitud para restablecer la contraseña.
 - **Campos**:
   - `token`: Token de recuperación (requerido).
   - `password`: Nueva contraseña (requerida, debe tener entre 11 y 15 caracteres y cumplir con las reglas de seguridad).
 
-#### RefreshTokenRequest
+#### 10. `RefreshTokenRequest`
 
 - **Descripción**: Solicitud para refrescar un token de acceso.
 - **Campos**:
   - `refreshToken`: Token de refresco (requerido).
 
-#### SubjectRequest
+#### 11. `SubjectRequest`
 
 - **Descripción**: Solicitud para crear o actualizar una asignatura.
 - **Campos**:
@@ -477,15 +484,15 @@ Este paquete contiene las clases de solicitud (request) que se utilizan para man
 ### Paquete `com.school.rest.response`
 
 Este paquete contiene las clases de respuesta (response) utilizadas para enviar datos de vuelta al cliente. Estas clases estructuran las respuestas de la API y aseguran que se envíen los mensajes adecuados en cada caso.
-
-#### ApiError
+### Clases
+#### 1. `ApiError`
 
 - **Descripción**: Clase que representa un error de la API.
 - **Campos**:
   - `message`: Mensaje de error.
   - `details`: Detalles adicionales sobre el error.
 
-#### AuthResponse
+#### 2. `AuthResponse`
 
 - **Descripción**: Respuesta de autenticación que incluye información del usuario.
 - **Campos**:
@@ -495,14 +502,14 @@ Este paquete contiene las clases de respuesta (response) utilizadas para enviar 
   - `refreshToken`: Token de refresco.
   - `status`: Estado de la respuesta (true/false).
 
-#### DeleteResponse
+#### 3. `DeleteResponse`
 
 - **Descripción**: Respuesta para operaciones de eliminación.
 - **Campos**:
   - `message`: Mensaje sobre la operación de eliminación.
   - `success`: Indica si la operación fue exitosa.
 
-#### LoginAuthResponse
+#### 4. `LoginAuthResponse`
 
 - **Descripción**: Respuesta para el inicio de sesión.
 - **Campos**:
@@ -513,28 +520,28 @@ Este paquete contiene las clases de respuesta (response) utilizadas para enviar 
   - `refreshToken`: Token de refresco.
   - `status`: Estado de la respuesta (true/false).
 
-#### PasswordRecoveryResponse
+#### 5. `PasswordRecoveryResponse` 
 
 - **Descripción**: Respuesta para la recuperación de contraseña.
 - **Campos**:
   - `message`: Mensaje sobre el proceso de recuperación.
   - `token`: Token para la recuperación de la contraseña (opcional).
 
-#### RegisterResponse
+#### 6. `RegisterResponse`
 
 - **Descripción**: Respuesta para el registro de un nuevo usuario.
 - **Campos**:
   - `email`: Correo electrónico del usuario registrado.
   - `password`: Contraseña del usuario.
 
-#### Response
+#### 7. `Response`
 
 - **Descripción**: Clase genérica para enviar respuestas con un mensaje y datos.
 - **Campos**:
   - `message`: Mensaje de respuesta.
   - `data`: Datos de la respuesta (tipo genérico).
 
-#### StudentResponse
+#### 8. `StudentResponse`
 
 - **Descripción**: Respuesta que contiene información del estudiante.
 - **Campos**:
@@ -546,7 +553,7 @@ Este paquete contiene las clases de respuesta (response) utilizadas para enviar 
   - `parentName`: Nombre del padre o tutor.
   - `parentLastName`: Apellido del padre o tutor.
 
-#### UpdateResponse
+#### 9. `UpdateResponse`
 
 - **Descripción**: Respuesta para operaciones de actualización.
 - **Campos**:
@@ -559,7 +566,8 @@ Este paquete contiene las clases de respuesta (response) utilizadas para enviar 
 
 Este paquete contiene la configuración de seguridad de la aplicación, utilizando Spring Security para gestionar la autenticación y autorización.
 
-#### SecurityConfig
+### Clases
+#### 1. `SecurityConfig`
 
 - **Descripción**: Clase de configuración principal para la seguridad de la aplicación.
 - **Características**:
@@ -579,7 +587,7 @@ Este paquete contiene la configuración de seguridad de la aplicación, utilizan
 - **Manejo de errores**: 
   - Configura un manejador de acceso denegado personalizado y un punto de entrada de autenticación.
 
-#### RoleSetup
+#### 2. `RoleSetup`
 
 - **Descripción**: Clase responsable de la configuración inicial de los roles y permisos en la aplicación.
 - **Método**:
@@ -597,8 +605,8 @@ Este paquete asegura que solo los usuarios autenticados y autorizados puedan acc
 ### Paquete `com.school.service.dto`
 
 Este paquete contiene las clases de **Data Transfer Objects (DTO)**, que se utilizan para transferir datos entre las distintas capas de la aplicación. Estos DTO aseguran que los datos estén estructurados correctamente y validan las entradas antes de ser procesadas.
-
-#### AddressDto
+### Clases
+#### 1. `AddressDto`
 - **Descripción**: Representa la dirección de una entidad.
 - **Campos**:
   - `streetNameNumberDepartmentFloorAndNumber`
@@ -606,19 +614,19 @@ Este paquete contiene las clases de **Data Transfer Objects (DTO)**, que se util
   - `state`
   - `zipCode`
 
-#### AdminRegistrationDto
+#### 2. `AdminRegistrationDto`
 - **Descripción**: DTO para la registración de administradores.
 - **Validaciones**: 
   - Nombre, DNI y correo electrónico deben ser válidos.
 
-#### CourseDto
+#### 3. `CourseDto`
 - **Descripción**: Representa un curso en el sistema.
 - **Campos**:
   - `id`
   - `subjectId`
   - `teacherId`
 
-#### CourseStudentDto
+#### 4. `CourseStudentDto`
 - **Descripción**: DTO que asocia estudiantes con cursos y sus evaluaciones.
 - **Campos**:
   - `courseId`
@@ -627,31 +635,31 @@ Este paquete contiene las clases de **Data Transfer Objects (DTO)**, que se util
   - `comments`
   - `fecha`
 
-#### EvaluationDTO
+#### 5. `EvaluationDTO`
 - **Descripción**: DTO para las evaluaciones de estudiantes.
 - **Validaciones**: Asegura que los campos esenciales como `dniStudent`, `year`, `trimester`, `subject`, y `feedback` no estén vacíos.
 
-#### MedicalInformationDto
+#### 6. `MedicalInformationDto`
 - **Descripción**: DTO que encapsula información médica de una entidad.
 - **Campos**:
   - `bloodType`
   - `allergies`
   - `additionalConditions`
 
-#### NotificationDTO
+#### 7. `NotificationDTO`
 - **Descripción**: DTO para enviar notificaciones a estudiantes, padres o grupos.
 - **Validaciones**: Valida campos como `year`, `session`, `message`, `targetGroup`, y `dni`.
 
-#### ParentDto
+#### 8. `ParentDto`
 - **Descripción**: Representa a un padre en el sistema.
 - **Campos**:
   - `id`, `name`, `lastName`, `dni`, `phoneNumber`, `email`, etc.
 
-#### ParentRegistrationDto
+#### 9. `ParentRegistrationDto`
 - **Descripción**: DTO para la registración de padres.
 - **Validaciones**: Incluye validaciones para nombre, apellido, DNI, número de teléfono, y correo electrónico.
 
-#### ProfessionalInformationDto
+#### 10. `ProfessionalInformationDto`
 - **Descripción**: DTO que encapsula información profesional de un docente.
 - **Campos**:
   - `academicTitles`
@@ -660,33 +668,33 @@ Este paquete contiene las clases de **Data Transfer Objects (DTO)**, que se util
   - `tutorship`
   - `extracurricularClasses`
 
-#### StudentDto
+#### 11. `StudentDto`
 - **Descripción**: Representa a un estudiante en el sistema.
 - **Campos**:
   - `id`, `address`, `session`, `name`, `lastName`, `dni`, `phoneNumber`, etc.
 
-#### StudentRegistrationDto
+#### 12. `StudentRegistrationDto`
 - **Descripción**: DTO para la registración de estudiantes.
 - **Validaciones**: Asegura que los campos como nombre, apellido, DNI y correo electrónico sean válidos.
 
-#### TeacherDto
+#### 13. `TeacherDto`
 - **Descripción**: Representa a un docente en el sistema.
 - **Campos**:
   - `id`, `name`, `lastName`, `dni`, `phoneNumber`, etc.
 
-#### TeacherRegistrationDto
+#### 14. `TeacherRegistrationDto`
 - **Descripción**: DTO para la registración de docentes.
 - **Validaciones**: Valida campos como nombre, apellido, DNI, número de teléfono, y correo electrónico.
 
-#### UpdateParentDto
+#### 15. `UpdateParentDto`
 - **Descripción**: DTO para la actualización de datos de padres.
 - **Validaciones**: Incluye validaciones similares a las de `ParentRegistrationDto`.
 
-#### UpdateStudentDto
+#### 16. `UpdateStudentDto`
 - **Descripción**: DTO para la actualización de datos de estudiantes.
 - **Validaciones**: Similar a `StudentRegistrationDto`, pero permite la actualización de datos existentes.
 
-#### UpdateTeacherDto
+#### 17. `UpdateTeacherDto`
 - **Descripción**: DTO para la actualización de datos de docentes.
 - **Validaciones**: Incluye validaciones similares a las de `TeacherRegistrationDto`.
 
@@ -696,64 +704,64 @@ Estos DTOs facilitan la validación y transferencia de datos, mejorando la integ
 ### Paquete: `com.school.service.implementation`
 
 Este paquete contiene las implementaciones de los servicios que gestionan la lógica de negocio en la aplicación. A continuación, se detallan las principales clases y sus responsabilidades:
-
-#### `AdminServiceImpl`
+### Clases
+#### 1. `AdminServiceImpl`
 Este servicio maneja la lógica relacionada con los administradores de la aplicación.
 - **Registro de Administradores**: Registra nuevos administradores utilizando el `AdminRepository` y el `UserEntityServiceImpl`.
 - **Verificación de DNI**: Verifica si el DNI del administrador ya está registrado.
 - **Creación de Usuarios**: Crea un registro de usuario con el rol de administrador y lo asocia con los datos del administrador.
 - **Logging**: Utiliza un mecanismo de logging para el seguimiento de eventos importantes.
 
-#### `CourseServiceImpl`
+#### 2. `CourseServiceImpl`
 Este servicio gestiona la creación de cursos y su asociación con asignaturas y profesores.
 - **Búsqueda de Asignaturas y Profesores**: Busca asignaturas y profesores según los IDs proporcionados en las solicitudes.
 - **Creación de Cursos**: Crea cursos y los guarda en la base de datos utilizando el `CourseRepository`.
 - **Transformación de Entidades**: Transforma las entidades `Course` en `CourseDto` para las respuestas.
 
-#### `CourseStudentService`
+#### 3. `CourseStudentService`
 Este servicio maneja las relaciones entre cursos y estudiantes.
 - **Registro de Relaciones**: Crea nuevas relaciones entre estudiantes y cursos, registrando notas y comentarios.
 - **Recuperación de Asignaciones**: Recupera las asignaciones de estudiantes a cursos específicos.
 - **Interacción con Repositorios**: Utiliza repositorios como `CourseStudentRepository` y `StudentRepository` para interactuar con la base de datos.
 
-#### `EmailServiceImpl`
+#### 4. `EmailServiceImpl`
 Este servicio se encarga del envío de correos electrónicos, como la recuperación de contraseñas y la confirmación de cambios.
 - **Envío de Correos**: Envía correos electrónicos utilizando plantillas de `Thymeleaf`.
 - **Manejo de Excepciones**: Maneja excepciones relacionadas con el envío de correos mediante `EmailServiceException`.
 
-#### `EvaluationServiceImpl`
+#### 5. `EvaluationServiceImpl`
 Este servicio gestiona la lógica relacionada con las evaluaciones.
 - **Guardado de Evaluaciones**: Guarda evaluaciones en la base de datos utilizando el `EvaluationRepository`.
 - **Recuperación de Evaluaciones**: Recupera evaluaciones por el DNI del estudiante.
 - **Manejo de Excepciones**: Maneja excepciones cuando no se encuentran evaluaciones para un estudiante dado.
 
-#### `NotificationServiceImpl`
+#### 6. `NotificationServiceImpl`
 Este servicio gestiona el envío de notificaciones a estudiantes, padres y cursos completos.
 - **Envío de Notificaciones**: Permite enviar notificaciones basadas en el DNI del estudiante o asociadas a un curso en particular.
 - **Validación de Datos**: Valida los datos proporcionados y guarda las notificaciones en el repositorio correspondiente.
 - **Respuestas a Notificaciones**: Permite agregar respuestas a notificaciones previamente enviadas.
 
-#### `ParentServiceImpl`
+#### 7. `ParentServiceImpl`
 Este servicio gestiona la creación, actualización y eliminación de padres.
 - **Registro y Asociación**: Registra usuarios asociados a padres, valida DNIs, y asocia padres con sus hijos.
 - **Interacción con Repositorios**: Utiliza los repositorios `ParentRepository`, `StudentRepository`, `UserEntityRepository` y el servicio `UserEntityServiceImpl`.
 
-#### `RolePermissionServiceImpl`
+#### 8. `RolePermissionServiceImpl`
 Este servicio maneja la creación de roles con sus permisos asociados.
 - **Creación de Roles**: Maneja la creación de roles y permite asignar permisos a roles específicos, como `ADMIN`, `TEACHER`, `PARENT`, y `STUDENT`.
 - **Interacción con Repositorios**: Utiliza los repositorios `RoleEntityRepository` y `PermissionRepository`.
 
-#### `StudentServiceImpl`
+#### 9. `StudentServiceImpl`
 Este servicio gestiona la creación, actualización y eliminación de estudiantes.
 - **Búsqueda de Estudiantes**: Permite la búsqueda de estudiantes por apellido y verificación de estudiantes mediante DNI.
 - **Interacción con Repositorios**: Utiliza los repositorios `StudentRepository`, `UserEntityRepository`, y el servicio `UserEntityServiceImpl`.
 
-#### `SubjectServiceImpl`
+#### 10. `SubjectServiceImpl`
 Este servicio proporciona la lógica para la creación de materias.
 - **Verificación de Materias**: Verifica si ya existen materias antes de crear nuevas.
 - **Interacción con Repositorios**: Utiliza el repositorio `SubjectRepository`.
 
-#### `TeacherServiceImpl`
+#### 11. `TeacherServiceImpl`
 Este servicio gestiona la lógica relacionada con la administración de profesores.
 - **Creación de Profesores**: Verifica si el DNI ya está registrado, genera una contraseña basada en el DNI y registra al profesor como usuario en el sistema.
 - **Actualización de Profesores**: Permite actualizar los datos de un profesor existente utilizando un DTO de actualización.
@@ -767,7 +775,7 @@ Dependencias:
 - `PasswordUtil` para generar contraseñas.
 - `StudentServiceImpl` para verificar información relacionada con estudiantes.
 
-#### `UserEntityServiceImpl`
+#### 12. `UserEntityServiceImpl`
 Este servicio gestiona la creación, autenticación y actualización de usuarios en el sistema.
 - **Registro de Usuarios**: Maneja el registro de nuevos usuarios, vinculándolos con roles y permisos adecuados.
 - **Autenticación de Usuarios**: Utiliza JWT para la autenticación de usuarios y proporciona métodos para refrescar tokens de acceso.
@@ -848,7 +856,8 @@ Este paquete contiene mappers que facilitan la conversión entre entidades y obj
 
 El paquete `utility` contiene utilidades clave para la seguridad y generación de respuestas estándar en la aplicación. A continuación, se describen las clases y sus principales funcionalidades:
 
-#### JwtUtils
+### Clases
+#### 1. `JwtUtils`
 Clase que gestiona la creación y validación de tokens JWT (JSON Web Tokens) para autenticar usuarios de manera segura.
 
 - **createToken(Authentication authentication)**: Genera un token JWT para un usuario autenticado, estableciendo las autoridades, el emisor, la fecha de emisión y la fecha de expiración.
@@ -858,12 +867,12 @@ Clase que gestiona la creación y validación de tokens JWT (JSON Web Tokens) pa
 - **createRefreshToken(UsernamePasswordAuthenticationToken authentication)**: Crea un token de refresh para renovar el token de acceso.
 - **validateRefreshToken(String oldRefreshToken)**: Valida el token de refresh cuando se solicita uno nuevo.
 
-#### PasswordUtil
+#### 2. `PasswordUtil`
 Clase encargada de generar contraseñas seguras para los usuarios, combinando un prefijo especial y el DNI del usuario.
 
 - **generatePassword(String dni)**: Genera una contraseña segura compuesta por un prefijo aleatorio (una letra mayúscula, una minúscula y un carácter especial) seguido del DNI del usuario.
 
-#### ResponseUtils
+#### 3. `ResponseUtils`
 Clase que proporciona métodos para crear respuestas estándar y de error en la API.
 
 - **createResponse(String message)**: Crea una respuesta exitosa que incluye un mensaje, un estado de éxito y una marca de tiempo.
