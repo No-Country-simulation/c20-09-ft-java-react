@@ -72,25 +72,7 @@ public class ParentController {
     }
 
     @GetMapping("/verify/{dni}")
-    @Operation(
-            summary = "Verify Teacher by DNI",
-            description = "Verifies the existence of a teacher by their DNI.",
-            responses = {
-                    @ApiResponse(
-                            responseCode = "200", description = "Teacher verification result",
-                            content = @Content(
-                                    schema = @Schema(implementation = StudentResponse.class)
-                            )
-                    ),
-                    @ApiResponse(
-                            responseCode = "404", description = "Teacher not found",
-                            content = @Content(
-                                    schema = @Schema(implementation = ApiError.class)
-                            )
-                    )
-            }
-    )
-    public ResponseEntity<StudentResponse> verifyChildByDni(@PathVariable String dni) {
-        return ResponseEntity.ok(parentService.verifyChildByDni(dni));
+    public ResponseEntity<StudentResponse> getStudentAndParentByDni(@PathVariable String dni) {
+        return ResponseEntity.ok(parentService.getStudentAndParentByDni(dni));
     }
 }

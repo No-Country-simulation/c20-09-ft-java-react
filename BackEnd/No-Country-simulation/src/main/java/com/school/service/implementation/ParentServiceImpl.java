@@ -151,10 +151,6 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
         return new DeleteResponse("Parent successfully deleted", true);
     }
 
-    public StudentResponse verifyChildByDni(String dni) {
-        return studentService.verifyChildByDni(dni);
-    }
-
     public StudentResponse verifyStudentByParentDni(String dni) {
         // Buscar el padre por DNI
         Parent parent = parentRepository.findByDniWithChildren(dni)
@@ -173,5 +169,9 @@ public class ParentServiceImpl implements GenericService<Parent, ParentRegistrat
 
         // Devolver la información del hijo como DTO
         return new StudentResponse(student.getDni(), student.getName(), student.getLastName(), student.getYear(), student.getSession(), parent.getName(), parent.getLastName());
+    }
+
+    public StudentResponse getStudentAndParentByDni(String dni) {
+        return studentService.getStudentAndParentByDni(dni);
     }
 }
