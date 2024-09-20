@@ -36,6 +36,7 @@ Esta aplicación está dirigida a instituciones educativas, ya sean públicas o 
 - [Despliegue](#despliegue)
 - [Documentación](#documentación)
 - [Contribución](#contribución)
+- [Agradecimientos](#agradecimientos) 
 - [Autores](#autores)
 
 ## Descripción
@@ -175,6 +176,10 @@ Aquí puedes acceder a la documentación específica de cada una de las áreas d
 2. **Crea una rama** para tu característica (`git checkout -b feature/nueva-caracteristica`).
 3. **Realiza los cambios** y haz commit (`git commit -m "Añadir nueva caracteristica"`)
 
+## Agradecimientos
+
+Este proyecto fue posible gracias a la organización de simulaciones laborales por parte de [No Country](https://www.nocountry.tech/). Agradecemos a todo su equipo por brindar un espacio donde los desarrolladores pueden poner en práctica sus habilidades y colaborar en proyectos reales, contribuyendo al crecimiento profesional de todos los participantes.
+
 ## Autores
 
 Proyecto creado por:
@@ -249,3 +254,13 @@ Proyecto creado por:
 
 [![GitHub](https://img.shields.io/badge/GitHub-KarinaReguera-blue)](https://github.com/KarinaReguera)
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Karina_Reguera-blue)](https://www.linkedin.com/in/karina-reguera/)
+
+<div style="display: flex; align-items: center;">
+    <img src="../design/img/paloma_carnaghi.webp" alt="Paloma Carnaghi" style="border-radius: 50%; margin-right: 10px; width: 50px; height: 50px;">
+    <p>
+        <strong>Paloma Carnaghi</strong> | Team Leader
+    </p>
+</div>
+
+[![Behance](https://img.shields.io/badge/Behance-Paloma_Carnaghi-blue)](https://www.behance.net/palomacarnaghi1)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-Paloma_Carnaghi-blue)](https://www.linkedin.com/in/paloma-carnaghi/)
