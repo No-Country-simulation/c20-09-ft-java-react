@@ -70,7 +70,6 @@ Este paquete contiene configuraciones esenciales para la seguridad, el inicio de
 
 Este paquete asegura que la aplicación esté protegida mediante autenticación JWT, que siempre se inicialice un administrador por defecto, y que la documentación de la API esté disponible para los desarrolladores.
 
-
 ## Carga de Datos
 ### Paquete `com.school.data`
 
@@ -142,52 +141,52 @@ Este paquete contiene las entidades que representan las tablas de la base de dat
 
 #### Clases
 
-##### `Address`
+##### 1. `Address`
 Representa la dirección de un usuario, con campos como país, estado, ciudad, código postal y dirección.
 
-##### `Admin`
+##### 2. `Admin`
 Extiende de la clase `User`. Representa a un administrador del sistema y contiene una relación uno a uno con `UserEntity`.
 
-##### `Course`
+##### 3. `Course`
 Representa un curso académico. Está relacionado con las entidades `Subject` (materia) y `Teacher` (profesor).
 
-#### `CourseStudent`
+##### 4. `CourseStudent`
 Asocia estudiantes con cursos, incluyendo la nota y comentarios, así como la fecha de la evaluación.
 
-#### `Evaluation`
+##### 5. `Evaluation`
 Almacena información sobre las evaluaciones de los estudiantes, incluyendo nombre, apellido, DNI, año, trimestre, materia y retroalimentación.
 
-#### `MedicalInformation`
+##### 6. `MedicalInformation`
 Contiene información médica relevante, como tipo de sangre, alergias y condiciones adicionales.
 
-#### `Notification`
+##### 7. `Notification`
 Modelo para las notificaciones enviadas a estudiantes, padres o profesores, incluyendo detalles como el grupo objetivo, mensaje y fecha de envío.
 
-#### `Parent`
+##### 8. `Parent`
 Extiende de la clase `User`. Representa a un padre o tutor, con una relación de muchos a muchos con los estudiantes y campos adicionales como la relación con el niño y ocupación.
 
-#### `PermissionEntity`
+##### 9. `PermissionEntity`
 Define permisos que pueden ser asignados a roles dentro del sistema.
 
-#### `ProfessionalInformation`
+##### 10. `ProfessionalInformation`
 Almacena información profesional de un profesor, incluyendo títulos académicos, materias que enseña y horas de trabajo.
 
-#### `RoleEntity`
+##### 11. `RoleEntity`
 Representa roles dentro del sistema, que pueden tener uno o más permisos asociados.
 
-#### `Student`
+##### 12. `Student`
 Extiende de la clase `User`. Representa a un estudiante, con relaciones con padres y profesores, así como información médica y de inscripción.
 
-#### `Subject`
+##### 13. `Subject`
 Representa una materia en el sistema.
 
-#### `Teacher`
+##### 14. `Teacher`
 Extiende de la clase `User`. Representa a un profesor, con relaciones con estudiantes y un campo para información profesional.
 
-#### `User`
+##### 15. `User`
 Clase abstracta que contiene campos comunes para usuarios, como nombre, apellido, DNI, correo electrónico, número de teléfono y dirección.
 
-#### `UserEntity`
+##### 16. `UserEntity`
 Modelo de usuario que gestiona la autenticación y autorización en el sistema, incluyendo roles, tokens y estados de la cuenta.
 
 ### Paquete `com.school.persistence.enums`
