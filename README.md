@@ -256,7 +256,7 @@ Proyecto creado por:
 [![LinkedIn](https://img.shields.io/badge/LinkedIn-Karina_Reguera-blue)](https://www.linkedin.com/in/karina-reguera/)
 
 <div style="display: flex; align-items: center;">
-    <img src="https://raw.githubusercontent.com/No-Country-simulation/c20-09-ft-java-react/refs/heads/develop/FrontEnd/design/img/paloma_carnaghi.webp?token=GHSAT0AAAAAACTN6Z4XZZBVBH5MKM7GY47WZXNNOOQ" alt="Paloma Carnaghi" style="border-radius: 50%; margin-right: 10px; width: 50px; height: 50px;">
+    <img src="https://raw.githubusercontent.com/No-Country-simulation/c20-09-ft-java-react/refs/heads/develop/FrontEnd/design/img/paloma_carnaghi.webp?token=GHSAT0AAAAAACTN6Z4W33R2HKQ6IFGO2K7MZXNUZBA" alt="Paloma Carnaghi" style="border-radius: 50%; margin-right: 10px; width: 50px; height: 50px;">
     <p>
         <strong>Paloma Carnaghi</strong> | Team Leader
     </p>
