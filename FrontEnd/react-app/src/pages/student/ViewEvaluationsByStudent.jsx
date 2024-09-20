@@ -16,10 +16,12 @@ import {
 } from "@chakra-ui/react";
 import { verifyChildByDni } from "../../services/adminService";
 
-const ViewEvaluations = () => {
-  const [evaluations, setEvaluations] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+const ViewEvaluationsByStudent = () => {
+  const [state, setState] = useState({
+    evaluations: [],
+    loading: true,
+    error: null,
+  });
   const [studentInfo, setStudentInfo] = useState({
     firstName: "",
     lastName: "",
@@ -43,26 +45,33 @@ const ViewEvaluations = () => {
         })
         .catch((err) => {
           console.error("Error al verificar el DNI:", err);
-          setError("Error al verificar el DNI.");
-          setLoading(false);
+          setState({
+            evaluations: [],
+            loading: false,
+            error: "Error al verificar el DNI.",
+          });
         });
     } else {
-      setError("DNI no encontrado en sessionStorage.");
-      setLoading(false);
+      setState({
+        evaluations: [],
+        loading: false,
+        error: "DNI no encontrado en sessionStorage.",
+      });
     }
   }, []);
 
   const fetchEvaluations = async (dni) => {
-    setLoading(true);
+    setState((prevState) => ({ ...prevState, loading: true }));
     try {
       const data = await getEvaluationsByDni(dni);
-      console.log("Data received:", data);
-      setEvaluations(data);
+      setState({ evaluations: data, loading: false, error: null });
     } catch (error) {
       console.error("Error fetching evaluations:", error);
-      setError(error.message || "Error al obtener las evaluaciones");
-    } finally {
-      setLoading(false);
+      setState({
+        evaluations: [],
+        loading: false,
+        error: error.message || "Error al obtener las evaluaciones",
+      });
     }
   };
 
@@ -92,14 +101,16 @@ const ViewEvaluations = () => {
           </Flex>
         </Box>
 
-        {loading && <Text textAlign="center">Cargando evaluaciones...</Text>}
-        {error && (
+        {state.loading && (
+          <Text textAlign="center">Cargando evaluaciones...</Text>
+        )}
+        {state.error && (
           <Text color="red.500" textAlign="center">
-            {error}
+            {state.error}
           </Text>
         )}
 
-        {!loading && !error && evaluations.length > 0 && (
+        {!state.loading && !state.error && state.evaluations.length > 0 && (
           <Table
             variant="simple"
             size={isMobile ? "sm" : "md"}
@@ -110,15 +121,17 @@ const ViewEvaluations = () => {
           >
             <Thead bg="orange.400">
               <Tr>
-                <Th>Año</Th>
-                <Th>Trimestre</Th>
-                <Th>Materia</Th>
-                <Th>Retroalimentación</Th>
+                <Th colorScheme="whiteAlpha">Año</Th>
+                <Th colorScheme="whiteAlpha">Trimestre</Th>
+                <Th colorScheme="whiteAlpha">Materia</Th>
+                <Th colorScheme="whiteAlpha">Retroalimentación</Th>
               </Tr>
             </Thead>
             <Tbody bg="white">
-              {evaluations.map((evaluation, index) => (
-                <Tr key={index}>
+              {state.evaluations.map((evaluation) => (
+                <Tr key={evaluation.id}>
+                  {" "}
+                  {/* Cambia 'evaluation.id' por el campo único real */}
                   <Td>{evaluation.year}</Td>
                   <Td>{evaluation.trimester}</Td>
                   <Td>{evaluation.subject}</Td>
@@ -128,7 +141,7 @@ const ViewEvaluations = () => {
             </Tbody>
           </Table>
         )}
-        {!loading && !error && evaluations.length === 0 && (
+        {!state.loading && !state.error && state.evaluations.length === 0 && (
           <Text textAlign="center">No hay evaluaciones para mostrar.</Text>
         )}
       </Box>
@@ -136,4 +149,4 @@ const ViewEvaluations = () => {
   );
 };
 
-export default ViewEvaluations;
+export default ViewEvaluationsByStudent;

@@ -20,13 +20,14 @@ import {
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import logo from "../assets/logoDonorinoSchoolBlack.webp";
-import btnHistorial from "../assets/tu_historial_academico.webp";
-import btnRendimiento from "../assets/tu_rendimiento.webp";
-import btnMensajes from "../assets/tus_mensajes.webp";
+import btnHistorial from "../assets/historial_academico.webp";
+import btnRendimiento from "../assets/rendimiento.webp";
+import btnEnviar from "../assets/enviar_notificaciones.webp";
+import btnRecibir from "../assets/recibir_notificaciones.webp";
 import "./Dashboard.css";
-import RegisterEvaluations from "./teacher/RegisterEvaluations";
-import SendNotifications from "./teacher/sendNotifications";
 import AcademicRecord from "./teacher/AcademicRecord";
+import RegisterEvaluations from "./teacher/RegisterEvaluations";
+import SendNotifications from "./teacher/SendNotifications";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -110,8 +111,16 @@ const TeacherDashboard = () => {
           </a>
           <a href="#" onClick={onMensajesOpen}>
             <Image
-              src={btnMensajes}
-              alt="Mensajes y Notificaciones"
+              src={btnEnviar}
+              alt="Enviar Notificaciones"
+              className="option-img"
+            />
+          </a>
+          {/* Agregar evento OnClick */}
+          <a href="#">
+            <Image
+              src={btnRecibir}
+              alt="Recibir Notificaciones"
               className="option-img"
             />
           </a>
