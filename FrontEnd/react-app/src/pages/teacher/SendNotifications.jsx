@@ -17,6 +17,7 @@ import {
   sendNotificationToParent,
 } from "../../services/notificationService";
 import { verifyChildByDni } from "../../services/adminService";
+import { getStudentAndParentByDni } from "../../services/notificationService"; // Importar desde teacherService
 import { useNavigate } from "react-router-dom";
 
 const SendNotifications = () => {
@@ -27,7 +28,7 @@ const SendNotifications = () => {
   const [fullName, setFullName] = useState("");
   const [parentFullName, setParentFullName] = useState("");
   const [message, setMessage] = useState("");
-  const [subject, setSubject] = useState(""); // Estado para el asunto
+  const [subject, setSubject] = useState("");
   const [loading, setLoading] = useState(false);
 
   const toast = useToast();
@@ -50,17 +51,28 @@ const SendNotifications = () => {
   const searchDni = async () => {
     if (dni.length === 8) {
       try {
-        const studentData = await verifyChildByDni(dni);
+        let studentData;
+
+        if (sendTo === "student") {
+          // Busca al estudiante
+          studentData = await verifyChildByDni(dni);
+        } else if (sendTo === "parent") {
+          // Busca al estudiante y padre
+          studentData = await getStudentAndParentByDni(dni);
+        }
+
         if (studentData) {
           const nameStudent = `${studentData.firstName || ""} ${
             studentData.lastName || ""
           }`.trim();
           setFullName(nameStudent);
-          setParentFullName(
-            `${studentData.parentName || ""} ${
-              studentData.parentLastName || ""
-            }`.trim()
-          );
+          if (sendTo === "parent") {
+            setParentFullName(
+              `${studentData.parentName || ""} ${
+                studentData.parentLastName || ""
+              }`.trim()
+            );
+          }
           setYear(studentData.year);
           setSession(studentData.session);
         } else {
@@ -73,7 +85,7 @@ const SendNotifications = () => {
         console.error(error);
         toast({
           title: "Error",
-          description: "No se pudo obtener la información del estudiante.",
+          description: "No se pudo obtener la información.",
           status: "error",
           duration: 5000,
           isClosable: true,
@@ -96,7 +108,6 @@ const SendNotifications = () => {
     setLoading(true);
     try {
       if (!year || !session || !sendTo || !message || !subject) {
-        // Verificar si el asunto está presente
         throw new Error("Por favor, completa todos los campos.");
       }
 
@@ -107,7 +118,7 @@ const SendNotifications = () => {
           year,
           session,
           targetGroup: "course",
-          subject, // Añadir el asunto
+          subject,
           message,
         };
         await sendNotificationToAll(payload);
@@ -119,7 +130,7 @@ const SendNotifications = () => {
           session,
           dni,
           targetGroup: "student",
-          subject, // Añadir el asunto
+          subject,
           message,
         };
         await sendNotificationToStudent(payload);
@@ -130,13 +141,11 @@ const SendNotifications = () => {
           session,
           dni,
           targetGroup: "parent",
-          subject, // Añadir el asunto
+          subject,
           message,
         };
         await sendNotificationToParent(payload);
       }
-
-      console.log("Datos a enviar:", payload);
 
       toast({
         title: "Notificación Enviada",
@@ -146,6 +155,7 @@ const SendNotifications = () => {
         isClosable: true,
       });
 
+      // Resetear campos
       setYear("");
       setSession("");
       setSendTo("");
@@ -153,7 +163,7 @@ const SendNotifications = () => {
       setFullName("");
       setParentFullName("");
       setMessage("");
-      setSubject(""); // Limpiar el asunto
+      setSubject("");
     } catch (error) {
       toast({
         title: "Error",
@@ -184,7 +194,12 @@ const SendNotifications = () => {
           <Box mb={6}>
             <FormControl mb={4}>
               <FormLabel color="#34495E">Año:</FormLabel>
-              <Select id="year" value={year} onChange={handleYearChange} isReadOnly>
+              <Select
+                id="year"
+                value={year}
+                onChange={handleYearChange}
+                isReadOnly
+              >
                 <option value="">Seleccionar año</option>
                 <option value="1">1º</option>
                 <option value="2">2º</option>
@@ -258,7 +273,7 @@ const SendNotifications = () => {
                 <FormLabel color="#34495E">Asunto</FormLabel>
                 <Input
                   value={subject}
-                  onChange={(e) => setSubject(e.target.value)} // Capturar el valor del asunto
+                  onChange={(e) => setSubject(e.target.value)}
                   placeholder="Ingrese el asunto"
                 />
               </FormControl>

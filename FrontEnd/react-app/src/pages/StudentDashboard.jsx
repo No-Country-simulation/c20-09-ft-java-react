@@ -22,10 +22,10 @@ import logo from "../assets/logoDonorinoSchoolBlack.webp";
 import btnHistorial from "../assets/tu_historial_academico.webp";
 import btnRendimiento from "../assets/tu_rendimiento.webp";
 import btnMensajes from "../assets/tus_mensajes.webp";
-import ViewEvaluations from "./student/ViewEvaluations";
 import ViewNotifications from "./student/ViewNotifications";
 import "./Dashboard.css";
 import AcademicRecord from "./student/ViewAcademicRecord";
+import ViewEvaluationsByStudent from "./student/ViewEvaluationsByStudent";
 
 const TeacherDashboard = () => {
   const [name, setName] = useState("");
@@ -164,7 +164,7 @@ const TeacherDashboard = () => {
             <ModalCloseButton />
             <ModalBody overflowY="auto">
               {/* Contenido del modal de Rendimiento */}
-              <ViewEvaluations />
+              <ViewEvaluationsByStudent />
             </ModalBody>
             <ModalFooter>
               <Button colorScheme="orange" onClick={onRendimientoClose}>

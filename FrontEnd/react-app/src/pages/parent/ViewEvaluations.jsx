@@ -14,7 +14,7 @@ import {
   Flex,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { verifyChildByDni } from "../../services/adminService";
+import { verifyStudentByParentDni } from "../../services/teacherService"; // Asegúrate de que la ruta sea correcta
 
 const ViewEvaluations = () => {
   const [evaluations, setEvaluations] = useState([]);
@@ -23,23 +23,26 @@ const ViewEvaluations = () => {
   const [studentInfo, setStudentInfo] = useState({
     firstName: "",
     lastName: "",
-    dni: "",
+    studentDni: "", // Cambiado el nombre de dni a studentDni
   });
 
   const isMobile = useBreakpointValue({ base: true, md: false });
 
   useEffect(() => {
-    const dni = sessionStorage.getItem("dni");
+    const dniParent = sessionStorage.getItem("dni"); // Cambiado a dniParent
 
-    if (dni) {
-      verifyChildByDni(dni)
+    if (dniParent) {
+      // Verificando dniParent
+      verifyStudentByParentDni(dniParent) // Usando dniParent aquí
         .then((data) => {
+          console.log("Datos del estudiante:", data); // Consola para verificar los datos
           setStudentInfo({
             firstName: data.firstName || "No disponible",
             lastName: data.lastName || "No disponible",
-            dni: dni,
+            studentDni: data.dni || "No disponible", // Suponiendo que el DNI del estudiante está aquí
           });
-          fetchEvaluations(dni);
+          // Aquí usamos el DNI del estudiante
+          fetchEvaluations(data.dni); // Usando el DNI del estudiante
         })
         .catch((err) => {
           console.error("Error al verificar el DNI:", err);
@@ -52,10 +55,11 @@ const ViewEvaluations = () => {
     }
   }, []);
 
-  const fetchEvaluations = async (dni) => {
+  const fetchEvaluations = async (studentDni) => {
+    // Cambiado a studentDni
     setLoading(true);
     try {
-      const data = await getEvaluationsByDni(dni);
+      const data = await getEvaluationsByDni(studentDni); // Usando studentDni aquí
       console.log("Data received:", data);
       setEvaluations(data);
     } catch (error) {
@@ -87,7 +91,8 @@ const ViewEvaluations = () => {
               <strong>Apellido:</strong> {studentInfo.lastName}
             </Text>
             <Text>
-              <strong>DNI:</strong> {studentInfo.dni}
+              <strong>DNI:</strong> {studentInfo.studentDni}{" "}
+              {/* Usando el nuevo nombre */}
             </Text>
           </Flex>
         </Box>

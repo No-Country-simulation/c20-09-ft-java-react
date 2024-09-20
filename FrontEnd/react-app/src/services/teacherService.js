@@ -28,9 +28,7 @@ export const getEvaluationsByDni = async (dni) => {
 // Servicio para verificar estudiante por DNI del padre
 export const verifyStudentByParentDni = async (dni) => {
   try {
-    const response = await teacherService.get(
-      `/evaluations/students/parent/${dni}`
-    );
+    const response = await teacherService.get(`/students/parent/${dni}`);
     return response.data; // Devuelve la información del estudiante
   } catch (error) {
     console.error(

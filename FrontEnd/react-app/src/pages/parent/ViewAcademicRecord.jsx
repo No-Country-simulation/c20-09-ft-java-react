@@ -13,7 +13,7 @@ import {
   Flex,
   useBreakpointValue,
 } from "@chakra-ui/react";
-import { verifyChildByDni } from "../../services/adminService";
+import { verifyStudentByParentDni } from "../../services/teacherService"; // Importa el nuevo servicio
 
 const AcademicRecord = () => {
   const [studentInfo, setStudentInfo] = useState({
@@ -55,17 +55,17 @@ const AcademicRecord = () => {
   useEffect(() => {
     const dni = sessionStorage.getItem("dni");
     if (dni) {
-      verifyChildByDni(dni)
+      verifyStudentByParentDni(dni) // Usa el nuevo servicio
         .then((data) => {
           // Suponiendo que la respuesta contiene firstName y lastName
           setStudentInfo({
             firstName: data.firstName || "No disponible",
             lastName: data.lastName || "No disponible",
-            dni: dni,
+            dniStudent: data.dni,
           });
         })
         .catch((err) => {
-          console.error("Error al verificar el DNI:", err);
+          console.error("Error al verificar el estudiante:", err);
         });
     }
   }, []);
@@ -79,7 +79,7 @@ const AcademicRecord = () => {
         boxShadow="0 4px 8px rgba(0, 0, 0, 0.9)"
       >
         <Heading as="h1" mb={6} textAlign="center" color="orange.500">
-          Historial Academico
+          Historial Académico
         </Heading>
 
         <Box mb={6} p={4} borderWidth={1} borderRadius="md">
@@ -91,7 +91,7 @@ const AcademicRecord = () => {
               <strong>Apellido:</strong> {studentInfo.lastName}
             </Text>
             <Text>
-              <strong>DNI:</strong> {studentInfo.dni}
+              <strong>DNI:</strong> {studentInfo.dniStudent}
             </Text>
           </Flex>
         </Box>

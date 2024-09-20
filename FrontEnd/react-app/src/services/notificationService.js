@@ -69,3 +69,18 @@ export async function getNotificationsForParent(dni) {
     throw error;
   }
 }
+
+export const getStudentAndParentByDni = async (dni) => {
+  try {
+    const response = await notification.get(`/verify/${dni}`);
+    return response.data;
+  } catch (error) {
+    console.error(
+      "Error al obtener la información del estudiante y el padre:",
+      error
+    );
+    throw new Error(
+      "Error al obtener la información del estudiante y el padre"
+    );
+  }
+};
