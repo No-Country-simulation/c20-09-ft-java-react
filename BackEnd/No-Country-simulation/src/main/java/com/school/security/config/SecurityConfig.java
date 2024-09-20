@@ -60,7 +60,7 @@ public class SecurityConfig {
                     http.requestMatchers(HttpMethod.GET, "/teacher/verifyStudent/**").hasAuthority("READ_PRIVILEGES");
                     http.requestMatchers(HttpMethod.GET, "/admin/**").hasRole("ADMIN");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-student").hasAnyRole("STUDENT");
-                    http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-teacher", "/admin/parent/verify/{dni}").hasAnyRole("TEACHER");
+                    http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-teacher", "/notifications/verify/{dni}").hasAnyRole("TEACHER");
                     http.requestMatchers(HttpMethod.GET, "/api/v1/status/auth-parent").hasAnyRole("PARENT");
 
                     // Permisos para evaluaciones

@@ -4,7 +4,9 @@ import com.school.persistence.entities.Notification;
 import com.school.persistence.entities.Student;
 import com.school.persistence.repository.NotificationRepository;
 import com.school.persistence.repository.StudentRepository;
+import com.school.rest.response.StudentResponse;
 import com.school.service.dto.NotificationDTO;
+import com.school.service.implementation.ParentServiceImpl;
 import com.school.service.interfaces.INotificationService;
 import com.school.utility.NotificationMapper;
 import jakarta.persistence.EntityNotFoundException;
@@ -26,6 +28,8 @@ import java.util.stream.Collectors;
 @RestController
 @RequestMapping("/notifications")
 public class NotificationController {
+    private final ParentServiceImpl parentService;
+
     // Inyecta el servicio de notificaciones que maneja la lógica de negocio.
     @Autowired
     private INotificationService notificationService;
@@ -41,6 +45,10 @@ public class NotificationController {
     // Inyecta el repositorio de estudiantes para acceder directamente a los datos de estudiantes.
     @Autowired
     private StudentRepository studentRepository;
+
+    public NotificationController(ParentServiceImpl parentService) {
+        this.parentService = parentService;
+    }
 
     /**
      * Este método permite a los profesores enviar una notificación a todos los estudiantes y padres
@@ -202,6 +210,11 @@ public class NotificationController {
         notificationService.addResponse(id, responseText);
 
         return ResponseEntity.ok("Respuesta añadida a la notificación.");
+    }
+
+    @GetMapping("/verify/{dni}")
+    public ResponseEntity<StudentResponse> getStudentAndParentByDni(@PathVariable String dni) {
+        return ResponseEntity.ok(parentService.getStudentAndParentByDni(dni));
     }
 
 }
